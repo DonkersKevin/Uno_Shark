@@ -6,13 +6,13 @@ public class UserMapper {
 
 
     public User mapUserDtoToUser(CreateUserDto createUserDto) {
-        return new User()
-                .setFirstName(createUserDto.getFirstName())
-                .setLastName(createUserDto.getLastName())
-                .setAddress(createUserDto.getAddress())
-                .setMobileNumber(createUserDto.getMobileNumber())
-                .setPhoneNumber(createUserDto.getPhoneNumber())
-                .setEmailAddress(createUserDto.getEmailAddress())
+        return new User(
+                createUserDto.getFirstName(),
+                createUserDto.getLastName(),
+                createUserDto.getAddress(),
+                createUserDto.getMobileNumber(),
+                createUserDto.getPhoneNumber(),
+                createUserDto.getEmailAddress())
                 .setLicensePlate(createUserDto.getLicensePlate())
                 .setRegistrationDate(createUserDto.getRegistrationDate());
     }

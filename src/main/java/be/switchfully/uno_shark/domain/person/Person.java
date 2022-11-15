@@ -25,6 +25,15 @@ public class Person {
     public Person() {
     }
 
+    public Person(String firstName, String lastName, Address address, String phoneNumber, String mobileNumber, String emailAddress) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.mobileNumber = mobileNumber;
+        this.emailAddress = emailAddress;
+    }
+
     public Person setFirstName(String firstName) {
         this.firstName = firstName;
         return this;

@@ -17,6 +17,8 @@ public class UserDto {
     private LicensePlate licensePlate;
     private LocalDate registrationDate;
 
+
+
     public Long getId() {
         return id;
     }
