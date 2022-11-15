@@ -8,7 +8,7 @@ public class Address {
 
     @Id
     @GeneratedValue
-    private int id;
+    private Long id;
     @Column(name = "streetname")
     private String streetName;
     @Column(name = "housenumber")
@@ -22,7 +22,7 @@ public class Address {
 
     }
 
-    public Address(int id, String streetName, String houseNumber, PostalCode postalCode, String country) {
+    public Address(Long id, String streetName, String houseNumber, PostalCode postalCode, String country) {
         this.id = id;
         this.streetName = streetName;
         this.houseNumber = houseNumber;
@@ -30,7 +30,7 @@ public class Address {
         this.country = country;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
