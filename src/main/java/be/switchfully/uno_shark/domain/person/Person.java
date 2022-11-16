@@ -12,6 +12,7 @@ public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "person_seq")
     @SequenceGenerator(name = "person_seq", sequenceName = "person_seq", allocationSize = 1)
+    @Column(name = "id", nullable = false)
     private long id;
 
 
