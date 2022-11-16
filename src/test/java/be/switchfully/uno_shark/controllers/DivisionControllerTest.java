@@ -3,6 +3,8 @@ package be.switchfully.uno_shark.controllers;
 
 import be.switchfully.uno_shark.domain.parking.dto.CreateDivisionDto;
 import be.switchfully.uno_shark.repositories.DivisionRepository;
+import be.switchfully.uno_shark.services.DivisionService;
+import io.restassured.response.Response;
 import net.bytebuddy.asm.Advice;
 import org.aspectj.lang.annotation.Before;
 import org.assertj.core.api.Assertions;
@@ -24,6 +26,9 @@ class DivisionControllerTest {
     @Autowired
     DivisionRepository divisionRepository;
 
+    @Autowired
+    DivisionService divisionService;
+
     @LocalServerPort
     private int port;
 
@@ -41,5 +46,38 @@ class DivisionControllerTest {
                 .statusCode(HttpStatus.CREATED.value());
 
         Assertions.assertThat(divisionRepository.findById(1L)).isPresent();
+        Assertions.assertThat(divisionRepository.findById(1L).orElseThrow().getParent()).isNull();
+    }
+
+    @Test
+    void whenEmptyField_illegalArgumentExceptionIsThrown(){
+        given()
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .body(new CreateDivisionDto(1, null, "Old Division Name","Gigachad"))
+                .contentType(JSON)
+                .post("/divisions")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value());
+    }
+
+    @Test
+    void getAllDivisionsHappyPath(){
+        divisionService.createDivision(new CreateDivisionDto (0, "Parent Division", "Old Division", "Gigachad"));
+        divisionService.createDivision(new CreateDivisionDto(1, "Subdivision", "Old Division", "Ligma Johnson"));
+
+        Response response = given().baseUri("http://localhost")
+                .port(port)
+                .when()
+                .get("/divisions")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .response();
+
+        response.body().prettyPrint();
     }
 }

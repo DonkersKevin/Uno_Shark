@@ -2,11 +2,13 @@ package be.switchfully.uno_shark.services;
 
 import be.switchfully.uno_shark.domain.parking.Division;
 import be.switchfully.uno_shark.domain.parking.dto.CreateDivisionDto;
+import be.switchfully.uno_shark.domain.parking.dto.ShowDivisionDto;
 import be.switchfully.uno_shark.domain.parking.mapper.DivisionMapper;
 import be.switchfully.uno_shark.repositories.DivisionRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @Transactional
@@ -27,5 +29,9 @@ public class DivisionService {
         divisionValidationService.assertNotNullOrBlank(createDivisionDto.getOriginalName(), "Original name");
         divisionValidationService.assertNotNullOrBlank(createDivisionDto.getDirector(), "Director ");
         divisionRepository.save(divisionMapper.mapToDivision(createDivisionDto));
+    }
+
+    public List<ShowDivisionDto> getAllDivisions(){
+         return divisionMapper.mapToDto(divisionRepository.findAll());
     }
 }
