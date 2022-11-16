@@ -61,4 +61,6 @@ public class ParkingLotDto {
     public Price getPricePerHour() {
         return pricePerHour;
     }
+
+
 }
