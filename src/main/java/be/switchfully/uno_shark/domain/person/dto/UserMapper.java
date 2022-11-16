@@ -13,8 +13,7 @@ public class UserMapper {
                 createUserDto.getMobileNumber(),
                 createUserDto.getPhoneNumber(),
                 createUserDto.getEmailAddress())
-                .setLicensePlate(createUserDto.getLicensePlate())
-                .setRegistrationDate(createUserDto.getRegistrationDate());
+                .setLicensePlate(createUserDto.getLicensePlate());
     }
 
     public UserDto mapUserToUserDto(User user) {
