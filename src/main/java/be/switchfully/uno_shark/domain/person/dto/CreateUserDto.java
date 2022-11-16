@@ -13,7 +13,6 @@ public class CreateUserDto {
     private String mobileNumber;
     private String emailAddress;
     private LicensePlate licensePlate;
-    private LocalDate registrationDate;
 
 
     public String getFirstName() {
@@ -43,11 +42,6 @@ public class CreateUserDto {
     public LicensePlate getLicensePlate() {
         return licensePlate;
     }
-
-    public LocalDate getRegistrationDate() {
-        return registrationDate;
-    }
-
 
 
     public CreateUserDto setFirstName(String firstName) {
@@ -82,11 +76,6 @@ public class CreateUserDto {
 
     public CreateUserDto setLicensePlate(LicensePlate licensePlate) {
         this.licensePlate = licensePlate;
-        return this;
-    }
-
-    public CreateUserDto setRegistrationDate(LocalDate registrationDate) {
-        this.registrationDate = registrationDate;
         return this;
     }
 }
