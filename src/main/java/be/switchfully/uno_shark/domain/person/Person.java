@@ -5,7 +5,6 @@ import be.switchfully.uno_shark.domain.person.address.Address;
 import javax.persistence.*;
 
 
-
 @Entity
 public class Person {
 
@@ -19,7 +18,7 @@ public class Person {
     private String firstName;
     private String lastName;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_address_id")
     private Address address;
 

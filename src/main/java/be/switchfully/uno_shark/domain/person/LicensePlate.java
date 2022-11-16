@@ -1,6 +1,7 @@
 package be.switchfully.uno_shark.domain.person;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "license_plate")
@@ -12,6 +13,7 @@ public class LicensePlate {
     private long id;
 
     @Column(name = "issuing_country")
+    @Enumerated(EnumType.STRING)
     private IssuingCountry issuingCountry;
     @Column(name = "license_plate_number")
     private String licensePlateNumber;
@@ -30,5 +32,17 @@ public class LicensePlate {
 
     public String getLicensePlateNumber() {
         return licensePlateNumber;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof LicensePlate that)) return false;
+        return id == that.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
