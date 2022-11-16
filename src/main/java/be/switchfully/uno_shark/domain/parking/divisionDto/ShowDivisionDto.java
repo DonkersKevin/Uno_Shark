@@ -36,4 +36,15 @@ public class ShowDivisionDto
     public String getDirector() {
         return director;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "\n id=" + id +
+                "\n parentName='" + parentName + '\'' +
+                "\n name='" + name + '\'' +
+                "\n originalName='" + originalName + '\'' +
+                "\n director='" + director + '\'' +
+                "\n}";
+    }
 }
