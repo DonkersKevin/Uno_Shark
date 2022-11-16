@@ -21,11 +21,12 @@ public class MemberService {
 
     private final UserValidator userValidator;
 
-    public MemberService(UserRepository userRepository) {
+    public MemberService(UserRepository userRepository, PersonValidator personValidator, UserValidator userValidator, UserMapper userMapper) {
         this.userRepository = userRepository;
-        this.userMapper = new UserMapper();
-        this.personValidator = new PersonValidator();
-        this.userValidator = new UserValidator();
+        this.userMapper = userMapper;
+        this.personValidator = personValidator;
+        this.userValidator = userValidator;
+
     }
 
     public UserDto createMember(CreateUserDto createUserDto) {
