@@ -40,7 +40,7 @@ public class MemberService {
     }
 
     private void isUniqueLicensePlate(LicensePlate licensePlate) {
-        if(userRepository.findUserByLicensePlate(licensePlate) != null) {
+        if(userRepository.findUserByLicensePlate_LicensePlateNumber(licensePlate.getLicensePlateNumber()) != null) {
             throw new IllegalArgumentException("This license plate is already registered.");
         }
     }

@@ -15,11 +15,12 @@ public class User{
     @SequenceGenerator(name = "user_seq", sequenceName = "user_seq", allocationSize = 1)
     private long id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_person_id")
     private Person person;
 
-    @OneToOne //todo if we want to change this to one-to-many
+    //todo if we want to change this to one-to-many
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_licenseplate_id")
     private LicensePlate licensePlate;
     @Column(name = "registration_date")
@@ -31,6 +32,12 @@ public class User{
     public User (String firstName, String lastName, Address address, String phoneNumber, String mobileNumber, String emailAddress) {
         this.person = new Person(firstName, lastName, address, phoneNumber, mobileNumber, emailAddress);
         this.registrationDate = LocalDate.now();
+    }
+
+    public User (String firstName, String lastName, Address address, String phoneNumber, String mobileNumber, String emailAddress, LicensePlate licensePlate) {
+        this.person = new Person(firstName, lastName, address, phoneNumber, mobileNumber, emailAddress);
+        this.registrationDate = LocalDate.now();
+        this.licensePlate = licensePlate;
     }
 
     public User setLicensePlate(LicensePlate licensePlate) {

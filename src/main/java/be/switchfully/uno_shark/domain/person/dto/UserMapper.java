@@ -1,7 +1,9 @@
 package be.switchfully.uno_shark.domain.person.dto;
 
 import be.switchfully.uno_shark.domain.person.User;
+import org.springframework.stereotype.Component;
 
+@Component
 public class UserMapper {
 
 
@@ -12,8 +14,8 @@ public class UserMapper {
                 createUserDto.getAddress(),
                 createUserDto.getMobileNumber(),
                 createUserDto.getPhoneNumber(),
-                createUserDto.getEmailAddress())
-                .setLicensePlate(createUserDto.getLicensePlate());
+                createUserDto.getEmailAddress(),
+                createUserDto.getLicensePlate());
     }
 
     public UserDto mapUserToUserDto(User user) {

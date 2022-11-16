@@ -8,7 +8,7 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "address_seq")
     @SequenceGenerator(name = "address_seq", sequenceName = "address_seq", allocationSize = 1)
-    private int id;
+    private long id;
     @Column(name = "streetname")
     private String streetName;
     @Column(name = "housenumber")
@@ -22,7 +22,7 @@ public class Address {
 
     }
 
-    public Address(int id, String streetName, String houseNumber, PostalCode postalCode, String country) {
+    public Address(long id, String streetName, String houseNumber, PostalCode postalCode, String country) {
         this.id = id;
         this.streetName = streetName;
         this.houseNumber = houseNumber;
@@ -30,7 +30,14 @@ public class Address {
         this.country = country;
     }
 
-    public int getId() {
+    public Address(String streetName, String houseNumber, PostalCode postalCode, String country) {
+        this.streetName = streetName;
+        this.houseNumber = houseNumber;
+        this.postalCode = postalCode;
+        this.country = country;
+    }
+
+    public long getId() {
         return id;
     }
 

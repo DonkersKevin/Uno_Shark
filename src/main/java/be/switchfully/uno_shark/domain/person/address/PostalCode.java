@@ -8,6 +8,14 @@ public class PostalCode {
     private String city;
 
 
+    public PostalCode() {
+    }
+
+    public PostalCode(String postalCode, String city) {
+        this.postalCode = postalCode;
+        this.city = city;
+    }
+
     public String getPostalCode() {
         return postalCode;
     }
