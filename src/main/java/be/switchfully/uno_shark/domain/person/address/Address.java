@@ -1,4 +1,5 @@
 package be.switchfully.uno_shark.domain.person.address;
+
 import javax.persistence.*;
 
 @Entity
@@ -8,7 +9,7 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "address_seq")
     @SequenceGenerator(name = "address_seq", sequenceName = "address_seq", allocationSize = 1)
-    private long id;
+    private Long id;
     @Column(name = "streetname")
     private String streetName;
     @Column(name = "housenumber")
@@ -22,7 +23,7 @@ public class Address {
 
     }
 
-    public Address(long id, String streetName, String houseNumber, PostalCode postalCode, String country) {
+    public Address(Long id, String streetName, String houseNumber, PostalCode postalCode, String country) {
         this.id = id;
         this.streetName = streetName;
         this.houseNumber = houseNumber;
