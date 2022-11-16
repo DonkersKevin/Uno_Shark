@@ -1,8 +1,7 @@
-package be.switchfully.uno_shark.domain.parking.dto;
+package be.switchfully.uno_shark.domain.parking.divisionDto;
 
 public class ShowDivisionDto
 {
-
     private long id;
     private String parentName;
     private String name;

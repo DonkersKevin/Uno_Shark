@@ -1,4 +1,4 @@
-package be.switchfully.uno_shark.domain.parking.dto;
+package be.switchfully.uno_shark.domain.parking.parkingLotDto;
 
 import be.switchfully.uno_shark.domain.parking.Division;
 import be.switchfully.uno_shark.domain.parking.ParkingCategory;
@@ -12,16 +12,16 @@ public class CreateParkingLotDto {
     private ParkingCategory parkingCategory;
     private Division division;
     private int capacity;
-    private Person contactPerson;
+    private Person person;
     private Address address;
     private Price pricePerHour;
 
-    public CreateParkingLotDto(String name, ParkingCategory parkingCategory, Division division, int capacity, Person contactPerson, Address address, Price pricePerHour) {
+    public CreateParkingLotDto(String name, ParkingCategory parkingCategory, Division division, int capacity, Person person, Address address, Price pricePerHour) {
         this.name = name;
         this.parkingCategory = parkingCategory;
         this.division = division;
         this.capacity = capacity;
-        this.contactPerson = contactPerson;
+        this.person = person;
         this.address = address;
         this.pricePerHour = pricePerHour;
     }
@@ -42,8 +42,8 @@ public class CreateParkingLotDto {
         return capacity;
     }
 
-    public Person getContactPerson() {
-        return contactPerson;
+    public Person getPerson() {
+        return person;
     }
 
     public Address getAddress() {

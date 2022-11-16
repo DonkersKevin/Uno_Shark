@@ -1,9 +1,8 @@
 package be.switchfully.uno_shark.controllers;
 
-import be.switchfully.uno_shark.domain.parking.dto.CreateDivisionDto;
-import be.switchfully.uno_shark.domain.parking.dto.ShowDivisionDto;
+import be.switchfully.uno_shark.domain.parking.divisionDto.CreateDivisionDto;
+import be.switchfully.uno_shark.domain.parking.divisionDto.ShowDivisionDto;
 import be.switchfully.uno_shark.services.DivisionService;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

@@ -2,6 +2,7 @@ package be.switchfully.uno_shark.domain.parking;
 
 import be.switchfully.uno_shark.domain.person.Person;
 import be.switchfully.uno_shark.domain.person.address.Address;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 
@@ -18,16 +19,16 @@ public class Parkinglot {
     @Enumerated(EnumType.STRING)
     private ParkingCategory parkingCategory;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "division_id")
     private Division division;
     private int capacity;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "person_id")
-    private Person contactPerson;
+    private Person person;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "address_id")
     private Address address;
 
@@ -37,23 +38,23 @@ public class Parkinglot {
     public Parkinglot() {
     }
 
-    public Parkinglot(Long id, String name, ParkingCategory parkingCategory, Division division, int capacity, Person contactPerson, Address address, Price pricePerHour) {
+    public Parkinglot(Long id, String name, ParkingCategory parkingCategory, Division division, int capacity, Person person, Address address, Price pricePerHour) {
         this.id = id;
         this.name = name;
         this.parkingCategory = parkingCategory;
         this.division = division;
         this.capacity = capacity;
-        this.contactPerson = contactPerson;
+        this.person = person;
         this.address = address;
         this.pricePerHour = pricePerHour;
     }
 
-    public Parkinglot(String name, ParkingCategory parkingCategory, Division division, int capacity, Person contactPerson, Address address, Price pricePerHour) {
+    public Parkinglot(String name, ParkingCategory parkingCategory, Division division, int capacity, Person person, Address address, Price pricePerHour) {
         this.name = name;
         this.parkingCategory = parkingCategory;
         this.division = division;
         this.capacity = capacity;
-        this.contactPerson = contactPerson;
+        this.person = person;
         this.address = address;
         this.pricePerHour = pricePerHour;
     }
@@ -78,8 +79,8 @@ public class Parkinglot {
         return capacity;
     }
 
-    public Person getContactPerson() {
-        return contactPerson;
+    public Person getPerson() {
+        return person;
     }
 
     public Address getAddress() {
