@@ -46,7 +46,7 @@ public class MemberService {
     }
 
     private void isUniqueEmail(String emailAddress) {
-        if(userRepository.findUserByEmailAddress(emailAddress) != null){
+        if(userRepository.findUserByPerson_EmailAddress(emailAddress) != null){
             throw new IllegalArgumentException("This email address is already registered.");
         }
     }

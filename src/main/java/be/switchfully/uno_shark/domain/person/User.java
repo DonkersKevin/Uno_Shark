@@ -7,9 +7,20 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "USERS")
-public class User extends Person{
+//todo can be used with inheritance bit we have to figure that one out
+public class User{
 
-    @Column(name = "license_plate")
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
+    @SequenceGenerator(name = "user_seq", sequenceName = "user_seq", allocationSize = 1)
+    private long id;
+
+    @OneToOne
+    @JoinColumn(name = "fk_person_id")
+    private Person person;
+
+    @OneToOne //todo if we want to change this to one-to-many
+    @JoinColumn(name = "fk_licenseplate_id")
     private LicensePlate licensePlate;
     @Column(name = "registration_date")
     private LocalDate registrationDate;
@@ -18,7 +29,7 @@ public class User extends Person{
     }
 
     public User (String firstName, String lastName, Address address, String phoneNumber, String mobileNumber, String emailAddress) {
-        super(firstName, lastName, address, phoneNumber, mobileNumber, emailAddress);
+        this.person = new Person(firstName, lastName, address, phoneNumber, mobileNumber, emailAddress);
         this.registrationDate = LocalDate.now();
     }
 
@@ -32,5 +43,9 @@ public class User extends Person{
 
     public LocalDate getRegistrationDate() {
         return registrationDate;
+    }
+
+    public Person getPerson() {
+        return person;
     }
 }

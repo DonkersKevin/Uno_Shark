@@ -18,12 +18,12 @@ public class UserMapper {
 
     public UserDto mapUserToUserDto(User user) {
         return new UserDto()
-                .setFirstName(user.getFirstName())
-                .setLastName(user.getLastName())
-                .setAddress(user.getAddress())
-                .setMobileNumber(user.getMobileNumber())
-                .setPhoneNumber(user.getPhoneNumber())
-                .setEmailAddress(user.getEmailAddress())
+                .setFirstName(user.getPerson().getFirstName())
+                .setLastName(user.getPerson().getLastName())
+                .setAddress(user.getPerson().getAddress())
+                .setMobileNumber(user.getPerson().getMobileNumber())
+                .setPhoneNumber(user.getPerson().getPhoneNumber())
+                .setEmailAddress(user.getPerson().getEmailAddress())
                 .setLicensePlate(user.getLicensePlate())
                 .setRegistrationDate(user.getRegistrationDate());
     }
