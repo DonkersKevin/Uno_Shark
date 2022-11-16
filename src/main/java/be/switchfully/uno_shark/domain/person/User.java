@@ -19,18 +19,13 @@ public class User extends Person{
 
     public User (String firstName, String lastName, Address address, String phoneNumber, String mobileNumber, String emailAddress) {
         super(firstName, lastName, address, phoneNumber, mobileNumber, emailAddress);
+        this.registrationDate = LocalDate.now();
     }
 
     public User setLicensePlate(LicensePlate licensePlate) {
         this.licensePlate = licensePlate;
         return this;
     }
-
-    public User setRegistrationDate(LocalDate registrationDate) {
-        this.registrationDate = registrationDate;
-        return this;
-    }
-
     public LicensePlate getLicensePlate() {
         return licensePlate;
     }
