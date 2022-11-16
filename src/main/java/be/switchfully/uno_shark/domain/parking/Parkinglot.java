@@ -1,7 +1,5 @@
 package be.switchfully.uno_shark.domain.parking;
 
-
-import be.switchfully.uno_shark.domain.person.ContactPerson;
 import be.switchfully.uno_shark.domain.person.Person;
 import be.switchfully.uno_shark.domain.person.address.Address;
 
@@ -13,7 +11,8 @@ public class Parkinglot {
 
     //Todo verify identity annotation
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "parkinglot_seq")
+    @SequenceGenerator(name = "parkinglot_seq", sequenceName = "parkinglot_seq", allocationSize = 1)
     private Long id;
     private String name;
     @Enumerated(EnumType.STRING)
@@ -25,7 +24,7 @@ public class Parkinglot {
     private int capacity;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "contactperson_id")
+    @JoinColumn(name = "person_id")
     private Person contactPerson;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -35,6 +34,8 @@ public class Parkinglot {
     @Embedded
     private Price pricePerHour;
 
+    public Parkinglot() {
+    }
 
     public Parkinglot(Long id, String name, ParkingCategory parkingCategory, Division division, int capacity, Person contactPerson, Address address, Price pricePerHour) {
         this.id = id;

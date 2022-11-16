@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name="DIVISION")
+@Table(name = "DIVISION")
 public class Division {
 
     @Id
@@ -13,7 +13,7 @@ public class Division {
     private long id;
 
     @ManyToOne
-    @JoinColumn(name="PARENT")
+    @JoinColumn(name = "PARENT")
     private Division parent;
 
     @OneToMany(mappedBy = "parent")
