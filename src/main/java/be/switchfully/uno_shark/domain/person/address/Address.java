@@ -1,5 +1,4 @@
 package be.switchfully.uno_shark.domain.person.address;
-
 import javax.persistence.*;
 
 @Entity
