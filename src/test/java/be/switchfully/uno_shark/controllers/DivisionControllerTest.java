@@ -2,6 +2,7 @@ package be.switchfully.uno_shark.controllers;
 
 
 import be.switchfully.uno_shark.domain.parking.dto.CreateDivisionDto;
+import be.switchfully.uno_shark.domain.parking.dto.ShowDivisionDto;
 import be.switchfully.uno_shark.repositories.DivisionRepository;
 import be.switchfully.uno_shark.services.DivisionService;
 import io.restassured.response.Response;
@@ -17,8 +18,13 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
 class DivisionControllerTest {
@@ -33,12 +39,12 @@ class DivisionControllerTest {
     private int port;
 
     @Test
-    void createDivisionHappyPath(){
+    void createDivisionHappyPath() {
         given()
                 .baseUri("http://localhost")
                 .port(port)
                 .when()
-                .body(new CreateDivisionDto(1, "New Division", "Old Division Name","Gigachad"))
+                .body(new CreateDivisionDto(1, "New Division", "Old Division Name", "Gigachad"))
                 .contentType(JSON)
                 .post("/divisions")
                 .then()
@@ -50,34 +56,40 @@ class DivisionControllerTest {
     }
 
     @Test
-    void whenEmptyField_illegalArgumentExceptionIsThrown(){
-        given()
+    void whenEmptyField_illegalArgumentExceptionIsThrown() {
+        Response response = given()
                 .baseUri("http://localhost")
                 .port(port)
                 .when()
-                .body(new CreateDivisionDto(1, null, "Old Division Name","Gigachad"))
+                .body(new CreateDivisionDto(1, null, "Old Division Name", "Gigachad"))
                 .contentType(JSON)
                 .post("/divisions")
                 .then()
                 .assertThat()
-                .statusCode(HttpStatus.BAD_REQUEST.value());
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .extract()
+                .response();
+
+        assertEquals("Name can not be empty!", response.jsonPath().getString("message"));
+
     }
 
     @Test
-    void getAllDivisionsHappyPath(){
-        divisionService.createDivision(new CreateDivisionDto (0, "Parent Division", "Old Division", "Gigachad"));
+    void getAllDivisionsHappyPath() {
+        divisionService.createDivision(new CreateDivisionDto(0, "Parent Division", "Old Division", "Gigachad"));
         divisionService.createDivision(new CreateDivisionDto(1, "Subdivision", "Old Division", "Ligma Johnson"));
 
-        Response response = given().baseUri("http://localhost")
+        ShowDivisionDto[] response = given().baseUri("http://localhost")
                 .port(port)
                 .when()
                 .get("/divisions")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())
-                .extract()
-                .response();
+                .extract().as(ShowDivisionDto[].class);
 
-        response.body().prettyPrint();
+        assertEquals(response.length, divisionRepository.findAll().size());
+
+        System.out.println(Arrays.stream(response).map(ShowDivisionDto::toString).collect(Collectors.toList()));
     }
 }
