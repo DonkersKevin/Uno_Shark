@@ -3,11 +3,16 @@ package be.switchfully.uno_shark.domain.person;
 import be.switchfully.uno_shark.domain.person.address.Address;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalTime;
 
 
+
+@Entity
 public class Person {
+
+    @Id
+    @GeneratedValue
+    private long id;
+
 
     private String firstName;
     private String lastName;
@@ -25,6 +30,7 @@ public class Person {
     public Person() {
     }
 
+    //check if we can still use the builder pattern and inheritance altogether.
     public Person(String firstName, String lastName, Address address, String phoneNumber, String mobileNumber, String emailAddress) {
         this.firstName = firstName;
         this.lastName = lastName;

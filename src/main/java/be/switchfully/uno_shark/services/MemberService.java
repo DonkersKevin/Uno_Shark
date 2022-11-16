@@ -3,6 +3,7 @@ package be.switchfully.uno_shark.services;
 import be.switchfully.uno_shark.domain.person.LicensePlate;
 import be.switchfully.uno_shark.domain.person.User;
 import be.switchfully.uno_shark.domain.person.dto.CreateUserDto;
+import be.switchfully.uno_shark.domain.person.dto.PersonDto;
 import be.switchfully.uno_shark.domain.person.dto.UserDto;
 import be.switchfully.uno_shark.domain.person.dto.UserMapper;
 import be.switchfully.uno_shark.repositories.UserRepository;
@@ -28,7 +29,8 @@ public class MemberService {
     }
 
     public UserDto createMember(CreateUserDto createUserDto) {
-        personValidator.checkRequiredFields(createUserDto); //todo check if we should take a userdto as arg or a persondto
+        PersonDto personDto = userMapper.mapUserDtoToPersonDto(createUserDto);
+        personValidator.checkRequiredFields(personDto);
         userValidator.checkRequiredFields(createUserDto);
         personValidator.isValidEmail(createUserDto.getEmailAddress());
         isUniqueEmail(createUserDto.getEmailAddress());
@@ -37,12 +39,16 @@ public class MemberService {
         return userMapper.mapUserToUserDto(user);
     }
 
-    //todo
     private void isUniqueLicensePlate(LicensePlate licensePlate) {
+        if(userRepository.findUserByLicensePlate(licensePlate) != null) {
+            throw new IllegalArgumentException("This license plate is already registered.");
+        }
     }
 
-    //todo
     private void isUniqueEmail(String emailAddress) {
+        if(userRepository.findUserByEmailAddress(emailAddress) != null){
+            throw new IllegalArgumentException("This email address is already registered.");
+        }
     }
 
 

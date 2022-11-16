@@ -28,4 +28,14 @@ public class UserMapper {
                 .setLicensePlate(user.getLicensePlate())
                 .setRegistrationDate(user.getRegistrationDate());
     }
+
+    public PersonDto mapUserDtoToPersonDto(CreateUserDto createUserDto) {
+        return new PersonDto()
+                .setFirstName(createUserDto.getFirstName())
+                .setLastName(createUserDto.getLastName())
+                .setAddress(createUserDto.getAddress())
+                .setPhoneNumber(createUserDto.getPhoneNumber())
+                .setMobileNumber(createUserDto.getMobileNumber())
+                .setEmailAddress(createUserDto.getEmailAddress());
+    }
 }

@@ -2,8 +2,10 @@ package be.switchfully.uno_shark.domain.person;
 
 import be.switchfully.uno_shark.domain.person.address.Address;
 
+import javax.persistence.Entity;
 import java.time.LocalDate;
 
+@Entity
 public class User extends Person{
 
     private LicensePlate licensePlate;
@@ -17,8 +19,6 @@ public class User extends Person{
     public User (String firstName, String lastName, Address address, String phoneNumber, String mobileNumber, String emailAddress) {
         super(firstName, lastName, address, phoneNumber, mobileNumber, emailAddress);
     }
-
-
 
     public User setLicensePlate(LicensePlate licensePlate) {
         this.licensePlate = licensePlate;
