@@ -3,13 +3,11 @@ package be.switchfully.uno_shark.controllers;
 
 import be.switchfully.uno_shark.domain.parking.dto.CreateDivisionDto;
 import be.switchfully.uno_shark.domain.parking.dto.ShowDivisionDto;
+import be.switchfully.uno_shark.domain.parking.dto.SingleDivisionDto;
 import be.switchfully.uno_shark.repositories.DivisionRepository;
 import be.switchfully.uno_shark.services.DivisionService;
 import io.restassured.response.Response;
-import net.bytebuddy.asm.Advice;
-import org.aspectj.lang.annotation.Before;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -92,4 +90,39 @@ class DivisionControllerTest {
 
         System.out.println(Arrays.stream(response).map(ShowDivisionDto::toString).collect(Collectors.toList()));
     }
+
+    @Test
+    void getASingleDivisionHappyPath(){
+        divisionService.createDivision(new CreateDivisionDto(0, "Parent Division", "Old Division", "Gigachad"));
+        divisionService.createDivision(new CreateDivisionDto(1, "Subdivision", "Old Division", "Ligma Johnson"));
+
+        Response response = given().baseUri("http://localhost")
+                .port(port)
+                .when()
+                .get("/divisions/1")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .extract().response();
+
+        response.body().prettyPrint();
+    }
+
+    @Test
+    void whenGetSingleDivision_andNoSuchDivisionExists_IllegalArgumentExceptionIsThrown(){
+        Response response = given()
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .contentType(JSON)
+                .get("/divisions/3")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .extract()
+                .response();
+
+        assertEquals("No such division exists!", response.jsonPath().getString("message"));
+    }
+
 }
