@@ -12,7 +12,7 @@ CREATE TABLE person
 create sequence person_seq start with 1 increment by 1;
 
 
-CREATE TABLE user
+CREATE TABLE users
 (
     id                bigint not null,
     license_plate     text   not null,
