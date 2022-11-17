@@ -6,6 +6,7 @@ import be.switchfully.uno_shark.domain.person.address.Address;
 import be.switchfully.uno_shark.domain.person.address.PostalCode;
 import be.switchfully.uno_shark.domain.person.dto.CreateUserDto;
 import be.switchfully.uno_shark.repositories.UserRepository;
+import io.restassured.response.Response;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,8 @@ import org.springframework.http.HttpStatus;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
 public class MemberIntegrationTest {
@@ -53,5 +56,66 @@ public class MemberIntegrationTest {
                 .statusCode(HttpStatus.CREATED.value());
 
         Assertions.assertThat(userRepository.findById(1L)).isPresent();
+    }
+
+    @Test
+    void whenEmptyAddress_illegalArgumentExceptionIsThrown() {
+        LicensePlate newLicensePlate = new LicensePlate(IssuingCountry.BE, "1ABC123" );
+
+        CreateUserDto newUser = new CreateUserDto()
+                .setFirstName("Freddi")
+                .setLastName("Fish")
+                .setAddress(null)
+                .setPhoneNumber("003487442233")
+                .setMobileNumber("+32487442233")
+                .setEmailAddress("Freddi@Fish.be")
+                .setLicensePlate(newLicensePlate);
+
+        Response response = given()
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .body(newUser)
+                .contentType(JSON)
+                .post("/members")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .extract()
+                .response();
+
+        assertEquals("Provide an address please!", response.jsonPath().getString("message"));
+
+    }
+
+    @Test
+    void whenEmptyLicensePlate_illegalArgumentExceptionIsThrown() {
+        PostalCode newPostalCode = new PostalCode("2000","Antwerp");
+        Address newAddress = new Address("fishlane", "23", newPostalCode, "belgium");
+
+        CreateUserDto newUser = new CreateUserDto()
+                .setFirstName("Freddi")
+                .setLastName("Fish")
+                .setAddress(newAddress)
+                .setPhoneNumber("003487442233")
+                .setMobileNumber("+32487442233")
+                .setEmailAddress("Freddi@Fish.be")
+                .setLicensePlate(null);
+
+        Response response = given()
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .body(newUser)
+                .contentType(JSON)
+                .post("/members")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .extract()
+                .response();
+
+        assertEquals("Provide an license plate please!", response.jsonPath().getString("message"));
+
     }
 }
