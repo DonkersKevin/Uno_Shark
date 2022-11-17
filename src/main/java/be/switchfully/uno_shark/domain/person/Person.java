@@ -37,6 +37,13 @@ public class Person {
         this.phoneNumber = phoneNumber;
         this.mobileNumber = mobileNumber;
         this.emailAddress = emailAddress;
+        checkPhoneNumber();
+    }
+
+    private void checkPhoneNumber(){
+        if(this.phoneNumber == null && this.mobileNumber == null){
+            throw new IllegalArgumentException("No phone number found.");
+        }
     }
 
     public Person setFirstName(String firstName) {

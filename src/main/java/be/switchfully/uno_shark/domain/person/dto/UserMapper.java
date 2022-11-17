@@ -10,7 +10,7 @@ public class UserMapper {
 
 
     public User mapUserDtoToUser(CreateUserDto createUserDto) {
-        return new User(
+        User user = new User(
                 createUserDto.getFirstName(),
                 createUserDto.getLastName(),
                 createUserDto.getAddress(),
@@ -18,6 +18,14 @@ public class UserMapper {
                 createUserDto.getPhoneNumber(),
                 createUserDto.getEmailAddress(),
                 createUserDto.getLicensePlate());
+        changeLevelMaybe(user,createUserDto);
+        return user;
+    }
+
+    private void changeLevelMaybe(User user,CreateUserDto dto){
+        if(dto.getMemberLevel() == null) return;
+
+        user.setMemberLevel(dto.getMemberLevel());
     }
 
     public UserDto mapUserToUserDto(User user) {
@@ -30,7 +38,8 @@ public class UserMapper {
                 .setPhoneNumber(user.getPerson().getPhoneNumber())
                 .setEmailAddress(user.getPerson().getEmailAddress())
                 .setLicensePlate(user.getLicensePlate())
-                .setRegistrationDate(user.getRegistrationDate());
+                .setRegistrationDate(user.getRegistrationDate())
+                .setMemberLevel(user.getMemberLevel());
     }
 
     public CreatePersonDto mapUserDtoToPersonDto(CreateUserDto createUserDto) {
