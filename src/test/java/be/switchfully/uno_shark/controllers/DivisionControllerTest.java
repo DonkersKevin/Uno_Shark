@@ -116,7 +116,7 @@ class DivisionControllerTest {
                 .port(port)
                 .when()
                 .contentType(JSON)
-                .get("/divisions/3")
+                .get("/divisions/1000000000")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
