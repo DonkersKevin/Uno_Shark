@@ -1,51 +1,50 @@
 package be.switchfully.uno_shark.domain.person.phonenumber;
 
 public class MobilePhone {
-    private String body;
-    private CountryCode countryCode;
+    private final String body;
+    private final CountryCode countryCode;
 
     public MobilePhone(String body, CountryCode countryCode) {
-        this.body = body;
+        String newBody = numberVerification(countryCode, body);
+        this.body = newBody;
         this.countryCode = countryCode;
-        numberVerification(this);
     }
 
-    private void numberVerification(MobilePhone phoneNumber) {
-        if (phoneNumber.getCountryCode() == null) {
+    private String numberVerification(CountryCode countryCode, String body) {
+        if (countryCode == null) {
             throw new IllegalArgumentException("Country code has to be provided!");
         }
-        verificationBelgiumNumber(phoneNumber);
+        if (body == null) {
+            throw new IllegalArgumentException("Body of phone number has to be provided!");
+        }
+        return verificationBelgiumNumber(countryCode, body);
     }
 
-    private static void verificationBelgiumNumber(MobilePhone phoneNumber) {
-        if (phoneNumber.getCountryCode().equals(CountryCode.BELGIUM)) {
-            if (phoneNumber.getBody().length() < 9) {
-                throw new IllegalArgumentException("Provide a valid phone number: +32 4xx xx xx xx");
+    private String verificationBelgiumNumber(CountryCode countryCode, String body) {
+        if (countryCode.equals(CountryCode.BELGIUM)) {
+            if (body.length() < 9) {
+                throw new IllegalArgumentException("Phone number too short.\nProvide a valid phone number: +32 4xx xx xx xx");
             }
-            if (phoneNumber.getBody().charAt(0) == '0') {
-                String oldBody = phoneNumber.getBody();
-                phoneNumber.setBody(oldBody.substring(1));
+            if (body.charAt(0) == '0') {
+                String newBody = body.substring(1);
+                if (newBody.charAt(0) != '4') {
+                    throw new IllegalArgumentException("Wrong format phone number.\nProvide a valid phone number: +32 4xx xx xx xx");
+                }
+                return newBody;
             }
-            if (phoneNumber.getBody().charAt(0) != '4') {
-                throw new IllegalArgumentException("Provide a valid phone number: +32 4xx xx xx xx");
+            if (body.charAt(0) != '4') {
+                throw new IllegalArgumentException("Wrong format phone number.\nProvide a valid phone number: +32 4xx xx xx xx");
             }
         }
+        return body;
     }
 
     public String getBody() {
         return body;
     }
 
-    public void setBody(String body) {
-        this.body = body;
-    }
-
     public CountryCode getCountryCode() {
         return countryCode;
-    }
-
-    public void setCountryCode(CountryCode countryCode) {
-        this.countryCode = countryCode;
     }
 
     @Override
