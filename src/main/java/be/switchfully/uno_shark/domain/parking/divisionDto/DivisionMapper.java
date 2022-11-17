@@ -8,6 +8,7 @@ import be.switchfully.uno_shark.repositories.DivisionRepository;
 import be.switchfully.uno_shark.services.GeneralValidationService;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -45,6 +46,10 @@ public class DivisionMapper {
     }
 
     public List<String> extractSubdivisions(Division division){
+        //Todo, fix and make pretty
+        if (division.getSubdivisions() == null){
+            return new ArrayList<>();
+        }
         return division.getSubdivisions().stream().map(Division::getName).toList();
     }
 

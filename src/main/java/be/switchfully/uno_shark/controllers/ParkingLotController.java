@@ -33,7 +33,7 @@ public class ParkingLotController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
     public List<ParkingLotDto> getAllParkinglots(){
-        log.info("Controller called : getting all parkinglots");
+        log.info("Getting all parkinglots");
         return parkingLotService.getAllParkinglots();
     }
 

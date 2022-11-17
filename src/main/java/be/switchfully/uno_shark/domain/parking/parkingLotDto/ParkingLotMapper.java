@@ -3,12 +3,15 @@ package be.switchfully.uno_shark.domain.parking.parkingLotDto;
 import be.switchfully.uno_shark.domain.parking.Parkinglot;
 import be.switchfully.uno_shark.domain.parking.divisionDto.DivisionMapper;
 import be.switchfully.uno_shark.domain.person.dto.PersonMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
 public class ParkingLotMapper {
+    Logger log = LoggerFactory.getLogger(getClass());
     private final DivisionMapper divisionMapper;
     private final PersonMapper personMapper;
     private ParkingLotMapper(DivisionMapper divisionMapper, PersonMapper personMapper) {
@@ -22,6 +25,7 @@ public class ParkingLotMapper {
     }
 
     public Parkinglot CreateDtoToParkingLot(CreateParkingLotDto createParkingLotDto) {
+        log.info("Converting Dto -> Parkinglot");
         return new Parkinglot(
                 createParkingLotDto.getName(),
                 createParkingLotDto.getParkingCategory(),
@@ -34,6 +38,7 @@ public class ParkingLotMapper {
     }
 
     public ParkingLotDto parkingLotToDto(Parkinglot parkinglot) {
+        log.info("Converting Dto <- Parkinglot");
         //Todo change Dtos
         return new ParkingLotDto(
                 parkinglot.getId(),
@@ -48,7 +53,6 @@ public class ParkingLotMapper {
     }
 
     public List<ParkingLotDto> parkingLotListToDto(List<Parkinglot> parkingLots) {
-        System.out.println("running");
         return parkingLots.stream().map(this::parkingLotToDto).toList();
     }
 }
