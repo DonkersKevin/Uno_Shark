@@ -1,15 +1,12 @@
 package be.switchfully.uno_shark.controllers;
 
 
-import be.switchfully.uno_shark.domain.parking.dto.CreateDivisionDto;
-import be.switchfully.uno_shark.domain.parking.dto.ShowDivisionDto;
+import be.switchfully.uno_shark.domain.parking.divisionDto.CreateDivisionDto;
+import be.switchfully.uno_shark.domain.parking.divisionDto.ShowDivisionDto;
 import be.switchfully.uno_shark.repositories.DivisionRepository;
 import be.switchfully.uno_shark.services.DivisionService;
 import io.restassured.response.Response;
-import net.bytebuddy.asm.Advice;
-import org.aspectj.lang.annotation.Before;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
