@@ -1,6 +1,7 @@
 package be.switchfully.uno_shark.domain.person.dto;
 
 import be.switchfully.uno_shark.domain.person.LicensePlate;
+import be.switchfully.uno_shark.domain.person.MembershipLevel;
 import be.switchfully.uno_shark.domain.person.address.Address;
 
 import java.time.LocalDate;
@@ -17,7 +18,11 @@ public class UserDto {
     private LicensePlate licensePlate;
     private LocalDate registrationDate;
 
+    private MembershipLevel memberLevel;
 
+    public MembershipLevel getMemberLevel() {
+        return memberLevel;
+    }
 
     public Long getId() {
         return id;
@@ -97,6 +102,11 @@ public class UserDto {
 
     public UserDto setRegistrationDate(LocalDate registrationDate) {
         this.registrationDate = registrationDate;
+        return this;
+    }
+
+    public UserDto setMemberLevel(MembershipLevel memberLevel) {
+        this.memberLevel = memberLevel;
         return this;
     }
 }
