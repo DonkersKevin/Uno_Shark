@@ -1,6 +1,7 @@
 package be.switchfully.uno_shark.domain.person;
 
 import be.switchfully.uno_shark.domain.person.address.Address;
+import be.switchfully.uno_shark.security.Role;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -35,28 +36,28 @@ public class User {
 
     private Role role;
 
+    @Column(name = "username")
+    private String userName;
+
     public User() {
     }
 
-    public User(String firstName, String lastName, Address address, String phoneNumber, String mobileNumber, String emailAddress) {
+    public User(String firstName, String lastName, Address address, String phoneNumber, String mobileNumber, String emailAddress, LicensePlate licensePlate, Role role, String userName) {
         this.person = new Person(firstName, lastName, address, phoneNumber, mobileNumber, emailAddress);
         this.registrationDate = LocalDate.now();
-        this.role = Role.MEMBER;
+        this.licensePlate = licensePlate;
+        this.memberLevel = BRONZE;
+        this.role = role;
+        this.userName = userName;
     }
 
-    public User(String firstName, String lastName, Address address, String phoneNumber, String mobileNumber, String emailAddress, LicensePlate licensePlate) {
+    public User(String firstName, String lastName, Address address, String phoneNumber, String mobileNumber, String emailAddress, LicensePlate licensePlate, String userName) {
         this.person = new Person(firstName, lastName, address, phoneNumber, mobileNumber, emailAddress);
         this.registrationDate = LocalDate.now();
         this.licensePlate = licensePlate;
         this.memberLevel = BRONZE;
         this.role = Role.MEMBER;
-    }
-
-    public User(String firstName, String lastName, Address address, String phoneNumber, String mobileNumber, String emailAddress, LicensePlate licensePlate, Role role) {
-        this.person = new Person(firstName, lastName, address, phoneNumber, mobileNumber, emailAddress);
-        this.registrationDate = LocalDate.now();
-        this.licensePlate = licensePlate;
-        this.role = role;
+        this.userName = userName;
     }
 
     public User setLicensePlate(LicensePlate licensePlate) {
@@ -86,5 +87,9 @@ public class User {
 
     public Role getRole() {
         return role;
+    }
+
+    public String getUsername() {
+        return userName;
     }
 }

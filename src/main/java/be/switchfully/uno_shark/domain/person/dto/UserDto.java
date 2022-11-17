@@ -20,6 +20,8 @@ public class UserDto {
 
     private MembershipLevel memberLevel;
 
+    private String userName;
+
     public MembershipLevel getMemberLevel() {
         return memberLevel;
     }
@@ -58,6 +60,10 @@ public class UserDto {
 
     public LocalDate getRegistrationDate() {
         return registrationDate;
+    }
+
+    public String getUserName() {
+        return userName;
     }
 
     public UserDto setId(Long id) {
@@ -107,6 +113,11 @@ public class UserDto {
 
     public UserDto setMemberLevel(MembershipLevel memberLevel) {
         this.memberLevel = memberLevel;
+        return this;
+    }
+
+    public UserDto setUserName(String userName) {
+        this.userName = userName;
         return this;
     }
 }

@@ -17,7 +17,6 @@ public class UserValidator {
         this.repoKun = repoKun;
     }
 
-
     public void checkRequiredFields(CreateUserDto createUserDto) {
         if (createUserDto.getLicensePlate() == null) {
             throw new IllegalArgumentException("Provide an license plate please!");
@@ -25,6 +24,9 @@ public class UserValidator {
 
         serviceChan.assertNotNullOrBlank(createUserDto.getLicensePlate().getLicensePlateNumber(),"plate number");
         isUniqueLicensePlate(createUserDto.getLicensePlate());
+
+        serviceChan.assertNotNullOrBlank(createUserDto.getUserName(), "username");
+//        isUniqueUsername(createUserDto.getUserName());
     }
 
     private void isUniqueLicensePlate(LicensePlate licensePlate) {
@@ -32,4 +34,10 @@ public class UserValidator {
             throw new IllegalArgumentException("This license plate is already registered!");
         }
     }
+
+//    private void isUniqueUsername(String username) {
+//        if(repoKun.findUserByUsername(username) != null) {
+//            throw new IllegalArgumentException("This username is already registered!");
+//        }
+//    }
 }
