@@ -1,7 +1,6 @@
 package be.switchfully.uno_shark.domain.person.dto;
 
 import be.switchfully.uno_shark.domain.person.Person;
-import be.switchfully.uno_shark.domain.parking.Division;
 import be.switchfully.uno_shark.domain.person.User;
 import be.switchfully.uno_shark.services.CreatePersonDto;
 import org.springframework.stereotype.Component;
@@ -12,7 +11,7 @@ import java.util.List;
 public class UserMapper {
 
 
-    public User mapUserDtoToUser(CreateUserDto createUserDto) {
+    public User mapCreateUserDtoToUser(CreateUserDto createUserDto) {
         User user = new User(
                 createUserDto.getFirstName(),
                 createUserDto.getLastName(),
@@ -21,13 +20,13 @@ public class UserMapper {
                 createUserDto.getPhoneNumber(),
                 createUserDto.getEmailAddress(),
                 createUserDto.getLicensePlate());
-        changeLevelMaybe(user,createUserDto);
+        changeLevelMaybe(user, createUserDto);
         return user;
     }
 
-    private void changeLevelMaybe(User user,CreateUserDto dto){
-        if(dto.getMemberLevel() == null) return;
 
+    private void changeLevelMaybe(User user, CreateUserDto dto) {
+        if (dto.getMemberLevel() == null) return;
         user.setMemberLevel(dto.getMemberLevel());
     }
 
@@ -61,6 +60,6 @@ public class UserMapper {
     }
 
     private UserDtoLimitedInfo mapUserToUserDtoLimitedInfo(User user) {
-        return new UserDtoLimitedInfo(user.getPerson().getId(),user.getPerson().getFirstName(), user.getPerson().getLastName(), user.getPerson().getPhoneNumber(), user.getPerson().getEmailAddress(), user.getLicensePlate().getLicensePlateNumber(), user.getRegistrationDate());
+        return new UserDtoLimitedInfo(user.getPerson().getId(), user.getPerson().getFirstName(), user.getPerson().getLastName(), user.getPerson().getPhoneNumber(), user.getPerson().getEmailAddress(), user.getLicensePlate().getLicensePlateNumber(), user.getRegistrationDate());
     }
 }

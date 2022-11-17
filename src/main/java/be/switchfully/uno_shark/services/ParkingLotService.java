@@ -1,6 +1,6 @@
 package be.switchfully.uno_shark.services;
 
-import be.switchfully.uno_shark.domain.parking.Parkinglot;
+import be.switchfully.uno_shark.domain.parking.ParkingLot;
 import be.switchfully.uno_shark.domain.parking.parkingLotDto.CreateParkingLotDto;
 import be.switchfully.uno_shark.domain.parking.parkingLotDto.ParkingLotDto;
 import be.switchfully.uno_shark.domain.parking.parkingLotDto.ParkingLotMapper;
@@ -25,8 +25,8 @@ public class ParkingLotService {
     }
 
     public ParkingLotDto addParkingLot(CreateParkingLotDto createParkingLotDto) {
-        Parkinglot parkingLotTosave = parkingLotMapper.CreateDtoToParkingLot(createParkingLotDto);
-        Parkinglot returnedParkinglot = parkingLotRepository.save(parkingLotTosave);
+        ParkingLot parkingLotTosave = parkingLotMapper.CreateDtoToParkingLot(createParkingLotDto);
+        ParkingLot returnedParkinglot = parkingLotRepository.save(parkingLotTosave);
         return parkingLotMapper.parkingLotToDto(returnedParkinglot);
     }
 

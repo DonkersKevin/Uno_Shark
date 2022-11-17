@@ -1,6 +1,6 @@
 package be.switchfully.uno_shark.domain.parking.parkingLotDto;
 
-import be.switchfully.uno_shark.domain.parking.Parkinglot;
+import be.switchfully.uno_shark.domain.parking.ParkingLot;
 import be.switchfully.uno_shark.domain.parking.divisionDto.DivisionMapper;
 import org.springframework.stereotype.Component;
 
@@ -13,13 +13,13 @@ public class ParkingLotMapper {
         this.divisionMapper = divisionMapper;
     }
 
-    public Parkinglot dtoToParkingLot(CreateParkingLotDto createParkingLotDto) {
+    public ParkingLot dtoToParkingLot(CreateParkingLotDto createParkingLotDto) {
         //todo fix
         return null;
     }
 
-    public Parkinglot CreateDtoToParkingLot(CreateParkingLotDto createParkingLotDto) {
-        return new Parkinglot(
+    public ParkingLot CreateDtoToParkingLot(CreateParkingLotDto createParkingLotDto) {
+        return new ParkingLot(
                 createParkingLotDto.getName(),
                 createParkingLotDto.getParkingCategory(),
                 createParkingLotDto.getDivision(),
@@ -30,7 +30,7 @@ public class ParkingLotMapper {
         );
     }
 
-    public ParkingLotDto parkingLotToDto(Parkinglot parkinglot) {
+    public ParkingLotDto parkingLotToDto(ParkingLot parkinglot) {
         //Todo change Dtos
         return new ParkingLotDto(
                 parkinglot.getId(),
@@ -44,7 +44,7 @@ public class ParkingLotMapper {
         );
     }
 
-    public List<ParkingLotDto> parkingLotListToDto(List<Parkinglot> parkingLots) {
+    public List<ParkingLotDto> parkingLotListToDto(List<ParkingLot> parkingLots) {
         System.out.println("running");
         return parkingLots.stream().map(this::parkingLotToDto).toList();
     }

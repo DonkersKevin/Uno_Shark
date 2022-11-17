@@ -38,11 +38,12 @@ public class LicensePlate {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof LicensePlate that)) return false;
-        return id == that.id;
+
+        return getLicensePlateNumber() != null ? getLicensePlateNumber().equals(that.getLicensePlateNumber()) : that.getLicensePlateNumber() == null;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return getLicensePlateNumber() != null ? getLicensePlateNumber().hashCode() : 0;
     }
 }

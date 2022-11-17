@@ -1,6 +1,5 @@
 package be.switchfully.uno_shark.services;
 
-import be.switchfully.uno_shark.domain.person.LicensePlate;
 import be.switchfully.uno_shark.domain.person.Role;
 import be.switchfully.uno_shark.domain.person.User;
 import be.switchfully.uno_shark.domain.person.dto.*;
@@ -35,7 +34,7 @@ public class MemberService {
         personValidator.checkRequiredFields(createPersonDto);
         userValidator.checkRequiredFields(createUserDto);
         personValidator.isValidEmail(createUserDto.getEmailAddress());
-        User user = userRepository.save(userMapper.mapUserDtoToUser(createUserDto));
+        User user = userRepository.save(userMapper.mapCreateUserDtoToUser(createUserDto));
         return userMapper.mapUserToUserDto(user);
     }
 
