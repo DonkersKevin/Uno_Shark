@@ -207,7 +207,7 @@ public class MemberIntegrationTest {
         assertEquals("This license plate is already registered!", response.jsonPath().getString("message"));
 
     }
-}
+
 
     @Test
     void getAllUsersHappyPath() {
