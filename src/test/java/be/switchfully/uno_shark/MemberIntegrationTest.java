@@ -2,16 +2,13 @@ package be.switchfully.uno_shark;
 
 import be.switchfully.uno_shark.domain.person.IssuingCountry;
 import be.switchfully.uno_shark.domain.person.LicensePlate;
-import be.switchfully.uno_shark.domain.person.MembershipLevel;
+import be.switchfully.uno_shark.domain.person.User;
 import be.switchfully.uno_shark.domain.person.address.Address;
 import be.switchfully.uno_shark.domain.person.address.PostalCode;
 import be.switchfully.uno_shark.domain.person.dto.CreateUserDto;
-import be.switchfully.uno_shark.domain.person.dto.UserDtoLimitedInfo;
 import be.switchfully.uno_shark.repositories.UserRepository;
-import be.switchfully.uno_shark.services.MemberService;
 import io.restassured.response.Response;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -23,6 +20,8 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
 import static be.switchfully.uno_shark.domain.person.MembershipLevel.BRONZE;
 import static be.switchfully.uno_shark.domain.person.MembershipLevel.GOLD;
+
+import java.lang.reflect.Type;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
@@ -40,13 +39,13 @@ public class MemberIntegrationTest {
     @Autowired
     UserRepository userRepository;
 
-    MemberService memberService;
+
 
     @Test
     void createNewMemberHappyPath() {
-        PostalCode newPostalCode = new PostalCode("2000","Antwerp");
+        PostalCode newPostalCode = new PostalCode("2000", "Antwerp");
         Address newAddress = new Address("fishlane", "23", newPostalCode, "belgium");
-        LicensePlate newLicensePlate = new LicensePlate(IssuingCountry.BE, "1ABC123" );
+        LicensePlate newLicensePlate = new LicensePlate(IssuingCountry.BE, "1ABC123");
 
         CreateUserDto newUser = new CreateUserDto()
                 .setFirstName("Freddi")
@@ -74,7 +73,7 @@ public class MemberIntegrationTest {
 
     @Test
     void whenEmptyAddress_illegalArgumentExceptionIsThrown() {
-        LicensePlate newLicensePlate = new LicensePlate(IssuingCountry.BE, "1ABC123" );
+        LicensePlate newLicensePlate = new LicensePlate(IssuingCountry.BE, "1ABC123");
 
         CreateUserDto newUser = new CreateUserDto()
                 .setFirstName("Freddi")
@@ -104,7 +103,7 @@ public class MemberIntegrationTest {
 
     @Test
     void whenEmptyLicensePlate_illegalArgumentExceptionIsThrown() {
-        PostalCode newPostalCode = new PostalCode("2000","Antwerp");
+        PostalCode newPostalCode = new PostalCode("2000", "Antwerp");
         Address newAddress = new Address("fishlane", "23", newPostalCode, "belgium");
 
         CreateUserDto newUser = new CreateUserDto()
@@ -133,13 +132,11 @@ public class MemberIntegrationTest {
     }
 
 
-
-
     @Test
     void createNewMemberGold() {
-        PostalCode newPostalCode = new PostalCode("2000","Antwerp");
+        PostalCode newPostalCode = new PostalCode("2000", "Antwerp");
         Address newAddress = new Address("fishlane", "23", newPostalCode, "belgium");
-        LicensePlate newLicensePlate = new LicensePlate(IssuingCountry.BE, "1ABC124" );
+        LicensePlate newLicensePlate = new LicensePlate(IssuingCountry.BE, "1ABC124");
 
         CreateUserDto newUser = new CreateUserDto()
                 .setFirstName("Freddi")
@@ -164,22 +161,23 @@ public class MemberIntegrationTest {
 
         Assertions.assertThat(userRepository.findById(1L)).isPresent();
         Assertions.assertThat(userRepository.findById(1L).orElseThrow().getMemberLevel()).isEqualByComparingTo(GOLD);
+    }
 
         @Test
-    void getAllUsersHappyPath(){
-        List<UserDtoLimitedInfo> userList = memberService.getAllMembers();
+        void getAllUsersHappyPath () {
+            List<User> userList = userRepository.findAll();
 
-        Response response = given()
-                .baseUri("http://localhost")
-                .port(port)
-                .when()
-                .get("/members")
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.OK.value())
-                .extract()
-                .response();
 
-        assertEquals(response, userList);
+            List<User> response = List.of(given()
+                    .baseUri("http://localhost")
+                    .port(port)
+                    .when()
+                    .get("/members")
+                    .as(User[].class));
+
+            assertEquals(response, userList);
+
+        }
+
     }
-}
+

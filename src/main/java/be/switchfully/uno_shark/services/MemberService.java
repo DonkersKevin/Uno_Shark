@@ -41,7 +41,7 @@ public class MemberService {
 
     public List<UserDtoLimitedInfo> getAllMembers() {
         List<User> userList = userRepository.findAll();
-        List<User> memberList = userList.stream().filter(user -> user.getRole().equals(Role.MEMBER)).collect(Collectors.toList());
+        List<User> memberList = userList.stream().filter(user -> user.getRole() == Role.MEMBER).collect(Collectors.toList());
         return userMapper.mapListUserToUserDtoLimitedInfo(memberList);
     }
 

@@ -24,6 +24,11 @@ values (nextval('address_seq'),'Belgium','175','Brussel','1030','Boulevard de la
 insert into division (id, director, name, original_name)
 values (nextval('division_seq'),'Freddy', 'UGC', 'KBC');
 
+insert into division (id, director, name, original_name)
+values (nextval('division_seq'),'Tommy', 'KinePolis', 'Belfius');
+
+insert into division (id, director, name, original_name)
+values (nextval('division_seq'),'Freddy', 'Pathé', 'BNP');
 
 
 INSERT INTO person (id, email_address, first_name, last_name, mobile_number, phone_number, fk_address_id)
@@ -68,14 +73,26 @@ VALUES (nextval('licenseplate_seq'), 'BE', 'ABC128');
 INSERT INTO license_plate(id, issuing_country, license_plate_number)
 VALUES (nextval('licenseplate_seq'), 'BE', 'ABC129');
 
-
-INSERT INTO users (id, registration_date, role, fk_licenseplate_id, fk_person_id)
-values ()
-
-
-
-
-/**
 insert into parkinglot (id, capacity, name, parking_category, amount, currency, fk_address_id, fk_person_id, fk_division_id)
 values (nextval('parkinglot_seq'),400,'Goeminne','undergound', 8.00,'EUR',1,3,2);
-  */
+
+insert into parkinglot (id, capacity, name, parking_category, amount, currency, fk_address_id, fk_person_id, fk_division_id)
+values (nextval('parkinglot_seq'),250,'Center','aboveground', 6.00,'EUR',3,4,1);
+
+insert into parkinglot (id, capacity, name, parking_category, amount, currency, fk_address_id, fk_person_id, fk_division_id)
+values (nextval('parkinglot_seq'),20,'rue Haute','underground', 2.00,'EUR',5,6,3);
+
+insert into users(id, registration_date, fk_licenseplate_id, fk_person_id, role, member_level)
+values (nextval('user_seq'), '2010-12-01',  1, 1, 'MANAGER','GOLD');
+
+insert into users(id, registration_date, fk_licenseplate_id, fk_person_id, role, member_level)
+values (nextval('user_seq'), '2015-08-05',  2, 2, 'MEMBER','GOLD');
+
+insert into users(id, registration_date, fk_licenseplate_id, fk_person_id, role, member_level)
+values (nextval('user_seq'), '2021-03-11',  3, 3, 'MEMBER','SILVER');
+
+insert into users(id, registration_date, fk_licenseplate_id, fk_person_id, role, member_level)
+values (nextval('user_seq'), '2016-06-06',  4, 4, 'MEMBER','SILVER');
+
+
+
