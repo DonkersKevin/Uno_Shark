@@ -14,7 +14,6 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 @RestControllerAdvice
 public class UnoSharkExceptionHandler {
-
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @ExceptionHandler(IllegalArgumentException.class)
