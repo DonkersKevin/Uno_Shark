@@ -1,6 +1,7 @@
 package be.switchfully.uno_shark.domain.person.address;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "address")
@@ -56,5 +57,29 @@ public class Address {
 
     public String getCountry() {
         return country;
+    }
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "id=" + id +
+                ", streetName='" + streetName + '\'' +
+                ", houseNumber='" + houseNumber + '\'' +
+                ", postalCode=" + postalCode +
+                ", country='" + country + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Address address = (Address) o;
+        return Objects.equals(id, address.id) && Objects.equals(streetName, address.streetName) && Objects.equals(houseNumber, address.houseNumber) && Objects.equals(postalCode, address.postalCode) && Objects.equals(country, address.country);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, streetName, houseNumber, postalCode, country);
     }
 }

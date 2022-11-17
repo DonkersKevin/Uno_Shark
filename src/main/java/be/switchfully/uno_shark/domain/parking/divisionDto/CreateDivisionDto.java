@@ -1,4 +1,4 @@
-package be.switchfully.uno_shark.domain.parking.dto;
+package be.switchfully.uno_shark.domain.parking.divisionDto;
 
 public class CreateDivisionDto {
 
