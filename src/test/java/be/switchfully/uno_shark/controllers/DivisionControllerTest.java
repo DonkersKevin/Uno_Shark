@@ -2,7 +2,6 @@ package be.switchfully.uno_shark.controllers;
 
 import be.switchfully.uno_shark.domain.parking.divisionDto.CreateDivisionDto;
 import be.switchfully.uno_shark.domain.parking.divisionDto.ShowDivisionDto;
-import be.switchfully.uno_shark.domain.parking.dto.SingleDivisionDto;
 import be.switchfully.uno_shark.repositories.DivisionRepository;
 import be.switchfully.uno_shark.services.DivisionService;
 import io.restassured.response.Response;
@@ -13,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.annotation.DirtiesContext;
 
 
 import java.util.Arrays;
@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class DivisionControllerTest {
 
     @Autowired
@@ -92,10 +93,11 @@ class DivisionControllerTest {
 
     @Test
     void getASingleDivisionHappyPath(){
-        divisionService.createDivision(new CreateDivisionDto(0, "Parent Division", "Old Division", "Gigachad"));
+       divisionService.createDivision(new CreateDivisionDto(0, "Parent Division", "Old Division", "Gigachad"));
         divisionService.createDivision(new CreateDivisionDto(1, "Subdivision", "Old Division", "Ligma Johnson"));
 
-        Response response = given().baseUri("http://localhost")
+
+       Response response = given().baseUri("http://localhost")
                 .port(port)
                 .when()
                 .get("/divisions/1")

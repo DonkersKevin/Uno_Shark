@@ -1,9 +1,9 @@
 package be.switchfully.uno_shark.services;
 
-import be.switchfully.uno_shark.domain.parking.mapper.DivisionMapper;
 import be.switchfully.uno_shark.domain.parking.divisionDto.CreateDivisionDto;
 import be.switchfully.uno_shark.domain.parking.divisionDto.ShowDivisionDto;
 import be.switchfully.uno_shark.domain.parking.divisionDto.DivisionMapper;
+import be.switchfully.uno_shark.domain.parking.divisionDto.SingleDivisionDto;
 import be.switchfully.uno_shark.repositories.DivisionRepository;
 import org.springframework.stereotype.Service;
 

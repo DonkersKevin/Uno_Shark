@@ -3,7 +3,7 @@ package be.switchfully.uno_shark.domain.parking.divisionDto;
 import be.switchfully.uno_shark.domain.parking.Division;
 import be.switchfully.uno_shark.domain.parking.divisionDto.CreateDivisionDto;
 import be.switchfully.uno_shark.domain.parking.divisionDto.ShowDivisionDto;
-import be.switchfully.uno_shark.domain.parking.dto.SingleDivisionDto;
+import be.switchfully.uno_shark.domain.parking.divisionDto.SingleDivisionDto;
 import be.switchfully.uno_shark.repositories.DivisionRepository;
 import be.switchfully.uno_shark.services.GeneralValidationService;
 import org.springframework.stereotype.Component;
