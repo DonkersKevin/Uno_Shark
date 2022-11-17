@@ -39,7 +39,7 @@ public class Address {
         this.country = country;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
