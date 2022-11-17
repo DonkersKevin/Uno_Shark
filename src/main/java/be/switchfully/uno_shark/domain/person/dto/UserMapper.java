@@ -1,6 +1,8 @@
 package be.switchfully.uno_shark.domain.person.dto;
 
+import be.switchfully.uno_shark.domain.person.Person;
 import be.switchfully.uno_shark.domain.person.User;
+import be.switchfully.uno_shark.services.CreatePersonDto;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -28,6 +30,7 @@ public class UserMapper {
 
     public UserDto mapUserToUserDto(User user) {
         return new UserDto()
+                .setId(user.getPerson().getId())
                 .setFirstName(user.getPerson().getFirstName())
                 .setLastName(user.getPerson().getLastName())
                 .setAddress(user.getPerson().getAddress())
@@ -39,8 +42,8 @@ public class UserMapper {
                 .setMemberLevel(user.getMemberLevel());
     }
 
-    public PersonDto mapUserDtoToPersonDto(CreateUserDto createUserDto) {
-        return new PersonDto()
+    public CreatePersonDto mapUserDtoToPersonDto(CreateUserDto createUserDto) {
+        return new CreatePersonDto()
                 .setFirstName(createUserDto.getFirstName())
                 .setLastName(createUserDto.getLastName())
                 .setAddress(createUserDto.getAddress())

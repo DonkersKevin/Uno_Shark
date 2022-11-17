@@ -30,14 +30,11 @@ public class MemberService {
     }
 
     public UserDto createMember(CreateUserDto createUserDto) {
-        PersonDto personDto = userMapper.mapUserDtoToPersonDto(createUserDto);
-        personValidator.checkRequiredFields(personDto);
+        CreatePersonDto createPersonDto = userMapper.mapUserDtoToPersonDto(createUserDto);
+        personValidator.checkRequiredFields(createPersonDto);
         userValidator.checkRequiredFields(createUserDto);
         personValidator.isValidEmail(createUserDto.getEmailAddress());
         User user = userRepository.save(userMapper.mapUserDtoToUser(createUserDto));
         return userMapper.mapUserToUserDto(user);
     }
-
-
-
 }

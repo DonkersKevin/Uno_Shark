@@ -43,7 +43,7 @@ create table users
         primary key,
     registration_date  date,
     fk_licenseplate_id bigint
-        constraint fk_lisenceplate_id
+        constraint fk_licenseplate_id
             references license_plate,
     fk_person_id       bigint
         constraint fk_person_id
