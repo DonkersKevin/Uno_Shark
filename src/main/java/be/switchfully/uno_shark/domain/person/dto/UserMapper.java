@@ -43,6 +43,7 @@ public class UserMapper {
                 .setLicensePlate(user.getLicensePlate())
                 .setRegistrationDate(user.getRegistrationDate())
                 .setMemberLevel(user.getMemberLevel())
+                .setRole(user.getRole())
                 .setUserName(user.getUsername());
     }
 

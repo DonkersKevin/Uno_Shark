@@ -3,6 +3,7 @@ package be.switchfully.uno_shark.domain.person.dto;
 import be.switchfully.uno_shark.domain.person.LicensePlate;
 import be.switchfully.uno_shark.domain.person.MembershipLevel;
 import be.switchfully.uno_shark.domain.person.address.Address;
+import be.switchfully.uno_shark.security.Role;
 
 import java.time.LocalDate;
 
@@ -17,10 +18,11 @@ public class UserDto {
     private String emailAddress;
     private LicensePlate licensePlate;
     private LocalDate registrationDate;
-
     private MembershipLevel memberLevel;
 
+    private Role role;
     private String userName;
+
 
     public MembershipLevel getMemberLevel() {
         return memberLevel;
@@ -60,6 +62,10 @@ public class UserDto {
 
     public LocalDate getRegistrationDate() {
         return registrationDate;
+    }
+
+    public Role getRole() {
+        return role;
     }
 
     public String getUserName() {
@@ -113,6 +119,11 @@ public class UserDto {
 
     public UserDto setMemberLevel(MembershipLevel memberLevel) {
         this.memberLevel = memberLevel;
+        return this;
+    }
+
+    public UserDto setRole(Role role) {
+        this.role = role;
         return this;
     }
 
