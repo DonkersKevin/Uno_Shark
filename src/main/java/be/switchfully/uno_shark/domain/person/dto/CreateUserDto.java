@@ -1,6 +1,7 @@
 package be.switchfully.uno_shark.domain.person.dto;
 
 import be.switchfully.uno_shark.domain.person.LicensePlate;
+import be.switchfully.uno_shark.domain.person.MembershipLevel;
 import be.switchfully.uno_shark.domain.person.address.Address;
 
 import java.time.LocalDate;
@@ -13,6 +14,8 @@ public class CreateUserDto {
     private String mobileNumber;
     private String emailAddress;
     private LicensePlate licensePlate;
+
+    private MembershipLevel memberLevel;
 
 
     public String getFirstName() {
@@ -43,6 +46,9 @@ public class CreateUserDto {
         return licensePlate;
     }
 
+    public MembershipLevel getMemberLevel() {
+        return memberLevel;
+    }
 
     public CreateUserDto setFirstName(String firstName) {
         this.firstName = firstName;
@@ -78,4 +84,11 @@ public class CreateUserDto {
         this.licensePlate = licensePlate;
         return this;
     }
+
+    public CreateUserDto setMemberLevel(MembershipLevel memberLevel) {
+        this.memberLevel = memberLevel;
+        return this;
+    }
+
+
 }
