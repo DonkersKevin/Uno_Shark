@@ -5,7 +5,10 @@ import be.switchfully.uno_shark.domain.person.address.Address;
 import org.junit.jupiter.api.Test;
 
 
+import java.util.Currency;
+
 import static org.assertj.core.api.Assertions.*;
+
 
 class ParkinglotTest {
 
@@ -68,6 +71,22 @@ class ParkinglotTest {
     @Test
     void ifGivenCorrectParkingLot_thenAllOke() {
         Parkinglot parkinglot = new Parkinglot("De Brouckere", ParkingCategory.UNDERGROUND, new Division(), 100, new Person(), new Address(), new Price());
+        assertThat(parkinglot).isNotNull();
+    }
+
+    @Test
+    void ifGivenParkingLotWithPrice_thenPriceOke() {
+        Price newPrice = new Price(10,Currency.getInstance("EUR"));
+        Parkinglot parkinglot = new Parkinglot("De Brouckere", ParkingCategory.UNDERGROUND, new Division(), 100, new Person(), new Address(), new Price(10, Currency.getInstance("EUR")));
+        assertThat(parkinglot.getPricePerHour().getAmount()).isEqualTo(10);
+        assertThat(parkinglot.getPricePerHour().toString()).isEqualTo("Price{amount=10.0, currency=EUR}");
+        assertThat(parkinglot.getPricePerHour()).isEqualTo(newPrice);
+        assertThat(parkinglot.getPricePerHour().hashCode()).isEqualTo(newPrice.hashCode());
+    }
+
+    @Test
+    void givenFullConstructorParkingLot_notNull() {
+        Parkinglot parkinglot = new Parkinglot(1L,"De Brouckere", ParkingCategory.UNDERGROUND, new Division(), 100, new Person(), new Address(), new Price(10, Currency.getInstance("EUR")));
         assertThat(parkinglot).isNotNull();
     }
 }
