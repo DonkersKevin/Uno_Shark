@@ -35,4 +35,11 @@ public class ParkingLotController {
         log.info("Controller called : getting all parkinglots");
         return parkingLotService.getAllParkinglots();
     }
+
+    @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(OK)
+    public ParkingLotDto getParkingLotById(@PathVariable String id){
+        log.info("Looking for parkinglot with id: " + id);
+        return parkingLotService.getParkingLotById(id);
+    }
 }
