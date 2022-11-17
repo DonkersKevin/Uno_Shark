@@ -39,6 +39,11 @@ public class MemberService {
         return userMapper.mapUserToUserDto(user);
     }
 
+    public UserDto findAMember(long id) {
+        return userMapper.mapUserToUserDto(userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No such user exists!")));
+    }
+
+
     public List<UserDtoLimitedInfo> getAllMembers() {
         List<User> userList = userRepository.findAll();
         List<User> memberList = userList.stream().filter(user -> user.getRole() == Role.MEMBER).collect(Collectors.toList());
