@@ -1,7 +1,6 @@
 package be.switchfully.uno_shark.domain.parkingspotallocation.dto;
 
-import be.switchfully.uno_shark.domain.parking.ParkingLot;
-import be.switchfully.uno_shark.domain.person.LicensePlate;
+import be.switchfully.uno_shark.domain.person.licenseplate.LicensePlate;
 
 import java.time.LocalTime;
 
