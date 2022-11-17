@@ -38,4 +38,10 @@ public class MemberController {
         log.info("Retrieving the list of all registered users");
         return memberService.getAllMembers();
     }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public UserDto findSingleUser(@PathVariable long id){
+        return memberService.findAMember(id);
+    }
 }

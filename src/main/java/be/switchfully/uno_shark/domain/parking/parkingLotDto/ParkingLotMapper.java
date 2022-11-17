@@ -2,15 +2,21 @@ package be.switchfully.uno_shark.domain.parking.parkingLotDto;
 
 import be.switchfully.uno_shark.domain.parking.ParkingLot;
 import be.switchfully.uno_shark.domain.parking.divisionDto.DivisionMapper;
+import be.switchfully.uno_shark.domain.person.dto.PersonMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
 public class ParkingLotMapper {
+    Logger log = LoggerFactory.getLogger(getClass());
     private final DivisionMapper divisionMapper;
-    public ParkingLotMapper(DivisionMapper divisionMapper) {
+    private final PersonMapper personMapper;
+    private ParkingLotMapper(DivisionMapper divisionMapper, PersonMapper personMapper) {
         this.divisionMapper = divisionMapper;
+        this.personMapper = personMapper;
     }
 
     public ParkingLot dtoToParkingLot(CreateParkingLotDto createParkingLotDto) {
@@ -19,18 +25,20 @@ public class ParkingLotMapper {
     }
 
     public ParkingLot CreateDtoToParkingLot(CreateParkingLotDto createParkingLotDto) {
+        log.info("Converting Dto -> Parkinglot");
         return new ParkingLot(
                 createParkingLotDto.getName(),
                 createParkingLotDto.getParkingCategory(),
-                createParkingLotDto.getDivision(),
+                divisionMapper.mapToDivision(createParkingLotDto.getDivision()),
                 createParkingLotDto.getCapacity(),
-                createParkingLotDto.getPerson(),
+                personMapper.dtoToPerson(createParkingLotDto.getPerson()),
                 createParkingLotDto.getAddress(),
                 createParkingLotDto.getPricePerHour()
         );
     }
 
     public ParkingLotDto parkingLotToDto(ParkingLot parkinglot) {
+        log.info("Converting Dto <- Parkinglot");
         //Todo change Dtos
         return new ParkingLotDto(
                 parkinglot.getId(),
@@ -45,7 +53,6 @@ public class ParkingLotMapper {
     }
 
     public List<ParkingLotDto> parkingLotListToDto(List<ParkingLot> parkingLots) {
-        System.out.println("running");
         return parkingLots.stream().map(this::parkingLotToDto).toList();
     }
 }

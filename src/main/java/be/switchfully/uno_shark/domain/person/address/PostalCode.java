@@ -12,8 +12,25 @@ public class PostalCode {
     }
 
     public PostalCode(String postalCode, String city) {
-        this.postalCode = postalCode;
-        this.city = city;
+        this.postalCode = postalcodeVerification(postalCode);
+        this.city = cityVerification(city);
+    }
+
+    private String postalcodeVerification(String postalCode) {
+        if (postalCode == null) {
+            throw new IllegalArgumentException("Postal Code cannot be empty.");
+        }
+        if (postalCode.length() != 4) {
+            throw new IllegalArgumentException("Provide a valid postal code: format ####");
+        }
+        return postalCode;
+    }
+
+    private String cityVerification(String possibleCity) {
+        if (possibleCity == null) {
+            throw new IllegalArgumentException("Provide a city name.");
+        }
+        return possibleCity;
     }
 
     public String getPostalCode() {

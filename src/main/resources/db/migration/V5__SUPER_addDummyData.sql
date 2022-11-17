@@ -74,13 +74,13 @@ INSERT INTO license_plate(id, issuing_country, license_plate_number)
 VALUES (nextval('licenseplate_seq'), 'BE', 'ABC129');
 
 insert into parkinglot (id, capacity, name, parking_category, amount, currency, fk_address_id, fk_person_id, fk_division_id)
-values (nextval('parkinglot_seq'),400,'Goeminne','undergound', 8.00,'EUR',1,3,2);
+values (nextval('parkinglot_seq'),400,'Goeminne','UNDERGROUND', 8.00,'EUR',1,3,2);
 
 insert into parkinglot (id, capacity, name, parking_category, amount, currency, fk_address_id, fk_person_id, fk_division_id)
-values (nextval('parkinglot_seq'),250,'Center','aboveground', 6.00,'EUR',3,4,1);
+values (nextval('parkinglot_seq'),250,'Center','ABOVEGROUND', 6.00,'EUR',3,4,1);
 
 insert into parkinglot (id, capacity, name, parking_category, amount, currency, fk_address_id, fk_person_id, fk_division_id)
-values (nextval('parkinglot_seq'),20,'rue Haute','underground', 2.00,'EUR',5,6,3);
+values (nextval('parkinglot_seq'),20,'rue Haute','UNDERGROUND', 2.00,'EUR',5,6,3);
 
 insert into users(id, registration_date, fk_licenseplate_id, fk_person_id, role, member_level)
 values (nextval('user_seq'), '2010-12-01',  1, 1, 'MANAGER','GOLD');

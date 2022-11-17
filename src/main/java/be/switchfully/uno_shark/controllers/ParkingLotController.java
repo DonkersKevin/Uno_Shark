@@ -26,13 +26,21 @@ public class ParkingLotController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(CREATED)
     public ParkingLotDto createParkingLot(@RequestBody CreateParkingLotDto createParkingLotDto) {
+
         return parkingLotService.addParkingLot(createParkingLotDto);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
     public List<ParkingLotDto> getAllParkinglots(){
-        log.info("Controller called : getting all parkinglots");
+        log.info("Getting all parkinglots");
         return parkingLotService.getAllParkinglots();
+    }
+
+    @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(OK)
+    public ParkingLotDto getParkingLotById(@PathVariable String id){
+        log.info("Looking for parkinglot with id: " + id);
+        return parkingLotService.getParkingLotById(id);
     }
 }

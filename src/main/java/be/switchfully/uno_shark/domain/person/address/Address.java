@@ -33,10 +33,38 @@ public class Address {
     }
 
     public Address(String streetName, String houseNumber, PostalCode postalCode, String country) {
-        this.streetName = streetName;
-        this.houseNumber = houseNumber;
-        this.postalCode = postalCode;
-        this.country = country;
+        this.streetName = streetVerification(streetName);
+        this.houseNumber = houseNumberVerification(houseNumber);
+        this.postalCode = postalCodeVerification(postalCode);
+        this.country = countryVerification(country);
+    }
+
+    private String streetVerification(String streetName) {
+        if (streetName == null) {
+            throw new IllegalArgumentException("Provide a streetname.");
+        }
+        return streetName;
+    }
+
+    private String houseNumberVerification(String houseNumber) {
+        if (houseNumber == null) {
+            throw new IllegalArgumentException("Provide a house number.");
+        }
+        return houseNumber;
+    }
+
+    private PostalCode postalCodeVerification(PostalCode postalCode) {
+        if (postalCode == null) {
+            throw new IllegalArgumentException("Provide a postal code.");
+        }
+        return postalCode;
+    }
+
+    private String countryVerification(String country) {
+        if (country == null) {
+            throw new IllegalArgumentException("Provide a country.");
+        }
+        return country;
     }
 
     public Long getId() {

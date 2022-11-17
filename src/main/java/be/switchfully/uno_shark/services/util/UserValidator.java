@@ -1,6 +1,6 @@
 package be.switchfully.uno_shark.services.util;
 
-import be.switchfully.uno_shark.domain.person.LicensePlate;
+import be.switchfully.uno_shark.domain.person.licenseplate.LicensePlate;
 import be.switchfully.uno_shark.domain.person.dto.CreateUserDto;
 import be.switchfully.uno_shark.repositories.UserRepository;
 import be.switchfully.uno_shark.services.GeneralValidationService;

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @Transactional
@@ -33,5 +34,10 @@ public class ParkingLotService {
     public List<ParkingLotDto> getAllParkinglots() {
         log.info("Service getting all parkinglots");
         return parkingLotMapper.parkingLotListToDto(parkingLotRepository.findAll());
+    }
+
+    public ParkingLotDto getParkingLotById(String id) {
+        return parkingLotMapper.parkingLotToDto(parkingLotRepository.findById(Long.valueOf(id)).orElseThrow(()
+                -> new NoSuchElementException("No parkinglot with id: " + id + " is not found.")));
     }
 }
