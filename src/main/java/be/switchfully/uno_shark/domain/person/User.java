@@ -5,6 +5,9 @@ import be.switchfully.uno_shark.domain.person.address.Address;
 import javax.persistence.*;
 import java.time.LocalDate;
 
+import static be.switchfully.uno_shark.domain.person.MembershipLevel.*;
+import static javax.persistence.EnumType.*;
+
 @Entity
 @Table(name = "USERS")
 //todo can be used with inheritance bit we have to figure that one out
@@ -26,6 +29,10 @@ public class User{
     @Column(name = "registration_date")
     private LocalDate registrationDate;
 
+    @Enumerated(STRING)
+    @Column(name = "member_level")
+    private MembershipLevel memberLevel;
+
     public User() {
     }
 
@@ -38,6 +45,7 @@ public class User{
         this.person = new Person(firstName, lastName, address, phoneNumber, mobileNumber, emailAddress);
         this.registrationDate = LocalDate.now();
         this.licensePlate = licensePlate;
+        this.memberLevel = BRONZE;
     }
 
     public User setLicensePlate(LicensePlate licensePlate) {
@@ -54,5 +62,13 @@ public class User{
 
     public Person getPerson() {
         return person;
+    }
+
+    public void setMemberLevel(MembershipLevel memberLevel) {
+        this.memberLevel = memberLevel;
+    }
+
+    public MembershipLevel getMemberLevel() {
+        return memberLevel;
     }
 }
