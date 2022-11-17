@@ -36,7 +36,7 @@ public class ParkingLotMapper {
                 parkinglot.getId(),
                 parkinglot.getName(),
                 parkinglot.getParkingCategory(),
-                divisionMapper.mapToSingleDto(parkinglot.getDivision()),
+                divisionMapper.mapSingleDivisionDto(parkinglot.getDivision()),
                 parkinglot.getCapacity(),
                 parkinglot.getPerson(),
                 parkinglot.getAddress(),

@@ -1,6 +1,7 @@
 package be.switchfully.uno_shark.domain.person;
 
 import be.switchfully.uno_shark.domain.person.address.Address;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -10,6 +11,7 @@ import static javax.persistence.EnumType.*;
 
 @Entity
 @Table(name = "USERS")
+@JsonIgnoreProperties(ignoreUnknown = true)
 //todo can be used with inheritance bit we have to figure that one out
 public class User {
 
@@ -33,6 +35,7 @@ public class User {
     @Column(name = "member_level")
     private MembershipLevel memberLevel;
 
+    @Enumerated(STRING)
     private Role role;
 
     public User() {
@@ -86,5 +89,18 @@ public class User {
 
     public Role getRole() {
         return role;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User user)) return false;
+
+        return id == user.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (id ^ (id >>> 32));
     }
 }
