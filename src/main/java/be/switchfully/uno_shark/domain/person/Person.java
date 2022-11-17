@@ -3,6 +3,7 @@ package be.switchfully.uno_shark.domain.person;
 import be.switchfully.uno_shark.domain.person.address.Address;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 
 @Entity
@@ -14,7 +15,6 @@ public class Person {
     @Column(name = "id", nullable = false)
     private Long id;
 
-
     private String firstName;
     private String lastName;
 
@@ -23,10 +23,8 @@ public class Person {
     private Address address;
 
     private String phoneNumber;
-
     private String mobileNumber;
     private String emailAddress;
-
 
     public Person() {
     }
@@ -93,5 +91,31 @@ public class Person {
 
     public String getEmailAddress() {
         return emailAddress;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", address=" + address +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", mobileNumber='" + mobileNumber + '\'' +
+                ", emailAddress='" + emailAddress + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Person person = (Person) o;
+        return Objects.equals(id, person.id) && Objects.equals(firstName, person.firstName) && Objects.equals(lastName, person.lastName) && Objects.equals(address, person.address) && Objects.equals(phoneNumber, person.phoneNumber) && Objects.equals(mobileNumber, person.mobileNumber) && Objects.equals(emailAddress, person.emailAddress);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName, address, phoneNumber, mobileNumber, emailAddress);
     }
 }
