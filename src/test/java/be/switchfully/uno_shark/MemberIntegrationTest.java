@@ -6,7 +6,9 @@ import be.switchfully.uno_shark.domain.person.User;
 import be.switchfully.uno_shark.domain.person.address.Address;
 import be.switchfully.uno_shark.domain.person.address.PostalCode;
 import be.switchfully.uno_shark.domain.person.dto.CreateUserDto;
+import be.switchfully.uno_shark.domain.person.dto.UserDtoLimitedInfo;
 import be.switchfully.uno_shark.repositories.UserRepository;
+import be.switchfully.uno_shark.services.MemberService;
 import io.restassured.response.Response;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -21,7 +23,6 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import static be.switchfully.uno_shark.domain.person.MembershipLevel.BRONZE;
 import static be.switchfully.uno_shark.domain.person.MembershipLevel.GOLD;
 
-import java.lang.reflect.Type;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
@@ -39,7 +40,8 @@ public class MemberIntegrationTest {
     @Autowired
     UserRepository userRepository;
 
-
+    @Autowired
+    MemberService memberService;
 
     @Test
     void createNewMemberHappyPath() {
@@ -68,7 +70,7 @@ public class MemberIntegrationTest {
                 .statusCode(HttpStatus.CREATED.value());
 
         Assertions.assertThat(userRepository.findById(1L)).isPresent();
-        Assertions.assertThat(userRepository.findById(1L).orElseThrow().getMemberLevel()).isEqualByComparingTo(BRONZE);
+        Assertions.assertThat(userRepository.findById(1L).orElseThrow().getMemberLevel()).isEqualByComparingTo(GOLD);
     }
 
     @Test
@@ -163,21 +165,21 @@ public class MemberIntegrationTest {
         Assertions.assertThat(userRepository.findById(1L).orElseThrow().getMemberLevel()).isEqualByComparingTo(GOLD);
     }
 
-        @Test
-        void getAllUsersHappyPath () {
-            List<User> userList = userRepository.findAll();
+    @Test
+    void getAllUsersHappyPath() {
+        List<UserDtoLimitedInfo> userList = memberService.getAllMembers();
 
 
-            List<User> response = List.of(given()
-                    .baseUri("http://localhost")
-                    .port(port)
-                    .when()
-                    .get("/members")
-                    .as(User[].class));
+        List<UserDtoLimitedInfo> response = List.of(given()
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .get("/members")
+                .as(UserDtoLimitedInfo[].class));
 
-            assertEquals(response, userList);
-
-        }
+        assertEquals(response, userList);
 
     }
+
+}
 

@@ -1,6 +1,7 @@
 package be.switchfully.uno_shark.domain.person;
 
 import be.switchfully.uno_shark.domain.person.address.Address;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -10,6 +11,7 @@ import static javax.persistence.EnumType.*;
 
 @Entity
 @Table(name = "USERS")
+@JsonIgnoreProperties(ignoreUnknown = true)
 //todo can be used with inheritance bit we have to figure that one out
 public class User {
 
