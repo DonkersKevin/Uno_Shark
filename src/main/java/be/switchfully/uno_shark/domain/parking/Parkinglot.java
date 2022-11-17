@@ -56,7 +56,37 @@ public class Parkinglot {
         this.person = person;
         this.address = address;
         this.pricePerHour = pricePerHour;
+        verifyParkinglot(this);
     }
+
+    private void verifyParkinglot(Parkinglot parkinglot) {
+        if (verifyIfNull(parkinglot.getName())) {
+            throw new IllegalArgumentException("Provide a valid name.");
+        }
+        if (verifyIfNull(parkinglot.getParkingCategory())) {
+            throw new IllegalArgumentException("Provide a valid Parking Category.");
+        }
+        if (verifyIfNull(parkinglot.getDivision())) {
+            throw new IllegalArgumentException("Provide a valid Division for this parking lot.");
+        }
+        if (parkinglot.getCapacity() <= 0) {
+            throw new IllegalArgumentException("Provide a valid capacity for this parking lot.");
+        }
+        if (verifyIfNull(parkinglot.getPerson())) {
+            throw new IllegalArgumentException("Provide a valid Contactperson for this parking lot.");
+        }
+        if (verifyIfNull(parkinglot.getAddress())) {
+            throw new IllegalArgumentException("Provide a valid address for this parking lot.");
+        }
+        if (verifyIfNull(parkinglot.getPricePerHour())) {
+            throw new IllegalArgumentException("Provide a valid price per hour.");
+        }
+    }
+
+    private boolean verifyIfNull(Object object) {
+        return object == null;
+    }
+
 
     public Long getId() {
         return id;
