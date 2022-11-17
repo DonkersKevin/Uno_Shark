@@ -7,9 +7,7 @@ public class SingleDivisionDto {
     private String parentName;
     private String name;
     private String originalName;
-    //todo
     private String director;
-
     private List<String> subdivisions;
 
     public SingleDivisionDto(long id, String parentName, String name, String originalName, String director, List<String> subdivisions) {

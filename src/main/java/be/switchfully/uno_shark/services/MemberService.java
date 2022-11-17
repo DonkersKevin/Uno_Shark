@@ -1,6 +1,5 @@
 package be.switchfully.uno_shark.services;
 
-import be.switchfully.uno_shark.domain.person.LicensePlate;
 import be.switchfully.uno_shark.domain.person.Role;
 import be.switchfully.uno_shark.domain.person.User;
 import be.switchfully.uno_shark.domain.person.dto.*;
@@ -38,6 +37,11 @@ public class MemberService {
         User user = userRepository.save(userMapper.mapUserDtoToUser(createUserDto));
         return userMapper.mapUserToUserDto(user);
     }
+
+    public UserDto findAMember(long id) {
+        return userMapper.mapUserToUserDto(userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No such user exists!")));
+    }
+
 
     public List<UserDtoLimitedInfo> getAllMembers() {
         List<User> userList = userRepository.findAll();
