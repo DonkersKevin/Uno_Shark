@@ -11,7 +11,7 @@ import static javax.persistence.EnumType.*;
 @Entity
 @Table(name = "USERS")
 //todo can be used with inheritance bit we have to figure that one out
-public class User{
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
@@ -33,25 +33,37 @@ public class User{
     @Column(name = "member_level")
     private MembershipLevel memberLevel;
 
+    private Role role;
+
     public User() {
     }
 
-    public User (String firstName, String lastName, Address address, String phoneNumber, String mobileNumber, String emailAddress) {
+    public User(String firstName, String lastName, Address address, String phoneNumber, String mobileNumber, String emailAddress) {
         this.person = new Person(firstName, lastName, address, phoneNumber, mobileNumber, emailAddress);
         this.registrationDate = LocalDate.now();
+        this.role = Role.MEMBER;
     }
 
-    public User (String firstName, String lastName, Address address, String phoneNumber, String mobileNumber, String emailAddress, LicensePlate licensePlate) {
+    public User(String firstName, String lastName, Address address, String phoneNumber, String mobileNumber, String emailAddress, LicensePlate licensePlate) {
         this.person = new Person(firstName, lastName, address, phoneNumber, mobileNumber, emailAddress);
         this.registrationDate = LocalDate.now();
         this.licensePlate = licensePlate;
         this.memberLevel = BRONZE;
+        this.role = Role.MEMBER;
+    }
+
+    public User(String firstName, String lastName, Address address, String phoneNumber, String mobileNumber, String emailAddress, LicensePlate licensePlate, Role role) {
+        this.person = new Person(firstName, lastName, address, phoneNumber, mobileNumber, emailAddress);
+        this.registrationDate = LocalDate.now();
+        this.licensePlate = licensePlate;
+        this.role = role;
     }
 
     public User setLicensePlate(LicensePlate licensePlate) {
         this.licensePlate = licensePlate;
         return this;
     }
+
     public LicensePlate getLicensePlate() {
         return licensePlate;
     }
@@ -70,5 +82,9 @@ public class User{
 
     public MembershipLevel getMemberLevel() {
         return memberLevel;
+    }
+
+    public Role getRole() {
+        return role;
     }
 }
