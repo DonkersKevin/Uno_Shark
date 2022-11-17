@@ -1,13 +1,13 @@
 package be.switchfully.uno_shark.services.util;
 
-import be.switchfully.uno_shark.domain.person.dto.PersonDto;
+import be.switchfully.uno_shark.services.CreatePersonDto;
 import be.switchfully.uno_shark.services.GeneralValidationService;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PersonValidator {
 
-    private GeneralValidationService validationService;
+    private final GeneralValidationService validationService;
 
     public PersonValidator(GeneralValidationService validationService) {
         this.validationService = validationService;
@@ -19,10 +19,10 @@ public class PersonValidator {
         }
     }
 
-    public void checkRequiredFields(PersonDto personDto) {
-        validationService.assertNotNullOrBlank(personDto.getEmailAddress(), "Email address");
-        validationService.assertNotNullOrBlank(personDto.getPhoneNumber(), "Phone number");
-        if (personDto.getAddress() == null || personDto.getAddress().toString().equals("")) {
+    public void checkRequiredFields(CreatePersonDto createPersonDto) {
+        validationService.assertNotNullOrBlank(createPersonDto.getEmailAddress(), "Email address");
+        validationService.assertNotNullOrBlank(createPersonDto.getPhoneNumber(), "Phone number");
+        if (createPersonDto.getAddress() == null || createPersonDto.getAddress().toString().equals("")) {
             throw new IllegalArgumentException("Provide an address please!");
         }
     }

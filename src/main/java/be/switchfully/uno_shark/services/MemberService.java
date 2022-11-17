@@ -30,11 +30,10 @@ public class MemberService {
     }
 
     public UserDto createMember(CreateUserDto createUserDto) {
-        PersonDto personDto = userMapper.mapUserDtoToPersonDto(createUserDto);
-        personValidator.checkRequiredFields(personDto);
+        CreatePersonDto createPersonDto = userMapper.mapUserDtoToPersonDto(createUserDto);
+        personValidator.checkRequiredFields(createPersonDto);
         userValidator.checkRequiredFields(createUserDto);
         personValidator.isValidEmail(createUserDto.getEmailAddress());
-        isUniqueEmail(createUserDto.getEmailAddress());
         isUniqueLicensePlate(createUserDto.getLicensePlate());
         User user = userRepository.save(userMapper.mapUserDtoToUser(createUserDto));
         return userMapper.mapUserToUserDto(user);
@@ -42,15 +41,7 @@ public class MemberService {
 
     private void isUniqueLicensePlate(LicensePlate licensePlate) {
         if(userRepository.findUserByLicensePlate_LicensePlateNumber(licensePlate.getLicensePlateNumber()) != null) {
-            throw new IllegalArgumentException("This license plate is already registered.");
+            throw new IllegalArgumentException("This license plate is already registered!");
         }
     }
-
-    private void isUniqueEmail(String emailAddress) {
-        if(userRepository.findUserByPerson_EmailAddress(emailAddress) != null){
-            throw new IllegalArgumentException("This email address is already registered.");
-        }
-    }
-
-
 }

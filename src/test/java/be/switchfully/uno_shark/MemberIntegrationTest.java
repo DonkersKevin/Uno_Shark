@@ -118,4 +118,47 @@ public class MemberIntegrationTest {
         assertEquals("Provide an license plate please!", response.jsonPath().getString("message"));
 
     }
+
+    @Test
+    void whenSameLicensePlate_illegalArgumentExceptionIsThrown() {
+        PostalCode newPostalCode = new PostalCode("2000","Antwerp");
+        Address newAddress = new Address("fishlane", "23", newPostalCode, "belgium");
+        LicensePlate newLicensePlate = new LicensePlate(IssuingCountry.BE, "1ABC123" );
+
+        CreateUserDto newUser = new CreateUserDto()
+                .setFirstName("Freddi")
+                .setLastName("Fish")
+                .setAddress(newAddress)
+                .setPhoneNumber("003487442233")
+                .setMobileNumber("+32487442233")
+                .setEmailAddress("Freddi@Fish.be")
+                .setLicensePlate(newLicensePlate);
+
+        given()
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .body(newUser)
+                .contentType(JSON)
+                .post("/members")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.CREATED.value());
+
+        Response response = given()
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .body(newUser)
+                .contentType(JSON)
+                .post("/members")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .extract()
+                .response();
+
+        assertEquals("This license plate is already registered!", response.jsonPath().getString("message"));
+
+    }
 }
