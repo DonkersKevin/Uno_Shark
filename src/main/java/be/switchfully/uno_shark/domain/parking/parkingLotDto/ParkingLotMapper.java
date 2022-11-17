@@ -2,6 +2,7 @@ package be.switchfully.uno_shark.domain.parking.parkingLotDto;
 
 import be.switchfully.uno_shark.domain.parking.Parkinglot;
 import be.switchfully.uno_shark.domain.parking.divisionDto.DivisionMapper;
+import be.switchfully.uno_shark.domain.person.dto.PersonMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -9,8 +10,10 @@ import java.util.List;
 @Component
 public class ParkingLotMapper {
     private final DivisionMapper divisionMapper;
-    public ParkingLotMapper(DivisionMapper divisionMapper) {
+    private final PersonMapper personMapper;
+    private ParkingLotMapper(DivisionMapper divisionMapper, PersonMapper personMapper) {
         this.divisionMapper = divisionMapper;
+        this.personMapper = personMapper;
     }
 
     public Parkinglot dtoToParkingLot(CreateParkingLotDto createParkingLotDto) {
@@ -22,9 +25,9 @@ public class ParkingLotMapper {
         return new Parkinglot(
                 createParkingLotDto.getName(),
                 createParkingLotDto.getParkingCategory(),
-                createParkingLotDto.getDivision(),
+                divisionMapper.mapToDivision(createParkingLotDto.getDivision()),
                 createParkingLotDto.getCapacity(),
-                createParkingLotDto.getPerson(),
+                personMapper.dtoToPerson(createParkingLotDto.getPerson()),
                 createParkingLotDto.getAddress(),
                 createParkingLotDto.getPricePerHour()
         );

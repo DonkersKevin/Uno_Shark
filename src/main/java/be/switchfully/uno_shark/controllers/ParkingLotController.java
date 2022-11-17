@@ -26,6 +26,7 @@ public class ParkingLotController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(CREATED)
     public ParkingLotDto createParkingLot(@RequestBody CreateParkingLotDto createParkingLotDto) {
+
         return parkingLotService.addParkingLot(createParkingLotDto);
     }
 

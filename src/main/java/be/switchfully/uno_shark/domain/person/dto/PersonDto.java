@@ -15,6 +15,15 @@ public class PersonDto {
     public PersonDto() {
     }
 
+    public PersonDto(String firstName, String lastName, Address address, String phoneNumber, String mobileNumber, String emailAddress) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.mobileNumber = mobileNumber;
+        this.emailAddress = emailAddress;
+    }
+
     public String getFirstName() {
         return firstName;
     }
