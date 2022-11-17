@@ -36,8 +36,6 @@ public class MemberIntegrationTest {
     @Autowired
     UserRepository userRepository;
 
-
-
     @Test
     void createNewMemberHappyPath() {
         PostalCode newPostalCode = new PostalCode("2000","Antwerp");
@@ -200,6 +198,5 @@ public class MemberIntegrationTest {
                 .response();
 
         assertEquals("This license plate is already registered!", response.jsonPath().getString("message"));
-
     }
 }

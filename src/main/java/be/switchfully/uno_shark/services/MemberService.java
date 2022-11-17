@@ -37,4 +37,9 @@ public class MemberService {
         User user = userRepository.save(userMapper.mapUserDtoToUser(createUserDto));
         return userMapper.mapUserToUserDto(user);
     }
+
+    public UserDto findAMember(long id) {
+        return userMapper.mapUserToUserDto(userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No such user exists!")));
+    }
+
 }

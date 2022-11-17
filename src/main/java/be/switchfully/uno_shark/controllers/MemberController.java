@@ -27,4 +27,10 @@ public class MemberController {
         log.info("adding the following member: "+ createUserDto);
         return memberService.createMember(createUserDto);
     }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public UserDto findSingleUser(@PathVariable long id){
+        return memberService.findAMember(id);
+    }
 }
