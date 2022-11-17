@@ -1,6 +1,7 @@
 package be.switchfully.uno_shark.domain.parking;
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -60,5 +61,30 @@ public class Division {
 
     public String getDirector() {
         return director;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Division division = (Division) o;
+        return id == division.id && Objects.equals(parent, division.parent) && Objects.equals(subdivisions, division.subdivisions) && Objects.equals(name, division.name) && Objects.equals(originalName, division.originalName) && Objects.equals(director, division.director);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, parent, subdivisions, name, originalName, director);
+    }
+
+    @Override
+    public String toString() {
+        return "Division{" +
+                "id=" + id +
+                ", parent=" + parent +
+                ", subdivisions=" + subdivisions +
+                ", name='" + name + '\'' +
+                ", originalName='" + originalName + '\'' +
+                ", director='" + director + '\'' +
+                '}';
     }
 }

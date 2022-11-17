@@ -15,18 +15,18 @@ public class DivisionService {
     DivisionRepository divisionRepository;
     DivisionMapper divisionMapper;
 
-    DivisionValidationService divisionValidationService;
+    GeneralValidationService generalValidationService;
 
-    public DivisionService(DivisionRepository divisionRepository, DivisionMapper divisionMapper, DivisionValidationService divisionValidationService) {
+    public DivisionService(DivisionRepository divisionRepository, DivisionMapper divisionMapper, GeneralValidationService generalValidationService) {
         this.divisionRepository = divisionRepository;
         this.divisionMapper = divisionMapper;
-        this.divisionValidationService = divisionValidationService;
+        this.generalValidationService = generalValidationService;
     }
 
     public void createDivision(CreateDivisionDto createDivisionDto){
-        divisionValidationService.assertNotNullOrBlank(createDivisionDto.getName(), "Name");
-        divisionValidationService.assertNotNullOrBlank(createDivisionDto.getOriginalName(), "Original name");
-        divisionValidationService.assertNotNullOrBlank(createDivisionDto.getDirector(), "Director ");
+        generalValidationService.assertNotNullOrBlank(createDivisionDto.getName(), "Name");
+        generalValidationService.assertNotNullOrBlank(createDivisionDto.getOriginalName(), "Original name");
+        generalValidationService.assertNotNullOrBlank(createDivisionDto.getDirector(), "Director ");
         divisionRepository.save(divisionMapper.mapToDivision(createDivisionDto));
     }
 

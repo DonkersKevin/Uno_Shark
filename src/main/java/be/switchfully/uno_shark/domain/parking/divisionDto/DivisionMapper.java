@@ -4,7 +4,7 @@ import be.switchfully.uno_shark.domain.parking.Division;
 import be.switchfully.uno_shark.domain.parking.divisionDto.CreateDivisionDto;
 import be.switchfully.uno_shark.domain.parking.divisionDto.ShowDivisionDto;
 import be.switchfully.uno_shark.repositories.DivisionRepository;
-import be.switchfully.uno_shark.services.DivisionValidationService;
+import be.switchfully.uno_shark.services.GeneralValidationService;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -12,11 +12,11 @@ import java.util.List;
 @Component
 public class DivisionMapper {
     private DivisionRepository divisionRepository;
-    private DivisionValidationService divisionValidationService;
+    private GeneralValidationService generalValidationService;
 
-    public DivisionMapper(DivisionRepository divisionRepository, DivisionValidationService divisionValidationService) {
+    public DivisionMapper(DivisionRepository divisionRepository, GeneralValidationService generalValidationService) {
         this.divisionRepository = divisionRepository;
-        this.divisionValidationService = divisionValidationService;
+        this.generalValidationService = generalValidationService;
     }
 
     public Division mapToDivision(CreateDivisionDto createDivisionDto) {

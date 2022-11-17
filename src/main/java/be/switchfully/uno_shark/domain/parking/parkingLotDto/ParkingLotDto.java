@@ -6,6 +6,8 @@ import be.switchfully.uno_shark.domain.parking.divisionDto.ShowDivisionDto;
 import be.switchfully.uno_shark.domain.person.Person;
 import be.switchfully.uno_shark.domain.person.address.Address;
 
+import java.util.Objects;
+
 public class ParkingLotDto {
 
     private Long id;
@@ -62,5 +64,30 @@ public class ParkingLotDto {
         return pricePerHour;
     }
 
+    @Override
+    public String toString() {
+        return "ParkingLotDto{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", parkingCategory=" + parkingCategory +
+                ", division=" + division +
+                ", capacity=" + capacity +
+                ", Person=" + Person +
+                ", address=" + address +
+                ", pricePerHour=" + pricePerHour +
+                '}';
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ParkingLotDto that = (ParkingLotDto) o;
+        return capacity == that.capacity && Objects.equals(id, that.id) && Objects.equals(name, that.name) && parkingCategory == that.parkingCategory && Objects.equals(division, that.division) && Objects.equals(Person, that.Person) && Objects.equals(address, that.address) && Objects.equals(pricePerHour, that.pricePerHour);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, parkingCategory, division, capacity, Person, address, pricePerHour);
+    }
 }

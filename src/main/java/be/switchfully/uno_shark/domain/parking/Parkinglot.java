@@ -19,16 +19,16 @@ public class Parkinglot {
     private ParkingCategory parkingCategory;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "division_id")
+    @JoinColumn(name = "fk_division_id")
     private Division division;
     private int capacity;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "person_id")
+    @JoinColumn(name = "fk_person_id")
     private Person person;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "address_id")
+    @JoinColumn(name = "fk_address_id")
     private Address address;
 
     @Embedded
