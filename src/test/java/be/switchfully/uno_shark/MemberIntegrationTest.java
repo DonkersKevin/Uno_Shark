@@ -6,6 +6,7 @@ import be.switchfully.uno_shark.domain.person.User;
 import be.switchfully.uno_shark.domain.person.address.Address;
 import be.switchfully.uno_shark.domain.person.address.PostalCode;
 import be.switchfully.uno_shark.domain.person.dto.CreateUserDto;
+import be.switchfully.uno_shark.domain.person.dto.UserDto;
 import be.switchfully.uno_shark.domain.person.dto.UserDtoLimitedInfo;
 import be.switchfully.uno_shark.repositories.UserRepository;
 import be.switchfully.uno_shark.services.MemberService;
@@ -205,7 +206,6 @@ public class MemberIntegrationTest {
                 .response();
 
         assertEquals("This license plate is already registered!", response.jsonPath().getString("message"));
-
     }
 
 
@@ -225,5 +225,36 @@ public class MemberIntegrationTest {
 
     }
 
+    @Test
+    void getAMemberHappyPath(){
+        UserDto response = given()
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .get("/members/1")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(UserDto.class);
+
+        Assertions.assertThat(response.getMemberLevel()).isEqualByComparingTo(GOLD);
+    }
+
+    @Test
+    void whenMemberDoesNotExist_IllegalArgumentExceptionIsThrown(){
+        Response response = given()
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .get("/members/10000000000")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .extract()
+                .response();
+
+        assertEquals("No such user exists!", response.jsonPath().getString("message"));
+    }
 }
 
