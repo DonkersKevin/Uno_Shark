@@ -1,4 +1,4 @@
-package be.switchfully.uno_shark.domain.person;
+package be.switchfully.uno_shark.domain.person.licenseplate;
 
 public enum IssuingCountry {
     BE,

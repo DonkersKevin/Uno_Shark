@@ -2,7 +2,6 @@ package be.switchfully.uno_shark.domain.parking.parkingLotDto;
 
 import be.switchfully.uno_shark.domain.parking.ParkingCategory;
 import be.switchfully.uno_shark.domain.parking.Price;
-import be.switchfully.uno_shark.domain.parking.divisionDto.ShowDivisionDto;
 import be.switchfully.uno_shark.domain.parking.divisionDto.SingleDivisionDto;
 import be.switchfully.uno_shark.domain.person.Person;
 import be.switchfully.uno_shark.domain.person.address.Address;

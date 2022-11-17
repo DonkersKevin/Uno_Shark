@@ -1,6 +1,5 @@
 package be.switchfully.uno_shark.repositories;
 
-import be.switchfully.uno_shark.domain.person.LicensePlate;
 import be.switchfully.uno_shark.domain.person.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

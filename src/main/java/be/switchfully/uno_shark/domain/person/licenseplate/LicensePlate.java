@@ -1,4 +1,4 @@
-package be.switchfully.uno_shark.domain.person;
+package be.switchfully.uno_shark.domain.person.licenseplate;
 
 import javax.persistence.*;
 import java.util.Objects;
