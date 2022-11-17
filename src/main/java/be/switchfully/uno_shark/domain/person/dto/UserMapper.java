@@ -1,9 +1,12 @@
 package be.switchfully.uno_shark.domain.person.dto;
 
 import be.switchfully.uno_shark.domain.person.Person;
+import be.switchfully.uno_shark.domain.parking.Division;
 import be.switchfully.uno_shark.domain.person.User;
 import be.switchfully.uno_shark.services.CreatePersonDto;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class UserMapper {
@@ -50,5 +53,14 @@ public class UserMapper {
                 .setPhoneNumber(createUserDto.getPhoneNumber())
                 .setMobileNumber(createUserDto.getMobileNumber())
                 .setEmailAddress(createUserDto.getEmailAddress());
+    }
+
+
+    public List<UserDtoLimitedInfo> mapListUserToUserDtoLimitedInfo(List<User> users) {
+        return users.stream().map(this::mapUserToUserDtoLimitedInfo).toList();
+    }
+
+    private UserDtoLimitedInfo mapUserToUserDtoLimitedInfo(User user) {
+        return new UserDtoLimitedInfo(user.getPerson().getId(),user.getPerson().getFirstName(), user.getPerson().getLastName(), user.getPerson().getPhoneNumber(), user.getPerson().getEmailAddress(), user.getLicensePlate().getLicensePlateNumber(), user.getRegistrationDate());
     }
 }

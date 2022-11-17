@@ -76,7 +76,7 @@ public class Person {
         return this;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
