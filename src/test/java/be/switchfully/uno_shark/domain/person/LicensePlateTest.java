@@ -1,5 +1,7 @@
 package be.switchfully.uno_shark.domain.person;
 
+import be.switchfully.uno_shark.domain.person.licenseplate.IssuingCountry;
+import be.switchfully.uno_shark.domain.person.licenseplate.LicensePlate;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
