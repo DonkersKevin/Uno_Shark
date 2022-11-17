@@ -1,11 +1,9 @@
-package be.switchfully.uno_shark.domain.person.dto;
+package be.switchfully.uno_shark.services;
 
 import be.switchfully.uno_shark.domain.person.address.Address;
 
+public class CreatePersonDto {
 
-public class PersonDto {
-
-    private Long id;
     private String firstName;
     private String lastName;
     private Address address;
@@ -13,20 +11,7 @@ public class PersonDto {
     private String mobileNumber;
     private String emailAddress;
 
-    public PersonDto() {
-    }
-
-    public PersonDto(String firstName, String lastName, Address address, String phoneNumber, String mobileNumber, String emailAddress) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.address = address;
-        this.phoneNumber = phoneNumber;
-        this.mobileNumber = mobileNumber;
-        this.emailAddress = emailAddress;
-    }
-
-    public Long getId() {
-        return id;
+    public CreatePersonDto() {
     }
 
     public String getFirstName() {
@@ -53,37 +38,32 @@ public class PersonDto {
         return emailAddress;
     }
 
-    public PersonDto setId(Long id) {
-        this.id = id;
-        return this;
-    }
-
-    public PersonDto setFirstName(String firstName) {
+    public CreatePersonDto setFirstName(String firstName) {
         this.firstName = firstName;
         return this;
     }
 
-    public PersonDto setLastName(String lastName) {
+    public CreatePersonDto setLastName(String lastName) {
         this.lastName = lastName;
         return this;
     }
 
-    public PersonDto setAddress(Address address) {
+    public CreatePersonDto setAddress(Address address) {
         this.address = address;
         return this;
     }
 
-    public PersonDto setPhoneNumber(String phoneNumber) {
+    public CreatePersonDto setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
         return this;
     }
 
-    public PersonDto setMobileNumber(String mobileNumber) {
+    public CreatePersonDto setMobileNumber(String mobileNumber) {
         this.mobileNumber = mobileNumber;
         return this;
     }
 
-    public PersonDto setEmailAddress(String emailAddress) {
+    public CreatePersonDto setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
         return this;
     }

@@ -29,7 +29,7 @@ public class UserValidator {
 
     private void isUniqueLicensePlate(LicensePlate licensePlate) {
         if(repoKun.findUserByLicensePlate_LicensePlateNumber(licensePlate.getLicensePlateNumber()) != null) {
-            throw new IllegalArgumentException("This license plate is already registered.");
+            throw new IllegalArgumentException("This license plate is already registered!");
         }
     }
 }

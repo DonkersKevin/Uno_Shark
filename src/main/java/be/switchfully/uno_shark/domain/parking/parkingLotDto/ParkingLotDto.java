@@ -3,6 +3,7 @@ package be.switchfully.uno_shark.domain.parking.parkingLotDto;
 import be.switchfully.uno_shark.domain.parking.ParkingCategory;
 import be.switchfully.uno_shark.domain.parking.Price;
 import be.switchfully.uno_shark.domain.parking.divisionDto.ShowDivisionDto;
+import be.switchfully.uno_shark.domain.parking.divisionDto.SingleDivisionDto;
 import be.switchfully.uno_shark.domain.person.Person;
 import be.switchfully.uno_shark.domain.person.address.Address;
 
@@ -13,7 +14,7 @@ public class ParkingLotDto {
     private Long id;
     private String name;
     private ParkingCategory parkingCategory;
-    private ShowDivisionDto division;
+    private SingleDivisionDto division;
     private int capacity;
     private Person Person;
     private Address address;
@@ -21,7 +22,7 @@ public class ParkingLotDto {
 
 
 
-    public ParkingLotDto(Long id, String name, ParkingCategory parkingCategory, ShowDivisionDto division, int capacity, Person person, Address address, Price pricePerHour) {
+    public ParkingLotDto(Long id, String name, ParkingCategory parkingCategory, SingleDivisionDto division, int capacity, Person person, Address address, Price pricePerHour) {
         this.id = id;
         this.name = name;
         this.parkingCategory = parkingCategory;
@@ -44,7 +45,7 @@ public class ParkingLotDto {
         return parkingCategory;
     }
 
-    public ShowDivisionDto getDivision() {
+    public SingleDivisionDto getDivision() {
         return division;
     }
 

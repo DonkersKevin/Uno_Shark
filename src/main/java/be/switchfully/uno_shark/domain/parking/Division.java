@@ -63,7 +63,8 @@ public class Division {
         return director;
     }
 
-    @Override
+
+     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -73,7 +74,7 @@ public class Division {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, parent, subdivisions, name, originalName, director);
+        return Objects.hash(id, name, originalName, director);
     }
 
     @Override

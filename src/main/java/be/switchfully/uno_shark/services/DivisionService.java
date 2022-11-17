@@ -3,6 +3,7 @@ package be.switchfully.uno_shark.services;
 import be.switchfully.uno_shark.domain.parking.divisionDto.CreateDivisionDto;
 import be.switchfully.uno_shark.domain.parking.divisionDto.ShowDivisionDto;
 import be.switchfully.uno_shark.domain.parking.divisionDto.DivisionMapper;
+import be.switchfully.uno_shark.domain.parking.divisionDto.SingleDivisionDto;
 import be.switchfully.uno_shark.repositories.DivisionRepository;
 import org.springframework.stereotype.Service;
 
@@ -32,5 +33,9 @@ public class DivisionService {
 
     public List<ShowDivisionDto> getAllDivisions(){
          return divisionMapper.mapToDto(divisionRepository.findAll());
+    }
+
+    public SingleDivisionDto getSingleDivision(long id){
+        return  divisionMapper.mapSingleDivisionDto(divisionRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No such division exists!")));
     }
 }
