@@ -7,7 +7,6 @@ public class PostalCode {
     private String postalCode;
     private String city;
 
-
     public PostalCode() {
     }
 
