@@ -1,6 +1,5 @@
 package be.switchfully.uno_shark.services;
 
-import be.switchfully.uno_shark.domain.person.LicensePlate;
 import be.switchfully.uno_shark.domain.person.Role;
 import be.switchfully.uno_shark.domain.person.User;
 import be.switchfully.uno_shark.domain.person.dto.*;

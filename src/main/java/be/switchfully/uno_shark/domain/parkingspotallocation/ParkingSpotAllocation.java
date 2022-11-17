@@ -1,7 +1,7 @@
 package be.switchfully.uno_shark.domain.parkingspotallocation;
 
 import be.switchfully.uno_shark.domain.parking.Parkinglot;
-import be.switchfully.uno_shark.domain.person.LicensePlate;
+import be.switchfully.uno_shark.domain.person.licenseplate.LicensePlate;
 import be.switchfully.uno_shark.domain.person.User;
 
 import javax.persistence.*;

@@ -1,6 +1,6 @@
 package be.switchfully.uno_shark.domain.person.dto;
 
-import be.switchfully.uno_shark.domain.person.LicensePlate;
+import be.switchfully.uno_shark.domain.person.licenseplate.LicensePlate;
 import be.switchfully.uno_shark.domain.person.MembershipLevel;
 import be.switchfully.uno_shark.domain.person.address.Address;
 

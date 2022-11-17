@@ -1,8 +1,7 @@
 package be.switchfully.uno_shark;
 
-import be.switchfully.uno_shark.domain.person.IssuingCountry;
-import be.switchfully.uno_shark.domain.person.LicensePlate;
-import be.switchfully.uno_shark.domain.person.User;
+import be.switchfully.uno_shark.domain.person.licenseplate.IssuingCountry;
+import be.switchfully.uno_shark.domain.person.licenseplate.LicensePlate;
 import be.switchfully.uno_shark.domain.person.address.Address;
 import be.switchfully.uno_shark.domain.person.address.PostalCode;
 import be.switchfully.uno_shark.domain.person.dto.CreateUserDto;
@@ -21,7 +20,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-import static be.switchfully.uno_shark.domain.person.MembershipLevel.BRONZE;
 import static be.switchfully.uno_shark.domain.person.MembershipLevel.GOLD;
 
 import java.util.List;
