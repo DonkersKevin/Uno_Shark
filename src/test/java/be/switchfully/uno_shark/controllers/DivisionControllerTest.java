@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.annotation.DirtiesContext;
 
 
 import java.util.Arrays;
@@ -23,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class DivisionControllerTest {
 
     @Autowired
@@ -88,4 +90,40 @@ class DivisionControllerTest {
 
         System.out.println(Arrays.stream(response).map(ShowDivisionDto::toString).collect(Collectors.toList()));
     }
+
+    @Test
+    void getASingleDivisionHappyPath(){
+       divisionService.createDivision(new CreateDivisionDto(0, "Parent Division", "Old Division", "Gigachad"));
+        divisionService.createDivision(new CreateDivisionDto(1, "Subdivision", "Old Division", "Ligma Johnson"));
+
+
+       Response response = given().baseUri("http://localhost")
+                .port(port)
+                .when()
+                .get("/divisions/1")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .extract().response();
+
+        response.body().prettyPrint();
+    }
+
+    @Test
+    void whenGetSingleDivision_andNoSuchDivisionExists_IllegalArgumentExceptionIsThrown(){
+        Response response = given()
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .contentType(JSON)
+                .get("/divisions/3")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .extract()
+                .response();
+
+        assertEquals("No such division exists!", response.jsonPath().getString("message"));
+    }
+
 }
