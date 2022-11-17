@@ -2,6 +2,7 @@ package be.switchfully.uno_shark.controllers;
 
 import be.switchfully.uno_shark.domain.parking.divisionDto.CreateDivisionDto;
 import be.switchfully.uno_shark.domain.parking.divisionDto.ShowDivisionDto;
+import be.switchfully.uno_shark.domain.parking.divisionDto.SingleDivisionDto;
 import be.switchfully.uno_shark.repositories.DivisionRepository;
 import be.switchfully.uno_shark.services.DivisionService;
 import io.restassured.response.Response;
@@ -12,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.annotation.DirtiesContext;
 
 
 import java.util.Arrays;
@@ -23,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class DivisionControllerTest {
 
     @Autowired
@@ -47,8 +50,7 @@ class DivisionControllerTest {
                 .assertThat()
                 .statusCode(HttpStatus.CREATED.value());
 
-        Assertions.assertThat(divisionRepository.findById(1L)).isPresent();
-        Assertions.assertThat(divisionRepository.findById(1L).orElseThrow().getParent()).isNull();
+        Assertions.assertThat(divisionRepository.findById(4L).orElseThrow().getDirector()).isEqualTo("Gigachad");
     }
 
     @Test
@@ -72,8 +74,6 @@ class DivisionControllerTest {
 
     @Test
     void getAllDivisionsHappyPath() {
-        divisionService.createDivision(new CreateDivisionDto(0, "Parent Division", "Old Division", "Gigachad"));
-        divisionService.createDivision(new CreateDivisionDto(1, "Subdivision", "Old Division", "Ligma Johnson"));
 
         ShowDivisionDto[] response = given().baseUri("http://localhost")
                 .port(port)
@@ -82,10 +82,45 @@ class DivisionControllerTest {
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())
-                .extract().as(ShowDivisionDto[].class);
+                .extract()
+                .as(ShowDivisionDto[].class);
 
         assertEquals(response.length, divisionRepository.findAll().size());
 
         System.out.println(Arrays.stream(response).map(ShowDivisionDto::toString).collect(Collectors.toList()));
     }
+
+    @Test
+    void getASingleDivisionHappyPath(){
+
+       SingleDivisionDto response = given().baseUri("http://localhost")
+                .port(port)
+                .when()
+                .get("/divisions/1")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(SingleDivisionDto.class);
+
+        assertEquals(response.getName(), "UGC");
+    }
+
+    @Test
+    void whenGetSingleDivision_andNoSuchDivisionExists_IllegalArgumentExceptionIsThrown(){
+        Response response = given()
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .contentType(JSON)
+                .get("/divisions/1000000000")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .extract()
+                .response();
+
+        assertEquals("No such division exists!", response.jsonPath().getString("message"));
+    }
+
 }

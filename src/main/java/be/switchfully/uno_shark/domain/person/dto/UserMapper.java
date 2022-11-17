@@ -6,10 +6,13 @@ import be.switchfully.uno_shark.security.Role;
 import be.switchfully.uno_shark.services.CreatePersonDto;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class UserMapper {
 
-    public User mapUserDtoToUser(CreateUserDto createUserDto) {
+
+    public User mapCreateUserDtoToUser(CreateUserDto createUserDto) {
         User user = new User(
                 createUserDto.getFirstName(),
                 createUserDto.getLastName(),
@@ -19,15 +22,14 @@ public class UserMapper {
                 createUserDto.getEmailAddress(),
                 createUserDto.getLicensePlate(),
                 Role.valueOf(createUserDto.getRole().toUpperCase()),
-                createUserDto.getUserName())
-        ;
-        changeLevelMaybe(user,createUserDto);
+                createUserDto.getUserName());
+        changeLevelMaybe(user, createUserDto);
         return user;
     }
 
-    private void changeLevelMaybe(User user,CreateUserDto dto){
-        if(dto.getMemberLevel() == null) return;
 
+    private void changeLevelMaybe(User user, CreateUserDto dto) {
+        if (dto.getMemberLevel() == null) return;
         user.setMemberLevel(dto.getMemberLevel());
     }
 
@@ -55,5 +57,14 @@ public class UserMapper {
                 .setPhoneNumber(createUserDto.getPhoneNumber())
                 .setMobileNumber(createUserDto.getMobileNumber())
                 .setEmailAddress(createUserDto.getEmailAddress());
+    }
+
+
+    public List<UserDtoLimitedInfo> mapListUserToUserDtoLimitedInfo(List<User> users) {
+        return users.stream().map(this::mapUserToUserDtoLimitedInfo).toList();
+    }
+
+    private UserDtoLimitedInfo mapUserToUserDtoLimitedInfo(User user) {
+        return new UserDtoLimitedInfo(user.getPerson().getId(), user.getPerson().getFirstName(), user.getPerson().getLastName(), user.getPerson().getPhoneNumber(), user.getPerson().getEmailAddress(), user.getLicensePlate().getLicensePlateNumber(), user.getRegistrationDate());
     }
 }

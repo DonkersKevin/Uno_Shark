@@ -5,7 +5,6 @@ public class CreateDivisionDto {
     private long parentId;
     private String name;
     private String originalName;
-    //todo
     private String director;
 
     public CreateDivisionDto(long parentId, String name, String originalName, String director) {

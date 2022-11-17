@@ -1,19 +1,22 @@
 package be.switchfully.uno_shark.domain.parking.divisionDto;
 
-public class ShowDivisionDto
-{
+import java.util.List;
+
+public class SingleDivisionDto {
     private long id;
     private String parentName;
     private String name;
     private String originalName;
     private String director;
+    private List<String> subdivisions;
 
-    public ShowDivisionDto(long id, String parentName, String name, String originalName, String director) {
+    public SingleDivisionDto(long id, String parentName, String name, String originalName, String director, List<String> subdivisions) {
         this.id = id;
         this.parentName = parentName;
         this.name = name;
         this.originalName = originalName;
         this.director = director;
+        this.subdivisions = subdivisions;
     }
 
     public long getId() {
@@ -34,5 +37,9 @@ public class ShowDivisionDto
 
     public String getDirector() {
         return director;
+    }
+
+    public List<String> getSubdivisions() {
+        return subdivisions;
     }
 }

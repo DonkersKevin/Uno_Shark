@@ -1,11 +1,8 @@
 package be.switchfully.uno_shark.services;
 
-import be.switchfully.uno_shark.domain.person.LicensePlate;
+import be.switchfully.uno_shark.security.Role;
 import be.switchfully.uno_shark.domain.person.User;
-import be.switchfully.uno_shark.domain.person.dto.CreateUserDto;
-import be.switchfully.uno_shark.domain.person.dto.PersonDto;
-import be.switchfully.uno_shark.domain.person.dto.UserDto;
-import be.switchfully.uno_shark.domain.person.dto.UserMapper;
+import be.switchfully.uno_shark.domain.person.dto.*;
 import be.switchfully.uno_shark.repositories.UserRepository;
 import be.switchfully.uno_shark.security.KeycloakService;
 import be.switchfully.uno_shark.security.KeycloakUserDTO;
@@ -13,6 +10,9 @@ import be.switchfully.uno_shark.services.util.PersonValidator;
 import be.switchfully.uno_shark.services.util.UserValidator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -38,8 +38,20 @@ public class MemberService {
         personValidator.checkRequiredFields(createPersonDto);
         userValidator.checkRequiredFields(createUserDto);
         personValidator.isValidEmail(createUserDto.getEmailAddress());
-        User user = userRepository.save(userMapper.mapUserDtoToUser(createUserDto));
+        User user = userRepository.save(userMapper.mapCreateUserDtoToUser(createUserDto));
         keycloakService.addUser(new KeycloakUserDTO(user.getUsername(), createUserDto.getPassword(), user.getRole()));
         return userMapper.mapUserToUserDto(user);
     }
+
+    public UserDto findAMember(long id) {
+        return userMapper.mapUserToUserDto(userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No such user exists!")));
+    }
+
+
+    public List<UserDtoLimitedInfo> getAllMembers() {
+        List<User> userList = userRepository.findAll();
+        List<User> memberList = userList.stream().filter(user -> user.getRole() == Role.MEMBER).collect(Collectors.toList());
+        return userMapper.mapListUserToUserDtoLimitedInfo(memberList);
+    }
+
 }

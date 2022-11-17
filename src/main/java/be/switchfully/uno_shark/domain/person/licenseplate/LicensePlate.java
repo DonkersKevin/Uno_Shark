@@ -1,4 +1,4 @@
-package be.switchfully.uno_shark.domain.person;
+package be.switchfully.uno_shark.domain.person.licenseplate;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -22,8 +22,22 @@ public class LicensePlate {
     }
 
     public LicensePlate(IssuingCountry issuingCountry, String licensePlateNumber) {
-        this.issuingCountry = issuingCountry;
-        this.licensePlateNumber = licensePlateNumber;
+        this.issuingCountry = issuingCountryVerification(issuingCountry);
+        this.licensePlateNumber = licenseplateNumberVerification(licensePlateNumber);
+    }
+
+    private IssuingCountry issuingCountryVerification(IssuingCountry issuingCountry) {
+        if (issuingCountry == null) {
+            throw new IllegalArgumentException("Issuing country has to be provided.");
+        }
+        return issuingCountry;
+    }
+
+    private String licenseplateNumberVerification(String licensePlateNumber) {
+        if (licensePlateNumber == null) {
+            throw new IllegalArgumentException("License plate number has to be provided.");
+        }
+        return licensePlateNumber;
     }
 
     public IssuingCountry getIssuingCountry() {
@@ -38,11 +52,12 @@ public class LicensePlate {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof LicensePlate that)) return false;
-        return id == that.id;
+
+        return getLicensePlateNumber() != null ? getLicensePlateNumber().equals(that.getLicensePlateNumber()) : that.getLicensePlateNumber() == null;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return getLicensePlateNumber() != null ? getLicensePlateNumber().hashCode() : 0;
     }
 }

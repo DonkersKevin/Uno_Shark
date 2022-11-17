@@ -1,22 +1,19 @@
 package be.switchfully.uno_shark.domain.parking.divisionDto;
 
 import be.switchfully.uno_shark.domain.parking.Division;
-import be.switchfully.uno_shark.domain.parking.divisionDto.CreateDivisionDto;
-import be.switchfully.uno_shark.domain.parking.divisionDto.ShowDivisionDto;
 import be.switchfully.uno_shark.repositories.DivisionRepository;
 import be.switchfully.uno_shark.services.GeneralValidationService;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class DivisionMapper {
     private DivisionRepository divisionRepository;
-    private GeneralValidationService generalValidationService;
 
-    public DivisionMapper(DivisionRepository divisionRepository, GeneralValidationService generalValidationService) {
+    public DivisionMapper(DivisionRepository divisionRepository) {
         this.divisionRepository = divisionRepository;
-        this.generalValidationService = generalValidationService;
     }
 
     public Division mapToDivision(CreateDivisionDto createDivisionDto) {
@@ -32,15 +29,27 @@ public class DivisionMapper {
     }
 
     public List<ShowDivisionDto> mapToDto(List<Division> divisions) {
-        return divisions.stream().map(this::mapToSingleDto).toList();
+        return divisions.stream().map(this::mapEachDivisionDto).toList();
     }
 
-    public ShowDivisionDto mapToSingleDto(Division division){
+    public ShowDivisionDto mapEachDivisionDto(Division division) {
         return new ShowDivisionDto(division.getId(), extractParentName(division), division.getName(), division.getOriginalName(), division.getDirector());
     }
 
-    public String extractParentName(Division division){
-        if(division.getParent() == null){
+    public SingleDivisionDto mapSingleDivisionDto(Division division) {
+        return new SingleDivisionDto(division.getId(), extractParentName(division), division.getName(), division.getOriginalName(), division.getDirector(), extractSubdivisions(division));
+    }
+
+    public List<String> extractSubdivisions(Division division) {
+        //Todo, fix and make pretty
+        if (division.getSubdivisions() == null){
+            return new ArrayList<>();
+        }
+        return division.getSubdivisions().stream().map(Division::getName).toList();
+    }
+
+    public String extractParentName(Division division) {
+        if (division.getParent() == null) {
             return "No Parent Division";
         }
         return division.getParent().getName();

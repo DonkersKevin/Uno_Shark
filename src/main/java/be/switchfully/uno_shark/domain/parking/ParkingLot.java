@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "parkinglot")
-public class Parkinglot {
+public class ParkingLot {
 
     //Todo verify identity annotation
     @Id
@@ -34,10 +34,10 @@ public class Parkinglot {
     @Embedded
     private Price pricePerHour;
 
-    public Parkinglot() {
+    public ParkingLot() {
     }
 
-    public Parkinglot(Long id, String name, ParkingCategory parkingCategory, Division division, int capacity, Person person, Address address, Price pricePerHour) {
+    public ParkingLot(java.lang.Long id, String name, ParkingCategory parkingCategory, Division division, int capacity, Person person, Address address, Price pricePerHour) {
         this.id = id;
         this.name = name;
         this.parkingCategory = parkingCategory;
@@ -48,7 +48,7 @@ public class Parkinglot {
         this.pricePerHour = pricePerHour;
     }
 
-    public Parkinglot(String name, ParkingCategory parkingCategory, Division division, int capacity, Person person, Address address, Price pricePerHour) {
+    public ParkingLot(String name, ParkingCategory parkingCategory, Division division, int capacity, Person person, Address address, Price pricePerHour) {
         this.name = name;
         this.parkingCategory = parkingCategory;
         this.division = division;
@@ -59,7 +59,7 @@ public class Parkinglot {
         verifyParkinglot(this);
     }
 
-    private void verifyParkinglot(Parkinglot parkinglot) {
+    private void verifyParkinglot(ParkingLot parkinglot) {
         if (verifyIfNull(parkinglot.getName())) {
             throw new IllegalArgumentException("Provide a valid name.");
         }
@@ -88,7 +88,7 @@ public class Parkinglot {
     }
 
 
-    public Long getId() {
+    public java.lang.Long getId() {
         return id;
     }
 

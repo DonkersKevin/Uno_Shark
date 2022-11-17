@@ -2,6 +2,8 @@ package be.switchfully.uno_shark.domain.person;
 
 import be.switchfully.uno_shark.domain.person.address.Address;
 import be.switchfully.uno_shark.security.Role;
+import be.switchfully.uno_shark.domain.person.licenseplate.LicensePlate;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -11,6 +13,7 @@ import static javax.persistence.EnumType.*;
 
 @Entity
 @Table(name = "USERS")
+@JsonIgnoreProperties(ignoreUnknown = true)
 //todo can be used with inheritance bit we have to figure that one out
 public class User {
 
@@ -34,12 +37,34 @@ public class User {
     @Column(name = "member_level")
     private MembershipLevel memberLevel;
 
+    @Enumerated(STRING)
     private Role role;
 
     @Column(name = "username")
     private String userName;
 
     public User() {
+    }
+
+    public User(String firstName, String lastName, Address address, String phoneNumber, String mobileNumber, String emailAddress) {
+        this.person = new Person(firstName, lastName, address, phoneNumber, mobileNumber, emailAddress);
+        this.registrationDate = LocalDate.now();
+        this.role = Role.MEMBER;
+    }
+
+    public User(String firstName, String lastName, Address address, String phoneNumber, String mobileNumber, String emailAddress, LicensePlate licensePlate) {
+        this.person = new Person(firstName, lastName, address, phoneNumber, mobileNumber, emailAddress);
+        this.registrationDate = LocalDate.now();
+        this.licensePlate = licensePlate;
+        this.memberLevel = BRONZE;
+        this.role = Role.MEMBER;
+    }
+
+    public User(String firstName, String lastName, Address address, String phoneNumber, String mobileNumber, String emailAddress, LicensePlate licensePlate, Role role) {
+        this.person = new Person(firstName, lastName, address, phoneNumber, mobileNumber, emailAddress);
+        this.registrationDate = LocalDate.now();
+        this.licensePlate = licensePlate;
+        this.role = role;
     }
 
     public User(String firstName, String lastName, Address address, String phoneNumber, String mobileNumber, String emailAddress, LicensePlate licensePlate, Role role, String userName) {
@@ -91,5 +116,18 @@ public class User {
 
     public String getUsername() {
         return userName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User user)) return false;
+
+        return id == user.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (id ^ (id >>> 32));
     }
 }
