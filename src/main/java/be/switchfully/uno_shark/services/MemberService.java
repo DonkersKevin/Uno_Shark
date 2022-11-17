@@ -1,6 +1,7 @@
 package be.switchfully.uno_shark.services;
 
 import be.switchfully.uno_shark.domain.person.LicensePlate;
+import be.switchfully.uno_shark.domain.person.Role;
 import be.switchfully.uno_shark.domain.person.User;
 import be.switchfully.uno_shark.domain.person.dto.*;
 import be.switchfully.uno_shark.repositories.UserRepository;
@@ -54,7 +55,7 @@ public class MemberService {
     
     public List<UserDtoLimitedInfo> getAllMembers() {
         List<User> userList = userRepository.findAll();
-        List<User> memberList = userList.stream().filter(user -> user.getRole.equals("manager")).collect(Collectors.toList());
+        List<User> memberList = userList.stream().filter(user -> user.getRole().equals(Role.MEMBER)).collect(Collectors.toList());
         return userMapper.mapListUserToUserDtoLimitedInfo(memberList);
     }
 }

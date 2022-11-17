@@ -5,7 +5,9 @@ import be.switchfully.uno_shark.domain.person.LicensePlate;
 import be.switchfully.uno_shark.domain.person.address.Address;
 import be.switchfully.uno_shark.domain.person.address.PostalCode;
 import be.switchfully.uno_shark.domain.person.dto.CreateUserDto;
+import be.switchfully.uno_shark.domain.person.dto.UserDtoLimitedInfo;
 import be.switchfully.uno_shark.repositories.UserRepository;
+import be.switchfully.uno_shark.services.MemberService;
 import io.restassured.response.Response;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -14,6 +16,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
+
+import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
@@ -28,6 +32,8 @@ public class MemberIntegrationTest {
 
     @Autowired
     UserRepository userRepository;
+
+    MemberService memberService;
 
     @Test
     void createNewMemberHappyPath() {
@@ -116,6 +122,24 @@ public class MemberIntegrationTest {
                 .response();
 
         assertEquals("Provide an license plate please!", response.jsonPath().getString("message"));
+    }
 
+
+    @Test
+    void getAllUsersHappyPath(){
+        List<UserDtoLimitedInfo> userList = memberService.getAllMembers();
+
+        Response response = given()
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .get("/members")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .response();
+
+        assertEquals(response, userList);
     }
 }

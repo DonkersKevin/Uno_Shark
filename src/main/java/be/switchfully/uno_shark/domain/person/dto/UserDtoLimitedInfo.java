@@ -51,4 +51,17 @@ public class UserDtoLimitedInfo {
     public LocalDate getRegistrationDate() {
         return registrationDate;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserDtoLimitedInfo that)) return false;
+
+        return getId() != null ? getId().equals(that.getId()) : that.getId() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return getId() != null ? getId().hashCode() : 0;
+    }
 }

@@ -1,7 +1,6 @@
 package be.switchfully.uno_shark.domain.person.dto;
 
 import be.switchfully.uno_shark.domain.parking.Division;
-import be.switchfully.uno_shark.domain.parking.dto.ShowDivisionDto;
 import be.switchfully.uno_shark.domain.person.User;
 import org.springframework.stereotype.Component;
 
