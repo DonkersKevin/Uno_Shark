@@ -33,7 +33,7 @@ public class SpotAllocationService {
         this.spotAllocationRepository = spotAllocationRepository;
     }
 
-    public java.lang.Long allocateParkingSpot(CreateParkingSpotAllocationDto createParkingSpotAllocationDto) {
+    public Long allocateParkingSpot(CreateParkingSpotAllocationDto createParkingSpotAllocationDto) {
         verifyUser(createParkingSpotAllocationDto);
         verifyLicensePlate(createParkingSpotAllocationDto);
         verifyParkingLot(createParkingSpotAllocationDto);
@@ -42,7 +42,7 @@ public class SpotAllocationService {
 
         ParkingSpotAllocation parkingSpotAllocation = spotAllocationRepository.save(parkingSpotAllocationToSave);
 
-        return parkingSpotAllocation.getAllocationId();
+        return parkingSpotAllocation.getId();
     }
 
 

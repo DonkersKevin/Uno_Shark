@@ -12,8 +12,10 @@ public class CreateParkingSpotAllocationDto {
     private Long parkingLotId;
     private LocalTime startTime;
 
+    public CreateParkingSpotAllocationDto() {
+    }
 
-    public CreateParkingSpotAllocationDto(java.lang.Long userId, LicensePlate licensePlate, Long parkingLotId) {
+    public CreateParkingSpotAllocationDto(Long userId, LicensePlate licensePlate, Long parkingLotId) {
         this.userId = userId;
         this.licensePlate = licensePlate;
         this.parkingLotId = parkingLotId;
