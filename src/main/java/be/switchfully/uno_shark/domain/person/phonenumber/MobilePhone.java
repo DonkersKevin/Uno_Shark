@@ -5,6 +5,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
 @Embeddable
+
 public class MobilePhone {
     private String mobilePhoneBody;
     @Enumerated(EnumType.STRING)

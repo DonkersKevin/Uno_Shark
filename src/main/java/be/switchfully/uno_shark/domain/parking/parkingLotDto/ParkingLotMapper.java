@@ -4,6 +4,8 @@ import be.switchfully.uno_shark.domain.parking.ParkingCategory;
 import be.switchfully.uno_shark.domain.parking.ParkingLot;
 import be.switchfully.uno_shark.domain.parking.divisionDto.DivisionMapper;
 import be.switchfully.uno_shark.domain.person.dto.PersonMapper;
+import be.switchfully.uno_shark.domain.person.phonenumber.CountryCode;
+import be.switchfully.uno_shark.domain.person.phonenumber.MobilePhone;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -18,11 +20,6 @@ public class ParkingLotMapper {
     private ParkingLotMapper(DivisionMapper divisionMapper, PersonMapper personMapper) {
         this.divisionMapper = divisionMapper;
         this.personMapper = personMapper;
-    }
-
-    public ParkingLot dtoToParkingLot(CreateParkingLotDto createParkingLotDto) {
-        //todo fix
-        return null;
     }
 
     public ParkingLot CreateDtoToParkingLot(CreateParkingLotDto createParkingLotDto) {
@@ -53,7 +50,19 @@ public class ParkingLotMapper {
         );
     }
 
-    public List<ParkingLotDto> parkingLotListToDto(List<ParkingLot> parkingLots) {
-        return parkingLots.stream().map(this::parkingLotToDto).toList();
+    public ParkingLotSimpleDto parkingLotToSimpleDto(ParkingLot parkingLot){
+        return new ParkingLotSimpleDto(
+                parkingLot.getId(),
+                parkingLot.getName(),
+                parkingLot.getCapacity(),
+                //Todo remove hard coded phone number
+                new MobilePhone("499 76 98 09", CountryCode.BELGIUM)
+        );
     }
+
+    public List<ParkingLotSimpleDto> parkingLotListToDto(List<ParkingLot> parkingLots) {
+        return parkingLots.stream().map(this::parkingLotToSimpleDto).toList();
+    }
+
+
 }
