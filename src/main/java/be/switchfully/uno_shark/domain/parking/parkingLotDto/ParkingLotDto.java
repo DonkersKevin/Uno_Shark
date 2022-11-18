@@ -32,6 +32,7 @@ public class ParkingLotDto {
         this.pricePerHour = pricePerHour;
     }
 
+
     public Long getId() {
         return id;
     }

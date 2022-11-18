@@ -1,6 +1,5 @@
 package be.switchfully.uno_shark.domain.person.dto;
 
-import be.switchfully.uno_shark.domain.person.Person;
 import be.switchfully.uno_shark.domain.person.User;
 import be.switchfully.uno_shark.services.CreatePersonDto;
 import org.springframework.stereotype.Component;
@@ -16,8 +15,8 @@ public class UserMapper {
                 createUserDto.getFirstName(),
                 createUserDto.getLastName(),
                 createUserDto.getAddress(),
-                createUserDto.getMobileNumber(),
                 createUserDto.getPhoneNumber(),
+                createUserDto.getMobileNumber(),
                 createUserDto.getEmailAddress(),
                 createUserDto.getLicensePlate());
         changeLevelMaybe(user, createUserDto);
@@ -36,8 +35,8 @@ public class UserMapper {
                 .setFirstName(user.getPerson().getFirstName())
                 .setLastName(user.getPerson().getLastName())
                 .setAddress(user.getPerson().getAddress())
-                .setMobileNumber(user.getPerson().getMobileNumber())
-                .setPhoneNumber(user.getPerson().getPhoneNumber())
+                .setMobileNumber(user.getPerson().getMobilePhone().toString())
+                .setPhoneNumber(user.getPerson().getLandLinePhone().toString())
                 .setEmailAddress(user.getPerson().getEmailAddress())
                 .setLicensePlate(user.getLicensePlate())
                 .setRegistrationDate(user.getRegistrationDate())
@@ -49,8 +48,8 @@ public class UserMapper {
                 .setFirstName(createUserDto.getFirstName())
                 .setLastName(createUserDto.getLastName())
                 .setAddress(createUserDto.getAddress())
-                .setPhoneNumber(createUserDto.getPhoneNumber())
-                .setMobileNumber(createUserDto.getMobileNumber())
+                .setLandLinePhone(createUserDto.getPhoneNumber())
+                .setMobilePhone(createUserDto.getMobileNumber())
                 .setEmailAddress(createUserDto.getEmailAddress());
     }
 
@@ -60,6 +59,6 @@ public class UserMapper {
     }
 
     private UserDtoLimitedInfo mapUserToUserDtoLimitedInfo(User user) {
-        return new UserDtoLimitedInfo(user.getPerson().getId(), user.getPerson().getFirstName(), user.getPerson().getLastName(), user.getPerson().getPhoneNumber(), user.getPerson().getEmailAddress(), user.getLicensePlate().getLicensePlateNumber(), user.getRegistrationDate());
+        return new UserDtoLimitedInfo(user.getPerson().getId(),user.getPerson().getFirstName(), user.getPerson().getLastName(), user.getPerson().getLandLinePhone().toString(), user.getPerson().getEmailAddress(), user.getLicensePlate().getLicensePlateNumber(), user.getRegistrationDate());
     }
 }
