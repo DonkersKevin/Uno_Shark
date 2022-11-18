@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,6 +26,7 @@ public class ParkingSpotAllocationController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('CREATE_PARKINGLOT')")
     public Long createParkingSpotAllocation(@RequestBody CreateParkingSpotAllocationDto createParkingSpotAllocationDto) {
         log.info("adding the following ParkingSpotAllocation: "+ createParkingSpotAllocationDto);
         return spotAllocationService.allocateParkingSpot(createParkingSpotAllocationDto);

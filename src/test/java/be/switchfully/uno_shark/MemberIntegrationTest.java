@@ -20,7 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-import static be.switchfully.uno_shark.domain.person.MembershipLevel.GOLD;
+import static be.switchfully.uno_shark.domain.person.MembershipLevel.*;
 
 import java.util.List;
 
@@ -55,7 +55,11 @@ public class MemberIntegrationTest {
                 .setPhoneNumber("003487442233")
                 .setMobileNumber("+32487442233")
                 .setEmailAddress("Freddi@Fish.be")
-                .setLicensePlate(newLicensePlate);
+                .setLicensePlate(newLicensePlate)
+                .setMemberLevel(BRONZE)
+                .setUserName("testUser")
+                .setPassword("pwd")
+                .setRole("member");
 
         given()
                 .baseUri("http://localhost")
@@ -147,7 +151,10 @@ public class MemberIntegrationTest {
                 .setMobileNumber("+32487442233")
                 .setEmailAddress("Freddi@Fish.be")
                 .setLicensePlate(newLicensePlate)
-                .setMemberLevel(GOLD);
+                .setMemberLevel(GOLD)
+                .setUserName("testUser")
+                .setPassword("pwd")
+                .setRole("member");
 
         given()
                 .baseUri("http://localhost")
@@ -166,9 +173,9 @@ public class MemberIntegrationTest {
 
     @Test
     void whenSameLicensePlate_illegalArgumentExceptionIsThrown() {
-        PostalCode newPostalCode = new PostalCode("2000","Antwerp");
+        PostalCode newPostalCode = new PostalCode("2000", "Antwerp");
         Address newAddress = new Address("fishlane", "23", newPostalCode, "belgium");
-        LicensePlate newLicensePlate = new LicensePlate(IssuingCountry.BE, "1ABC123" );
+        LicensePlate newLicensePlate = new LicensePlate(IssuingCountry.BE, "1ABC123");
 
         CreateUserDto newUser = new CreateUserDto()
                 .setFirstName("Freddi")
@@ -177,7 +184,11 @@ public class MemberIntegrationTest {
                 .setPhoneNumber("003487442233")
                 .setMobileNumber("+32487442233")
                 .setEmailAddress("Freddi@Fish.be")
-                .setLicensePlate(newLicensePlate);
+                .setLicensePlate(newLicensePlate)
+                .setMemberLevel(BRONZE)
+                .setUserName("testFreddi")
+                .setPassword("pwd")
+                .setRole("member");
 
         given()
                 .baseUri("http://localhost")
@@ -217,14 +228,14 @@ public class MemberIntegrationTest {
                 .port(port)
                 .when()
                 .get("/members")
-                .as(UserDtoLimitedInfo[].class));
+                .as(UserDtoLimitedInfo.class));
 
         assertEquals(response, userList);
 
     }
 
     @Test
-    void getAMemberHappyPath(){
+    void getAMemberHappyPath() {
         UserDto response = given()
                 .baseUri("http://localhost")
                 .port(port)
@@ -240,7 +251,7 @@ public class MemberIntegrationTest {
     }
 
     @Test
-    void whenMemberDoesNotExist_IllegalArgumentExceptionIsThrown(){
+    void whenMemberDoesNotExist_IllegalArgumentExceptionIsThrown() {
         Response response = given()
                 .baseUri("http://localhost")
                 .port(port)

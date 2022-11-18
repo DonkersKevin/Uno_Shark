@@ -19,6 +19,7 @@ import javax.ws.rs.core.Response;
 public class KeycloakService {
 
     private final RealmResource realmResource;
+
     private final String clientID;
 
     public KeycloakService(Keycloak keycloak, @Value("${keycloak.realm}") String realmName, @Value("${keycloak.resource}") String clientId) {
@@ -54,6 +55,12 @@ public class KeycloakService {
 
     private String getClientUUID() {
         return realmResource.clients().findByClientId(clientID).get(0).getId();
+    }
+
+    public void deleteUserByUserName(String username) {
+        String userUUID = realmResource.users().search(username).get(1).getId();
+        System.out.println("DELETE RESPONSE");
+        System.out.println(realmResource.users().delete(userUUID));
     }
 
     private Response createUser(String username) {

@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,7 +34,7 @@ public class MemberController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    //Todo add security levels for member
+    @PreAuthorize("hasAuthority('GET_ALL_MEMBERS')")
     public List<UserDtoLimitedInfo> getAllMembers() {
         log.info("Retrieving the list of all registered users");
         return memberService.getAllMembers();
@@ -41,6 +42,7 @@ public class MemberController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('GET_MEMBER')")
     public UserDto findSingleUser(@PathVariable long id){
         return memberService.findAMember(id);
     }

@@ -39,7 +39,11 @@ public class MemberService {
         userValidator.checkRequiredFields(createUserDto);
         personValidator.isValidEmail(createUserDto.getEmailAddress());
         User user = userRepository.save(userMapper.mapCreateUserDtoToUser(createUserDto));
-        keycloakService.addUser(new KeycloakUserDTO(user.getUsername(), createUserDto.getPassword(), user.getRole()));
+        //to prevent writing testusers to keycloak
+        if(!user.getUsername().contains("test")) {
+            System.out.println("No test user -> writing to keycloak");
+            keycloakService.addUser(new KeycloakUserDTO(user.getUsername(), createUserDto.getPassword(), user.getRole()));
+        }
         return userMapper.mapUserToUserDto(user);
     }
 
