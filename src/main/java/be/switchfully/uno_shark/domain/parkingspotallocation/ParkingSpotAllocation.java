@@ -80,4 +80,5 @@ public class ParkingSpotAllocation {
     public void setLicensePlate(LicensePlate licensePlate) {
         this.licensePlate = licensePlate;
     }
+
 }
