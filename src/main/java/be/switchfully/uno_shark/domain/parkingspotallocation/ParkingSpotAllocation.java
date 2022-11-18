@@ -14,7 +14,7 @@ public class ParkingSpotAllocation {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "spotallocation_seq")
     @SequenceGenerator(name = "spotallocation_seq", sequenceName = "spotallocation_seq", allocationSize = 1)
-    private java.lang.Long allocationId;
+    private Long id;
 
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -22,15 +22,18 @@ public class ParkingSpotAllocation {
     private User user;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "fk_licensePlate_id")
+    @JoinColumn(name = "fk_licenseplate_id")
     private LicensePlate licensePlate;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_parkinglot_id")
     private ParkingLot parkinglot;
 
+    @Column(name = "starttime")
     private LocalTime startTime;
+    @Column(name = "endtime")
     private LocalTime endTime;
+    @Column(name = "isactive")
     private boolean isActive;
 
     public ParkingSpotAllocation() {
@@ -42,8 +45,8 @@ public class ParkingSpotAllocation {
         this.parkinglot = parkinglot;
     }
 
-    public java.lang.Long getAllocationId() {
-        return allocationId;
+    public Long getId() {
+        return id;
     }
 
     public User getUser() {
