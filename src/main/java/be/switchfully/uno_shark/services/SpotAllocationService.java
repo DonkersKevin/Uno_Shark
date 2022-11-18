@@ -1,11 +1,11 @@
 package be.switchfully.uno_shark.services;
 
+import be.switchfully.uno_shark.controllers.exceptions.NoSpotsLeftException;
 import be.switchfully.uno_shark.domain.parking.ParkingLot;
 import be.switchfully.uno_shark.domain.parkingspotallocation.ParkingSpotAllocation;
 import be.switchfully.uno_shark.domain.parkingspotallocation.dto.CreateParkingSpotAllocationDto;
 import be.switchfully.uno_shark.domain.parkingspotallocation.dto.SpotAllocationMapper;
 import be.switchfully.uno_shark.domain.person.MembershipLevel;
-import be.switchfully.uno_shark.domain.person.licenseplate.IssuingCountry;
 import be.switchfully.uno_shark.domain.person.licenseplate.LicensePlate;
 import be.switchfully.uno_shark.repositories.LicensePlateRepository;
 import be.switchfully.uno_shark.repositories.ParkingLotRepository;
@@ -55,14 +55,13 @@ public class SpotAllocationService {
 
     private void verifyLicensePlate(CreateParkingSpotAllocationDto createParkingSpotAllocationDto) {
         LicensePlate givenLicensePlate = createParkingSpotAllocationDto.getLicensePlate();
-
         Long userId = createParkingSpotAllocationDto.getUserId();
 
         LicensePlate extractedLicensePlate = userRepository.findById(userId).orElseThrow().getLicensePlate();
 
         MembershipLevel membershipLevel = userRepository.findById(userId).orElseThrow().getMemberLevel();
 
-        if (givenLicensePlate != extractedLicensePlate && membershipLevel != MembershipLevel.GOLD) {
+        if (!givenLicensePlate.equals(extractedLicensePlate) && membershipLevel != MembershipLevel.GOLD) {
             throw new IllegalArgumentException("provided license plate is not the same as member's license plate.");
         }
     }
@@ -83,7 +82,7 @@ public class SpotAllocationService {
         int usage = (int) spotAllocationRepository.findAll().stream().filter(parkingSpotAllocation -> parkingSpotAllocation.getParkinglot().getId() == parkingLotId).count();
 
         if (usage == capacity) {
-            throw new RuntimeException("parking is full!");
+            throw new NoSpotsLeftException("parking is full!");
         }
     }
 

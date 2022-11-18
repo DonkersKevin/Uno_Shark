@@ -55,11 +55,8 @@ public class LicensePlate {
         if (this == o) return true;
         if (!(o instanceof LicensePlate that)) return false;
 
+        if (getIssuingCountry() != that.getIssuingCountry()) return false;
         return getLicensePlateNumber() != null ? getLicensePlateNumber().equals(that.getLicensePlateNumber()) : that.getLicensePlateNumber() == null;
     }
 
-    @Override
-    public int hashCode() {
-        return getLicensePlateNumber() != null ? getLicensePlateNumber().hashCode() : 0;
-    }
 }

@@ -2,6 +2,7 @@ package be.switchfully.uno_shark.controllers;
 
 
 import be.switchfully.uno_shark.controllers.exceptions.NoParkingLotByThatIdException;
+import be.switchfully.uno_shark.controllers.exceptions.NoSpotsLeftException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -29,4 +30,11 @@ public class UnoSharkExceptionHandler {
         logger.error(ex.getMessage());
         response.sendError(NOT_FOUND.value(), ex.getMessage());
     }
+
+    @ExceptionHandler(NoSpotsLeftException.class)
+    protected void notFound(NoSpotsLeftException ex, HttpServletResponse response) throws IOException {
+        logger.error(ex.getMessage());
+        response.sendError(BAD_REQUEST.value(), ex.getMessage());
+    }
+
 }
