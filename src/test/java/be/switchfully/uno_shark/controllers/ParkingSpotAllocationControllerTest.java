@@ -28,9 +28,6 @@ class ParkingSpotAllocationControllerTest {
     @Autowired
     private SpotAllocationRepository spotRepo;
 
-    @Autowired
-    private SpotAllocationService spotService;
-
     @LocalServerPort
     private int port;
 
@@ -55,7 +52,7 @@ class ParkingSpotAllocationControllerTest {
         ShowAllocationDto[] response = given().baseUri("http://localhost")
                 .port(port)
                 .when()
-                .get("/spotallocation?limit=2")
+                .get("/spotallocations?limit=2")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())
@@ -71,7 +68,7 @@ class ParkingSpotAllocationControllerTest {
         ShowAllocationDto[] response = given().baseUri("http://localhost")
                 .port(port)
                 .when()
-                .get("/spotallocation?sort=descending")
+                .get("/spotallocations?sort=descending")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())
@@ -87,7 +84,7 @@ class ParkingSpotAllocationControllerTest {
         ShowAllocationDto[] response = given().baseUri("http://localhost")
                 .port(port)
                 .when()
-                .get("/spotallocation?status=active")
+                .get("/spotallocations?status=active")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())
@@ -104,7 +101,7 @@ class ParkingSpotAllocationControllerTest {
         ShowAllocationDto[] response = given().baseUri("http://localhost")
                 .port(port)
                 .when()
-                .get("/spotallocation?status=stopped")
+                .get("/spotallocations?status=stopped")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())
@@ -121,7 +118,7 @@ class ParkingSpotAllocationControllerTest {
         given().baseUri("http://localhost")
                 .port(port)
                 .when()
-                .put("/spotallocation/3")
+                .put("/spotallocations/3")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.OK.value());
@@ -135,7 +132,7 @@ class ParkingSpotAllocationControllerTest {
         Response response = given().baseUri("http://localhost")
                 .port(port)
                 .when()
-                .put("/spotallocation/1")
+                .put("/spotallocations/1")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
@@ -150,7 +147,7 @@ class ParkingSpotAllocationControllerTest {
         Response response = given().baseUri("http://localhost")
                 .port(port)
                 .when()
-                .put("/spotallocation/1000000")
+                .put("/spotallocations/1000000")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
