@@ -21,7 +21,7 @@ public class PersonValidator {
 
     public void checkRequiredFields(CreatePersonDto createPersonDto) {
         validationService.assertNotNullOrBlank(createPersonDto.getEmailAddress(), "Email address");
-        validationService.assertNotNullOrBlank(createPersonDto.getPhoneNumber().toString(), "Phone number");
+        validationService.assertNotNullOrBlank(createPersonDto.getLandLinePhone().toString(), "Phone number");
         if (createPersonDto.getAddress() == null || createPersonDto.getAddress().toString().equals("")) {
             throw new IllegalArgumentException("Provide an address please!");
         }

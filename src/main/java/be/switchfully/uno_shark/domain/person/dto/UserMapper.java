@@ -1,6 +1,5 @@
 package be.switchfully.uno_shark.domain.person.dto;
 
-import be.switchfully.uno_shark.domain.person.Person;
 import be.switchfully.uno_shark.domain.person.User;
 import be.switchfully.uno_shark.services.CreatePersonDto;
 import org.springframework.stereotype.Component;
@@ -49,8 +48,8 @@ public class UserMapper {
                 .setFirstName(createUserDto.getFirstName())
                 .setLastName(createUserDto.getLastName())
                 .setAddress(createUserDto.getAddress())
-                .setPhoneNumber(createUserDto.getPhoneNumber())
-                .setMobileNumber(createUserDto.getMobileNumber())
+                .setLandLinePhone(createUserDto.getPhoneNumber())
+                .setMobilePhone(createUserDto.getMobileNumber())
                 .setEmailAddress(createUserDto.getEmailAddress());
     }
 

@@ -1,7 +1,6 @@
 package be.switchfully.uno_shark.domain.parking.parkingLotDto;
 
 import be.switchfully.uno_shark.domain.parking.ParkingCategory;
-import be.switchfully.uno_shark.domain.parking.Parkinglot;
 import be.switchfully.uno_shark.domain.parking.ParkingLot;
 import be.switchfully.uno_shark.domain.parking.divisionDto.DivisionMapper;
 import be.switchfully.uno_shark.domain.person.dto.PersonMapper;
@@ -30,9 +29,7 @@ public class ParkingLotMapper {
         log.info("Converting Dto -> Parkinglot");
         return new ParkingLot(
                 createParkingLotDto.getName(),
-                createParkingLotDto.getParkingCategory(),
-                createParkingLotDto.getDivision(),
-                createParkingLotDto.getParkingCategory(),
+                ParkingCategory.valueOf(createParkingLotDto.getParkingCategory().toUpperCase()),
                 divisionMapper.mapToDivision(createParkingLotDto.getDivision()),
                 createParkingLotDto.getCapacity(),
                 personMapper.dtoToPerson(createParkingLotDto.getPerson()),

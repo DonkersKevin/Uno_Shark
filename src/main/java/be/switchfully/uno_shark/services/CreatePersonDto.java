@@ -9,8 +9,8 @@ public class CreatePersonDto {
     private String firstName;
     private String lastName;
     private Address address;
-    private LandLinePhone phoneNumber;
-    private MobilePhone mobileNumber;
+    private LandLinePhone landLinePhone;
+    private MobilePhone mobilePhone;
     private String emailAddress;
 
     public CreatePersonDto() {
@@ -28,12 +28,12 @@ public class CreatePersonDto {
         return address;
     }
 
-    public LandLinePhone getPhoneNumber() {
-        return phoneNumber;
+    public LandLinePhone getLandLinePhone() {
+        return landLinePhone;
     }
 
-    public MobilePhone getMobileNumber() {
-        return mobileNumber;
+    public MobilePhone getMobilePhone() {
+        return mobilePhone;
     }
 
     public String getEmailAddress() {
@@ -55,13 +55,13 @@ public class CreatePersonDto {
         return this;
     }
 
-    public CreatePersonDto setPhoneNumber(LandLinePhone phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public CreatePersonDto setLandLinePhone(LandLinePhone landLinePhone) {
+        this.landLinePhone = landLinePhone;
         return this;
     }
 
-    public CreatePersonDto setMobileNumber(MobilePhone mobileNumber) {
-        this.mobileNumber = mobileNumber;
+    public CreatePersonDto setMobilePhone(MobilePhone mobilePhone) {
+        this.mobilePhone = mobilePhone;
         return this;
     }
 
