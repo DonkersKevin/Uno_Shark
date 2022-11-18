@@ -69,7 +69,7 @@ public class User {
         this.role = role;
     }
 
-    public User(String firstName, String lastName, Address address, String phoneNumber, String mobileNumber, String emailAddress, LicensePlate licensePlate, Role role, String userName) {
+    public User(String firstName, String lastName, Address address, LandLinePhone phoneNumber, MobilePhone mobileNumber, String emailAddress, LicensePlate licensePlate, Role role, String userName) {
         this.person = new Person(firstName, lastName, address, phoneNumber, mobileNumber, emailAddress);
         this.registrationDate = LocalDate.now();
         this.licensePlate = licensePlate;
@@ -78,7 +78,7 @@ public class User {
         this.userName = userName;
     }
 
-    public User(String firstName, String lastName, Address address, String phoneNumber, String mobileNumber, String emailAddress, LicensePlate licensePlate, String userName) {
+    public User(String firstName, String lastName, Address address, LandLinePhone phoneNumber, MobilePhone mobileNumber, String emailAddress, LicensePlate licensePlate, String userName) {
         this.person = new Person(firstName, lastName, address, phoneNumber, mobileNumber, emailAddress);
         this.registrationDate = LocalDate.now();
         this.licensePlate = licensePlate;
