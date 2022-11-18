@@ -23,7 +23,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
 import static be.switchfully.uno_shark.domain.person.MembershipLevel.*;
 
@@ -32,10 +31,10 @@ import java.util.List;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.annotation.DirtiesContext.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
-@DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 public class MemberIntegrationTest {
 
     @LocalServerPort
@@ -87,6 +86,7 @@ public class MemberIntegrationTest {
     }
 
     @Test
+    @DirtiesContext(methodMode = MethodMode.BEFORE_METHOD)
     void createNewMemberHappyPath() {
         PostalCode newPostalCode = new PostalCode("2000", "Antwerp");
         Address newAddress = new Address("fishlane", "23", newPostalCode, "belgium");
