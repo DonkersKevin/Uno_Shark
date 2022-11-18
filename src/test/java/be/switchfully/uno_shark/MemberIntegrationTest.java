@@ -281,7 +281,21 @@ public class MemberIntegrationTest {
                         .as(UserDtoLimitedInfo[].class));
 
         assertEquals(response, userList);
+    }
 
+    @Test
+    void getAllUsers_asMember_Forbidden() {
+
+                given()
+                        .header("Authorization", "Bearer " + memberToken)
+                        .baseUri("http://localhost")
+                        .port(port)
+                        .when()
+                        .get("/members")
+                        .then()
+                        .assertThat()
+                        .statusCode(HttpStatus.FORBIDDEN.value())
+                        .extract();
     }
 
     @Test
@@ -299,6 +313,21 @@ public class MemberIntegrationTest {
                 .as(UserDto.class);
 
         Assertions.assertThat(response.getMemberLevel()).isEqualByComparingTo(GOLD);
+    }
+
+    @Test
+    void getAMember_asMember_Forbidden() {
+
+        given()
+                .header("Authorization", "Bearer " + memberToken)
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .get("/members/1")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.FORBIDDEN.value())
+                .extract();
     }
 
     @Test
