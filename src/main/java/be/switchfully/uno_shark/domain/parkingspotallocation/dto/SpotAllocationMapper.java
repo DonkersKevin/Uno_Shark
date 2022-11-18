@@ -27,7 +27,7 @@ public class SpotAllocationMapper {
     }
 
     public ShowAllocationDto mapAllocationToShowDto(ParkingSpotAllocation allocation){
-        ShowAllocationDto dto = new ShowAllocationDto(allocation.getAllocationId(),
+        ShowAllocationDto dto = new ShowAllocationDto(allocation.getId(),
                 allocation.getUser().getId(),
                 allocation.getLicensePlate(),
                 allocation.getParkinglot().getId(),

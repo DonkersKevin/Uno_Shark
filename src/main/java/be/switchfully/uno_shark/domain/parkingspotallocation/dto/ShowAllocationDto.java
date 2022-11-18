@@ -2,6 +2,7 @@ package be.switchfully.uno_shark.domain.parkingspotallocation.dto;
 
 import be.switchfully.uno_shark.domain.person.licenseplate.LicensePlate;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class ShowAllocationDto implements Comparable<ShowAllocationDto>{
@@ -10,10 +11,10 @@ public class ShowAllocationDto implements Comparable<ShowAllocationDto>{
     private Long userId;
     private LicensePlate licensePlate;
     private Long parkingLotId;
-    private LocalTime startTime;
-    private LocalTime stopTime;
+    private LocalDateTime startTime;
+    private LocalDateTime stopTime;
 
-    public ShowAllocationDto(Long id, Long userId, LicensePlate licensePlate, Long parkingLotId, LocalTime startTime) {
+    public ShowAllocationDto(Long id, Long userId, LicensePlate licensePlate, Long parkingLotId, LocalDateTime startTime) {
         this.id = id;
         this.userId = userId;
         this.licensePlate = licensePlate;
@@ -21,7 +22,7 @@ public class ShowAllocationDto implements Comparable<ShowAllocationDto>{
         this.startTime = startTime;
     }
 
-    public void setStopTime(LocalTime stopTime) {
+    public void setStopTime(LocalDateTime stopTime) {
         this.stopTime = stopTime;
     }
 
@@ -41,11 +42,11 @@ public class ShowAllocationDto implements Comparable<ShowAllocationDto>{
         return parkingLotId;
     }
 
-    public LocalTime getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    public LocalTime getStopTime() {
+    public LocalDateTime getStopTime() {
         return stopTime;
     }
 

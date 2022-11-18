@@ -5,6 +5,7 @@ import be.switchfully.uno_shark.domain.person.licenseplate.LicensePlate;
 import be.switchfully.uno_shark.domain.person.User;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
@@ -30,9 +31,9 @@ public class ParkingSpotAllocation {
     private ParkingLot parkinglot;
 
     @Column(name = "starttime")
-    private LocalTime startTime;
+    private LocalDateTime startTime;
     @Column(name = "endtime")
-    private LocalTime endTime;
+    private LocalDateTime endTime;
     @Column(name = "isactive")
     private boolean isActive;
 
@@ -61,15 +62,16 @@ public class ParkingSpotAllocation {
         return parkinglot;
     }
 
-    public LocalTime getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    public LocalTime getEndTime() {
+    public LocalDateTime getEndTime() {
         return endTime;
     }
 
     public boolean isActive() {
         return isActive;
     }
+
 }

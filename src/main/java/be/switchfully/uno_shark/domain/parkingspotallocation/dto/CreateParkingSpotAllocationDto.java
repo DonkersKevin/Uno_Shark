@@ -2,6 +2,7 @@ package be.switchfully.uno_shark.domain.parkingspotallocation.dto;
 
 import be.switchfully.uno_shark.domain.person.licenseplate.LicensePlate;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class CreateParkingSpotAllocationDto {
@@ -10,7 +11,7 @@ public class CreateParkingSpotAllocationDto {
     private Long userId;
     private LicensePlate licensePlate;
     private Long parkingLotId;
-    private LocalTime startTime;
+    private LocalDateTime startTime;
 
     public CreateParkingSpotAllocationDto() {
     }
@@ -19,10 +20,10 @@ public class CreateParkingSpotAllocationDto {
         this.userId = userId;
         this.licensePlate = licensePlate;
         this.parkingLotId = parkingLotId;
-        this.startTime = LocalTime.now();
+        this.startTime = LocalDateTime.now();
     }
 
-    public CreateParkingSpotAllocationDto(java.lang.Long userId, LicensePlate licensePlate, Long parkingLotId, LocalTime startTime) {
+    public CreateParkingSpotAllocationDto(java.lang.Long userId, LicensePlate licensePlate, Long parkingLotId, LocalDateTime startTime) {
         this.userId = userId;
         this.licensePlate = licensePlate;
         this.parkingLotId = parkingLotId;
@@ -42,7 +43,7 @@ public class CreateParkingSpotAllocationDto {
         return parkingLotId;
     }
 
-    public LocalTime getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
