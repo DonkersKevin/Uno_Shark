@@ -17,6 +17,12 @@ public class CreateUserDto {
 
     private MembershipLevel memberLevel;
 
+    private String role;
+
+    private String userName;
+
+    private String password;
+
 
     public String getFirstName() {
         return firstName;
@@ -48,6 +54,18 @@ public class CreateUserDto {
 
     public MembershipLevel getMemberLevel() {
         return memberLevel;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public String getRole() {
+        return role;
     }
 
     public CreateUserDto setFirstName(String firstName) {
@@ -90,5 +108,19 @@ public class CreateUserDto {
         return this;
     }
 
+    public CreateUserDto setRole(String role) {
+        this.role = role;
+        return this;
+    }
+
+    public CreateUserDto setUserName(String userName) {
+        this.userName = userName;
+        return this;
+    }
+
+    public CreateUserDto setPassword(String password) {
+        this.password = password;
+        return this;
+    }
 
 }
