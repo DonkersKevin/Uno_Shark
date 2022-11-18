@@ -41,6 +41,9 @@ class DivisionControllerTest {
 
     private static String managerToken;
 
+    private static String memberToken;
+
+
     @BeforeAll
     static void generateManagerToken() {
         managerToken = RestAssured
@@ -58,6 +61,25 @@ class DivisionControllerTest {
                 .path("access_token")
                 .toString();
     }
+
+    @BeforeAll
+    static void generateMemberToken() {
+        memberToken = RestAssured
+                .given()
+                .contentType("application/x-www-form-urlencoded; charset=utf-8")
+                .formParam("username", "member")
+                .formParam("password", "member")
+                .formParam("grant_type", "password")
+                .formParam("client_id", "parkSharkoUno")
+                .formParam("client_secret", "a50b122c-462f-4f5f-996c-2af33b6506be")
+                .when()
+                .post("https://keycloak.switchfully.com/auth/realms/sharkoUno/protocol/openid-connect/token")
+                .then()
+                .extract()
+                .path("access_token")
+                .toString();
+    }
+
     @Test
     void createDivisionHappyPath() {
         given()
@@ -73,6 +95,21 @@ class DivisionControllerTest {
                 .statusCode(HttpStatus.CREATED.value());
 
         Assertions.assertThat(divisionRepository.findById(4L).orElseThrow().getDirector()).isEqualTo("Gigachad");
+    }
+
+    @Test
+    void createDivision_asMember_Forbidden() {
+        given()
+                .header("Authorization", "Bearer " + memberToken)
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .body(new CreateDivisionDto(1, "New Division", "Old Division Name", "Gigachad"))
+                .contentType(JSON)
+                .post("/divisions")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.FORBIDDEN.value());
     }
 
     @Test
@@ -116,11 +153,26 @@ class DivisionControllerTest {
     }
 
     @Test
-    void getASingleDivisionHappyPath(){
+    void getAllDivisions_asMember_Forbidden() {
 
-       SingleDivisionDto response = given()
-               .header("Authorization", "Bearer " + managerToken)
-               .baseUri("http://localhost")
+        given()
+                .header("Authorization", "Bearer " + memberToken)
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .get("/divisions")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.FORBIDDEN.value())
+                .extract();
+    }
+
+    @Test
+    void getASingleDivisionHappyPath() {
+
+        SingleDivisionDto response = given()
+                .header("Authorization", "Bearer " + managerToken)
+                .baseUri("http://localhost")
                 .port(port)
                 .when()
                 .get("/divisions/1")
@@ -134,7 +186,23 @@ class DivisionControllerTest {
     }
 
     @Test
-    void whenGetSingleDivision_andNoSuchDivisionExists_IllegalArgumentExceptionIsThrown(){
+    void getASingleDivision_asMember_Forbidden() {
+
+        given()
+                .header("Authorization", "Bearer " + memberToken)
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .get("/divisions/1")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.FORBIDDEN.value())
+                .extract();
+
+    }
+
+    @Test
+    void whenGetSingleDivision_andNoSuchDivisionExists_IllegalArgumentExceptionIsThrown() {
         Response response = given()
                 .header("Authorization", "Bearer " + managerToken)
                 .baseUri("http://localhost")

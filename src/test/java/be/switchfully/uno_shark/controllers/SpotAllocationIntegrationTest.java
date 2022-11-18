@@ -7,7 +7,6 @@ import be.switchfully.uno_shark.domain.person.licenseplate.LicensePlate;
 import be.switchfully.uno_shark.repositories.SpotAllocationRepository;
 import be.switchfully.uno_shark.services.SpotAllocationService;
 import io.restassured.response.Response;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -16,7 +15,6 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 
-import static io.restassured.RestAssured.expect;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -46,7 +44,7 @@ public class SpotAllocationIntegrationTest {
                 .when()
                 .body(createParkingSpotAllocationDto)
                 .contentType(JSON)
-                .post("/spotallocation")
+                .post("/spotallocations")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.CREATED.value());
@@ -64,7 +62,7 @@ public class SpotAllocationIntegrationTest {
                 .when()
                 .body(createParkingSpotAllocationDto)
                 .contentType(JSON)
-                .post("/spotallocation")
+                .post("/spotallocations")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
@@ -85,7 +83,7 @@ public class SpotAllocationIntegrationTest {
                 .when()
                 .body(createParkingSpotAllocationDto)
                 .contentType(JSON)
-                .post("/spotallocation")
+                .post("/spotallocations")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
@@ -106,7 +104,7 @@ public class SpotAllocationIntegrationTest {
                 .when()
                 .body(createParkingSpotAllocationDto)
                 .contentType(JSON)
-                .post("/spotallocation")
+                .post("/spotallocations")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.CREATED.value());
@@ -123,7 +121,7 @@ public class SpotAllocationIntegrationTest {
                 .when()
                 .body(createParkingSpotAllocationDto)
                 .contentType(JSON)
-                .post("/spotallocation")
+                .post("/spotallocations")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
@@ -144,7 +142,7 @@ public class SpotAllocationIntegrationTest {
                 .when()
                 .body(createParkingSpotAllocationDto)
                 .contentType(JSON)
-                .post("/spotallocation")
+                .post("/spotallocations")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.CREATED.value());
@@ -166,7 +164,7 @@ public class SpotAllocationIntegrationTest {
                 .when()
                 .body(createParkingSpotAllocationDto)
                 .contentType(JSON)
-                .post("/spotallocation")
+                .post("/spotallocations")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
