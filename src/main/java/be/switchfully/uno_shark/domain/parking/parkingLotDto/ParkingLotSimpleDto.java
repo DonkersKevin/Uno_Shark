@@ -1,6 +1,6 @@
 package be.switchfully.uno_shark.domain.parking.parkingLotDto;
 
-import be.switchfully.uno_shark.domain.person.address.Address;
+import be.switchfully.uno_shark.domain.person.phonenumber.LandLinePhone;
 import be.switchfully.uno_shark.domain.person.phonenumber.MobilePhone;
 
 public class ParkingLotSimpleDto {
@@ -9,14 +9,16 @@ public class ParkingLotSimpleDto {
     private Long id;
     private String name;
     private int capacity;
-    //todo fix phone
     private MobilePhone mobilePhone;
 
-    public ParkingLotSimpleDto(Long id, String name, int capacity, MobilePhone mobilePhone) {
+    private LandLinePhone landLinePhone;
+
+    public ParkingLotSimpleDto(Long id, String name, int capacity, MobilePhone mobilePhone, LandLinePhone landLinePhone) {
         this.id = id;
         this.name = name;
         this.capacity = capacity;
         this.mobilePhone = mobilePhone;
+        this.landLinePhone = landLinePhone;
     }
 
     public Long getId() {
@@ -33,5 +35,9 @@ public class ParkingLotSimpleDto {
 
     public MobilePhone getMobilePhone() {
         return mobilePhone;
+    }
+
+    public LandLinePhone getLandLinePhone() {
+        return landLinePhone;
     }
 }

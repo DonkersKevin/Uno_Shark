@@ -55,12 +55,13 @@ public class ParkingLotMapper {
                 parkingLot.getId(),
                 parkingLot.getName(),
                 parkingLot.getCapacity(),
-                //Todo remove hard coded phone number
-                new MobilePhone("499 76 98 09", CountryCode.BELGIUM)
+                parkingLot.getPerson().getMobilePhone(),
+                parkingLot.getPerson().getLandLinePhone()
         );
     }
 
     public List<ParkingLotSimpleDto> parkingLotListToDto(List<ParkingLot> parkingLots) {
+        log.info("Converting List of ParkingLotSimpleDto <- Parkinglot");
         return parkingLots.stream().map(this::parkingLotToSimpleDto).toList();
     }
 
