@@ -13,6 +13,7 @@ import be.switchfully.uno_shark.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -31,6 +32,10 @@ public class SpotAllocationService {
         this.userRepository = userRepository;
         this.parkingLotRepository = parkingLotRepository;
         this.spotAllocationRepository = spotAllocationRepository;
+    }
+
+    private static boolean notActive(ParkingSpotAllocation allocation) {
+        return !allocation.isActive();
     }
 
     public Long allocateParkingSpot(CreateParkingSpotAllocationDto createParkingSpotAllocationDto) {
@@ -86,11 +91,27 @@ public class SpotAllocationService {
         }
     }
 
-    public List<ShowAllocationDto> getAllAllocations(){
-        return spotAllocationRepository.findAll().stream()
+    public List<ShowAllocationDto> getAllAllocations(String sort, String status, Integer limit){
+        List<ShowAllocationDto> dtoList = getFromRepo(status).stream()
                 .map(spotAllocationMapper::mapAllocationToShowDto)
                 .sorted(ShowAllocationDto::compareTo)
                 .toList();
+        if(sort != null && sort.equals("descending"))
+            dtoList = dtoList.stream().sorted(Comparator.reverseOrder()).toList();
+        if(limit != null && limit > 0 && limit <= dtoList.size())
+            dtoList = dtoList.subList(0,limit);
+
+        return dtoList;
+    }
+
+    public List<ParkingSpotAllocation> getFromRepo(String status){
+        List<ParkingSpotAllocation> allocations =spotAllocationRepository.findAll();
+
+        if("active".equals(status))
+            return allocations.stream().filter(ParkingSpotAllocation::isActive).toList();
+        if("stopped".equals(status))
+            return allocations.stream().filter(SpotAllocationService::notActive).toList();
+        return allocations;
     }
 
 

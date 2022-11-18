@@ -35,8 +35,10 @@ public class ParkingSpotAllocationController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<ShowAllocationDto> getAll(){
-        return spotAllocationService.getAllAllocations();
+    public List<ShowAllocationDto> getAll(@RequestParam(required=false) String sort,
+                                          @RequestParam(required=false) String status,
+                                          @RequestParam(required=false) Integer limit){
+        return spotAllocationService.getAllAllocations(sort, status, limit);
     }
 
 }
