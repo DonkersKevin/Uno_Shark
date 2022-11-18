@@ -1,6 +1,6 @@
 package be.switchfully.uno_shark.services;
 
-import be.switchfully.uno_shark.domain.parking.Parkinglot;
+import be.switchfully.uno_shark.domain.parking.ParkingLot;
 import be.switchfully.uno_shark.domain.parking.parkingLotDto.CreateParkingLotDto;
 import be.switchfully.uno_shark.domain.parking.parkingLotDto.ParkingLotDto;
 import be.switchfully.uno_shark.domain.parking.parkingLotDto.ParkingLotMapper;
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @Transactional
@@ -25,13 +26,18 @@ public class ParkingLotService {
     }
 
     public ParkingLotDto addParkingLot(CreateParkingLotDto createParkingLotDto) {
-        Parkinglot parkingLotTosave = parkingLotMapper.CreateDtoToParkingLot(createParkingLotDto);
-        Parkinglot returnedParkinglot = parkingLotRepository.save(parkingLotTosave);
+        ParkingLot parkingLotTosave = parkingLotMapper.CreateDtoToParkingLot(createParkingLotDto);
+        ParkingLot returnedParkinglot = parkingLotRepository.save(parkingLotTosave);
         return parkingLotMapper.parkingLotToDto(returnedParkinglot);
     }
 
     public List<ParkingLotDto> getAllParkinglots() {
         log.info("Service getting all parkinglots");
         return parkingLotMapper.parkingLotListToDto(parkingLotRepository.findAll());
+    }
+
+    public ParkingLotDto getParkingLotById(String id) {
+        return parkingLotMapper.parkingLotToDto(parkingLotRepository.findById(Long.valueOf(id)).orElseThrow(()
+                -> new NoSuchElementException("No parkinglot with id: " + id + " is not found.")));
     }
 }

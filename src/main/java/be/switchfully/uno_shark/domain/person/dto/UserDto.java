@@ -1,14 +1,15 @@
 package be.switchfully.uno_shark.domain.person.dto;
 
-import be.switchfully.uno_shark.domain.person.LicensePlate;
+import be.switchfully.uno_shark.domain.person.licenseplate.LicensePlate;
 import be.switchfully.uno_shark.domain.person.MembershipLevel;
+import be.switchfully.uno_shark.domain.person.Role;
 import be.switchfully.uno_shark.domain.person.address.Address;
 
 import java.time.LocalDate;
 
 public class UserDto {
 
-    private Long id;
+    private java.lang.Long id;
     private String firstName;
     private String lastName;
     private Address address;
@@ -18,13 +19,40 @@ public class UserDto {
     private LicensePlate licensePlate;
     private LocalDate registrationDate;
 
+    private Role role;
+
     private MembershipLevel memberLevel;
+
+    public UserDto(Long id, String firstName, String lastName, Address address, String phoneNumber, String mobileNumber, String emailAddress, LicensePlate licensePlate, LocalDate registrationDate, Role role, MembershipLevel memberLevel) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.mobileNumber = mobileNumber;
+        this.emailAddress = emailAddress;
+        this.licensePlate = licensePlate;
+        this.registrationDate = registrationDate;
+        this.role = role;
+        this.memberLevel = memberLevel;
+    }
+
+    public UserDto() {
+    }
 
     public MembershipLevel getMemberLevel() {
         return memberLevel;
     }
 
-    public Long getId() {
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public java.lang.Long getId() {
         return id;
     }
 
@@ -60,7 +88,7 @@ public class UserDto {
         return registrationDate;
     }
 
-    public UserDto setId(Long id) {
+    public UserDto setId(java.lang.Long id) {
         this.id = id;
         return this;
     }

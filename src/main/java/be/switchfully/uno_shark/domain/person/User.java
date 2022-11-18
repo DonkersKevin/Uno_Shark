@@ -3,6 +3,7 @@ package be.switchfully.uno_shark.domain.person;
 import be.switchfully.uno_shark.domain.person.address.Address;
 import be.switchfully.uno_shark.domain.person.phonenumber.LandLinePhone;
 import be.switchfully.uno_shark.domain.person.phonenumber.MobilePhone;
+import be.switchfully.uno_shark.domain.person.licenseplate.LicensePlate;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
