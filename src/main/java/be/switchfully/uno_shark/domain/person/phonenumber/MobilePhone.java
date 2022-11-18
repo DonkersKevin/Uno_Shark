@@ -1,5 +1,6 @@
 package be.switchfully.uno_shark.domain.person.phonenumber;
 
+
 public class MobilePhone {
     private final String body;
     private final CountryCode countryCode;

@@ -1,5 +1,6 @@
 package be.switchfully.uno_shark.controllers;
 
+import be.switchfully.uno_shark.domain.parking.parkingLotDto.ParkingLotSimpleDto;
 import be.switchfully.uno_shark.services.ParkingLotService;
 import be.switchfully.uno_shark.domain.parking.parkingLotDto.CreateParkingLotDto;
 import be.switchfully.uno_shark.domain.parking.parkingLotDto.ParkingLotDto;
@@ -32,7 +33,7 @@ public class ParkingLotController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
-    public List<ParkingLotDto> getAllParkinglots(){
+    public List<ParkingLotSimpleDto> getAllParkinglots(){
         log.info("Getting all parkinglots");
         return parkingLotService.getAllParkinglots();
     }
