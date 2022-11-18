@@ -18,15 +18,15 @@ public class ParkingSpotAllocation {
     private Long id;
 
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "fk_users_id")
     private User user;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne (cascade = CascadeType.ALL, fetch = FetchType.EAGER )
     @JoinColumn(name = "fk_licenseplate_id")
     private LicensePlate licensePlate;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "fk_parkinglot_id")
     private ParkingLot parkinglot;
 
@@ -40,10 +40,13 @@ public class ParkingSpotAllocation {
     public ParkingSpotAllocation() {
     }
 
+
     public ParkingSpotAllocation(User user, LicensePlate licensePlate, ParkingLot parkinglot) {
         this.user = user;
         this.licensePlate = licensePlate;
         this.parkinglot = parkinglot;
+        this.startTime = LocalDateTime.now();
+        this.isActive = true;
     }
 
     public Long getId() {
@@ -72,6 +75,10 @@ public class ParkingSpotAllocation {
 
     public boolean isActive() {
         return isActive;
+    }
+
+    public void setLicensePlate(LicensePlate licensePlate) {
+        this.licensePlate = licensePlate;
     }
 
 }

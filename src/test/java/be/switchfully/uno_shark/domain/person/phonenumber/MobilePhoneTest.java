@@ -10,18 +10,18 @@ class MobilePhoneTest {
     void givenValidPhoneNumber_GivesPhoneNumber() {
         MobilePhone mobilePhone = new MobilePhone("0475849562", CountryCode.BELGIUM);
         assertThat(mobilePhone).isNotNull();
-        assertThat(mobilePhone.getBody()).isEqualTo("475849562");
+        assertThat(mobilePhone.getMobilePhoneBody()).isEqualTo("475849562");
         assertThat(mobilePhone.toString()).isEqualTo("+32475849562");
-        assertThat(mobilePhone.getCountryCode()).isEqualTo(CountryCode.BELGIUM);
+        assertThat(mobilePhone.getMobilePhoneCountryCode()).isEqualTo(CountryCode.BELGIUM);
     }
 
     @Test
     void givenValidPhoneNumberShortNotation_GivesPhoneNumber() {
         MobilePhone mobilePhone = new MobilePhone("475849562", CountryCode.BELGIUM);
         assertThat(mobilePhone).isNotNull();
-        assertThat(mobilePhone.getBody()).isEqualTo("475849562");
+        assertThat(mobilePhone.getMobilePhoneBody()).isEqualTo("475849562");
         assertThat(mobilePhone.toString()).isEqualTo("+32475849562");
-        assertThat(mobilePhone.getCountryCode()).isEqualTo(CountryCode.BELGIUM);
+        assertThat(mobilePhone.getMobilePhoneCountryCode()).isEqualTo(CountryCode.BELGIUM);
     }
 
     @Test

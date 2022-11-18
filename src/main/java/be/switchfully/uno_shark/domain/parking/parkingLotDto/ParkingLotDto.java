@@ -9,7 +9,6 @@ import be.switchfully.uno_shark.domain.person.address.Address;
 import java.util.Objects;
 
 public class ParkingLotDto {
-
     private Long id;
     private String name;
     private ParkingCategory parkingCategory;
@@ -18,8 +17,6 @@ public class ParkingLotDto {
     private Person Person;
     private Address address;
     private Price pricePerHour;
-
-
 
     public ParkingLotDto(Long id, String name, ParkingCategory parkingCategory, SingleDivisionDto division, int capacity, Person person, Address address, Price pricePerHour) {
         this.id = id;

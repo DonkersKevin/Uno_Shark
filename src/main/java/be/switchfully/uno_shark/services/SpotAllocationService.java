@@ -6,7 +6,9 @@ import be.switchfully.uno_shark.domain.parkingspotallocation.dto.CreateParkingSp
 import be.switchfully.uno_shark.domain.parkingspotallocation.dto.ShowAllocationDto;
 import be.switchfully.uno_shark.domain.parkingspotallocation.dto.SpotAllocationMapper;
 import be.switchfully.uno_shark.domain.person.MembershipLevel;
+import be.switchfully.uno_shark.domain.person.licenseplate.IssuingCountry;
 import be.switchfully.uno_shark.domain.person.licenseplate.LicensePlate;
+import be.switchfully.uno_shark.repositories.LicensePlateRepository;
 import be.switchfully.uno_shark.repositories.ParkingLotRepository;
 import be.switchfully.uno_shark.repositories.SpotAllocationRepository;
 import be.switchfully.uno_shark.repositories.UserRepository;
@@ -21,16 +23,16 @@ import java.util.List;
 public class SpotAllocationService {
 
     private final SpotAllocationMapper spotAllocationMapper;
-
     private final UserRepository userRepository;
     private final ParkingLotRepository parkingLotRepository;
-
+    private final LicensePlateRepository licensePlateRepository;
     private SpotAllocationRepository spotAllocationRepository;
 
-    public SpotAllocationService(SpotAllocationMapper spotAllocationMapper, UserRepository userRepository, ParkingLotRepository parkingLotRepository, SpotAllocationRepository spotAllocationRepository) {
+    public SpotAllocationService(SpotAllocationMapper spotAllocationMapper, UserRepository userRepository, ParkingLotRepository parkingLotRepository, LicensePlateRepository licensePlateRepository, SpotAllocationRepository spotAllocationRepository) {
         this.spotAllocationMapper = spotAllocationMapper;
         this.userRepository = userRepository;
         this.parkingLotRepository = parkingLotRepository;
+        this.licensePlateRepository = licensePlateRepository;
         this.spotAllocationRepository = spotAllocationRepository;
     }
 
@@ -43,6 +45,7 @@ public class SpotAllocationService {
         verifyLicensePlate(createParkingSpotAllocationDto);
         verifyParkingLot(createParkingSpotAllocationDto);
         verifyParkingLotCapacity(createParkingSpotAllocationDto);
+
         ParkingSpotAllocation parkingSpotAllocationToSave = spotAllocationMapper.mapDtoToSpotAllocation(createParkingSpotAllocationDto);
 
         ParkingSpotAllocation parkingSpotAllocation = spotAllocationRepository.save(parkingSpotAllocationToSave);
@@ -53,7 +56,7 @@ public class SpotAllocationService {
 
     private void verifyUser(CreateParkingSpotAllocationDto createParkingSpotAllocationDto) {
         Long userId = createParkingSpotAllocationDto.getUserId();
-        if (userRepository.findById(userId) == null)
+        if (userRepository.findById(userId).isEmpty())
             throw new IllegalArgumentException("Unknown userID.");
     }
 
@@ -73,7 +76,7 @@ public class SpotAllocationService {
 
     private void verifyParkingLot(CreateParkingSpotAllocationDto createParkingSpotAllocationDto) {
         Long parkingLotId = createParkingSpotAllocationDto.getParkingLotId();
-        if (parkingLotRepository.findById(parkingLotId) == null) {
+        if (parkingLotRepository.findById(parkingLotId).isEmpty()) {
             throw new IllegalArgumentException("Unknown parking lot.");
         }
     }

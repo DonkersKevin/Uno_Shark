@@ -1,6 +1,8 @@
 package be.switchfully.uno_shark.domain.person;
 
 import be.switchfully.uno_shark.domain.person.address.Address;
+import be.switchfully.uno_shark.domain.person.phonenumber.LandLinePhone;
+import be.switchfully.uno_shark.domain.person.phonenumber.MobilePhone;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -22,26 +24,29 @@ public class Person {
     @JoinColumn(name = "fk_address_id")
     private Address address;
 
-    private String phoneNumber;
-    private String mobileNumber;
+    @Embedded
+    private LandLinePhone landLinePhone;
+
+    @Embedded
+    private MobilePhone mobilePhone;
     private String emailAddress;
 
     public Person() {
     }
 
     //check if we can still use the builder pattern and inheritance altogether.
-    public Person(String firstName, String lastName, Address address, String phoneNumber, String mobileNumber, String emailAddress) {
+    public Person(String firstName, String lastName, Address address, LandLinePhone landLinePhone, MobilePhone mobilePhone, String emailAddress) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
-        this.phoneNumber = phoneNumber;
-        this.mobileNumber = mobileNumber;
+        this.landLinePhone = landLinePhone;
+        this.mobilePhone = mobilePhone;
         this.emailAddress = emailAddress;
         checkPhoneNumber();
     }
 
     private void checkPhoneNumber(){
-        if(this.phoneNumber == null && this.mobileNumber == null){
+        if(this.landLinePhone == null && this.mobilePhone == null){
             throw new IllegalArgumentException("No phone number found.");
         }
     }
@@ -61,13 +66,13 @@ public class Person {
         return this;
     }
 
-    public Person setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public Person setLandLinePhone(LandLinePhone phoneNumber) {
+        this.landLinePhone = phoneNumber;
         return this;
     }
 
-    public Person setMobileNumber(String mobileNumber) {
-        this.mobileNumber = mobileNumber;
+    public Person setMobilePhone(MobilePhone mobileNumber) {
+        this.mobilePhone = mobileNumber;
         return this;
     }
 
@@ -92,12 +97,12 @@ public class Person {
         return address;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public LandLinePhone getLandLinePhone() {
+        return landLinePhone;
     }
 
-    public String getMobileNumber() {
-        return mobileNumber;
+    public MobilePhone getMobilePhone() {
+        return mobilePhone;
     }
 
     public String getEmailAddress() {
@@ -111,8 +116,8 @@ public class Person {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", address=" + address +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", mobileNumber='" + mobileNumber + '\'' +
+                ", phoneNumber='" + landLinePhone + '\'' +
+                ", mobileNumber='" + mobilePhone + '\'' +
                 ", emailAddress='" + emailAddress + '\'' +
                 '}';
     }
@@ -122,11 +127,11 @@ public class Person {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Person person = (Person) o;
-        return Objects.equals(id, person.id) && Objects.equals(firstName, person.firstName) && Objects.equals(lastName, person.lastName) && Objects.equals(address, person.address) && Objects.equals(phoneNumber, person.phoneNumber) && Objects.equals(mobileNumber, person.mobileNumber) && Objects.equals(emailAddress, person.emailAddress);
+        return Objects.equals(id, person.id) && Objects.equals(firstName, person.firstName) && Objects.equals(lastName, person.lastName) && Objects.equals(address, person.address) && Objects.equals(landLinePhone, person.landLinePhone) && Objects.equals(mobilePhone, person.mobilePhone) && Objects.equals(emailAddress, person.emailAddress);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, address, phoneNumber, mobileNumber, emailAddress);
+        return Objects.hash(id, firstName, lastName, address, landLinePhone, mobilePhone, emailAddress);
     }
 }

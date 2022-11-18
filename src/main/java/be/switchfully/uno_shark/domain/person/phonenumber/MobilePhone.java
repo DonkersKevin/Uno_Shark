@@ -1,13 +1,23 @@
 package be.switchfully.uno_shark.domain.person.phonenumber;
 
-public class MobilePhone {
-    private final String body;
-    private final CountryCode countryCode;
+import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
-    public MobilePhone(String body, CountryCode countryCode) {
-        String newBody = numberVerification(countryCode, body);
-        this.body = newBody;
-        this.countryCode = countryCode;
+@Embeddable
+
+public class MobilePhone {
+    private String mobilePhoneBody;
+    @Enumerated(EnumType.STRING)
+    private CountryCode mobilePhoneCountryCode;
+
+    public MobilePhone() {
+    }
+
+    public MobilePhone(String mobilePhoneBody, CountryCode mobilePhoneCountryCode) {
+        String newBody = numberVerification(mobilePhoneCountryCode, mobilePhoneBody);
+        this.mobilePhoneBody = newBody;
+        this.mobilePhoneCountryCode = mobilePhoneCountryCode;
     }
 
     private String numberVerification(CountryCode countryCode, String body) {
@@ -39,16 +49,24 @@ public class MobilePhone {
         return body;
     }
 
-    public String getBody() {
-        return body;
+    public String getMobilePhoneBody() {
+        return mobilePhoneBody;
     }
 
-    public CountryCode getCountryCode() {
-        return countryCode;
+    public CountryCode getMobilePhoneCountryCode() {
+        return mobilePhoneCountryCode;
+    }
+
+    public void setMobilePhoneBody(String body) {
+        this.mobilePhoneBody = body;
+    }
+
+    public void setMobilePhoneCountryCode(CountryCode countryCode) {
+        this.mobilePhoneCountryCode = countryCode;
     }
 
     @Override
     public String toString() {
-        return countryCode.getCountryCode() + body;
+        return mobilePhoneCountryCode.getCountryCode() + mobilePhoneBody;
     }
 }

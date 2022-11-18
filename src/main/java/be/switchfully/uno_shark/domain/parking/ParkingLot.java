@@ -8,8 +8,6 @@ import javax.persistence.*;
 @Entity
 @Table(name = "parkinglot")
 public class ParkingLot {
-
-    //Todo verify identity annotation
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "parkinglot_seq")
     @SequenceGenerator(name = "parkinglot_seq", sequenceName = "parkinglot_seq", allocationSize = 1)
