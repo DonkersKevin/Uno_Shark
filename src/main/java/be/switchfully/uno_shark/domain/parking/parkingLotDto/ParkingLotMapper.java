@@ -1,5 +1,6 @@
 package be.switchfully.uno_shark.domain.parking.parkingLotDto;
 
+import be.switchfully.uno_shark.domain.parking.ParkingCategory;
 import be.switchfully.uno_shark.domain.parking.Parkinglot;
 import be.switchfully.uno_shark.domain.parking.divisionDto.DivisionMapper;
 import org.springframework.stereotype.Component;
@@ -21,7 +22,7 @@ public class ParkingLotMapper {
     public Parkinglot CreateDtoToParkingLot(CreateParkingLotDto createParkingLotDto) {
         return new Parkinglot(
                 createParkingLotDto.getName(),
-                createParkingLotDto.getParkingCategory(),
+                ParkingCategory.valueOf(createParkingLotDto.getParkingCategory().toUpperCase()),
                 createParkingLotDto.getDivision(),
                 createParkingLotDto.getCapacity(),
                 createParkingLotDto.getPerson(),

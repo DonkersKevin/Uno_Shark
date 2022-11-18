@@ -1,14 +1,16 @@
 package be.switchfully.uno_shark.services;
 
 import be.switchfully.uno_shark.domain.person.address.Address;
+import be.switchfully.uno_shark.domain.person.phonenumber.LandLinePhone;
+import be.switchfully.uno_shark.domain.person.phonenumber.MobilePhone;
 
 public class CreatePersonDto {
 
     private String firstName;
     private String lastName;
     private Address address;
-    private String phoneNumber;
-    private String mobileNumber;
+    private LandLinePhone phoneNumber;
+    private MobilePhone mobileNumber;
     private String emailAddress;
 
     public CreatePersonDto() {
@@ -26,11 +28,11 @@ public class CreatePersonDto {
         return address;
     }
 
-    public String getPhoneNumber() {
+    public LandLinePhone getPhoneNumber() {
         return phoneNumber;
     }
 
-    public String getMobileNumber() {
+    public MobilePhone getMobileNumber() {
         return mobileNumber;
     }
 
@@ -53,12 +55,12 @@ public class CreatePersonDto {
         return this;
     }
 
-    public CreatePersonDto setPhoneNumber(String phoneNumber) {
+    public CreatePersonDto setPhoneNumber(LandLinePhone phoneNumber) {
         this.phoneNumber = phoneNumber;
         return this;
     }
 
-    public CreatePersonDto setMobileNumber(String mobileNumber) {
+    public CreatePersonDto setMobileNumber(MobilePhone mobileNumber) {
         this.mobileNumber = mobileNumber;
         return this;
     }

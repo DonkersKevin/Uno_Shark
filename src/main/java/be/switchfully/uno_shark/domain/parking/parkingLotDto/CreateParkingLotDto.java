@@ -9,14 +9,14 @@ import be.switchfully.uno_shark.domain.person.address.Address;
 public class CreateParkingLotDto {
 
     private String name;
-    private ParkingCategory parkingCategory;
+    private String parkingCategory;
     private Division division;
     private int capacity;
     private Person person;
     private Address address;
     private Price pricePerHour;
 
-    public CreateParkingLotDto(String name, ParkingCategory parkingCategory, Division division, int capacity, Person person, Address address, Price pricePerHour) {
+    public CreateParkingLotDto(String name, String parkingCategory, Division division, int capacity, Person person, Address address, Price pricePerHour) {
         this.name = name;
         this.parkingCategory = parkingCategory;
         this.division = division;
@@ -30,7 +30,7 @@ public class CreateParkingLotDto {
         return name;
     }
 
-    public ParkingCategory getParkingCategory() {
+    public String getParkingCategory() {
         return parkingCategory;
     }
 

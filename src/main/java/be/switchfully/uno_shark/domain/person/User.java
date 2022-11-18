@@ -1,6 +1,8 @@
 package be.switchfully.uno_shark.domain.person;
 
 import be.switchfully.uno_shark.domain.person.address.Address;
+import be.switchfully.uno_shark.domain.person.phonenumber.LandLinePhone;
+import be.switchfully.uno_shark.domain.person.phonenumber.MobilePhone;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -41,13 +43,13 @@ public class User {
     public User() {
     }
 
-    public User(String firstName, String lastName, Address address, String phoneNumber, String mobileNumber, String emailAddress) {
+    public User(String firstName, String lastName, Address address, LandLinePhone phoneNumber, MobilePhone mobileNumber, String emailAddress) {
         this.person = new Person(firstName, lastName, address, phoneNumber, mobileNumber, emailAddress);
         this.registrationDate = LocalDate.now();
         this.role = Role.MEMBER;
     }
 
-    public User(String firstName, String lastName, Address address, String phoneNumber, String mobileNumber, String emailAddress, LicensePlate licensePlate) {
+    public User(String firstName, String lastName, Address address, LandLinePhone phoneNumber, MobilePhone mobileNumber, String emailAddress, LicensePlate licensePlate) {
         this.person = new Person(firstName, lastName, address, phoneNumber, mobileNumber, emailAddress);
         this.registrationDate = LocalDate.now();
         this.licensePlate = licensePlate;
@@ -55,7 +57,7 @@ public class User {
         this.role = Role.MEMBER;
     }
 
-    public User(String firstName, String lastName, Address address, String phoneNumber, String mobileNumber, String emailAddress, LicensePlate licensePlate, Role role) {
+    public User(String firstName, String lastName, Address address, LandLinePhone phoneNumber, MobilePhone mobileNumber, String emailAddress, LicensePlate licensePlate, Role role) {
         this.person = new Person(firstName, lastName, address, phoneNumber, mobileNumber, emailAddress);
         this.registrationDate = LocalDate.now();
         this.licensePlate = licensePlate;

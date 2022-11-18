@@ -8,6 +8,9 @@ import be.switchfully.uno_shark.domain.person.address.PostalCode;
 import be.switchfully.uno_shark.domain.person.dto.CreateUserDto;
 import be.switchfully.uno_shark.domain.person.dto.UserDto;
 import be.switchfully.uno_shark.domain.person.dto.UserDtoLimitedInfo;
+import be.switchfully.uno_shark.domain.person.phonenumber.CountryCode;
+import be.switchfully.uno_shark.domain.person.phonenumber.LandLinePhone;
+import be.switchfully.uno_shark.domain.person.phonenumber.MobilePhone;
 import be.switchfully.uno_shark.repositories.UserRepository;
 import be.switchfully.uno_shark.services.MemberService;
 import io.restassured.response.Response;
@@ -54,8 +57,8 @@ public class MemberIntegrationTest {
                 .setFirstName("Freddi")
                 .setLastName("Fish")
                 .setAddress(newAddress)
-                .setPhoneNumber("003487442233")
-                .setMobileNumber("+32487442233")
+                .setPhoneNumber(new LandLinePhone("070001122", CountryCode.BELGIUM))
+                .setMobileNumber(new MobilePhone("0478123456", CountryCode.BELGIUM))
                 .setEmailAddress("Freddi@Fish.be")
                 .setLicensePlate(newLicensePlate);
 
@@ -82,8 +85,8 @@ public class MemberIntegrationTest {
                 .setFirstName("Freddi")
                 .setLastName("Fish")
                 .setAddress(null)
-                .setPhoneNumber("003487442233")
-                .setMobileNumber("+32487442233")
+                .setPhoneNumber(new LandLinePhone("070001122", CountryCode.BELGIUM))
+                .setMobileNumber(new MobilePhone("0478123456", CountryCode.BELGIUM))
                 .setEmailAddress("Freddi@Fish.be")
                 .setLicensePlate(newLicensePlate);
 
@@ -113,8 +116,8 @@ public class MemberIntegrationTest {
                 .setFirstName("Freddi")
                 .setLastName("Fish")
                 .setAddress(newAddress)
-                .setPhoneNumber("003487442233")
-                .setMobileNumber("+32487442233")
+                .setPhoneNumber(new LandLinePhone("070001122", CountryCode.BELGIUM))
+                .setMobileNumber(new MobilePhone("0478123456", CountryCode.BELGIUM))
                 .setEmailAddress("Freddi@Fish.be")
                 .setLicensePlate(null);
 
@@ -145,8 +148,8 @@ public class MemberIntegrationTest {
                 .setFirstName("Freddi")
                 .setLastName("Fish")
                 .setAddress(newAddress)
-                .setPhoneNumber("003487442233")
-                .setMobileNumber("+32487442233")
+                .setPhoneNumber(new LandLinePhone("070001122", CountryCode.BELGIUM))
+                .setMobileNumber(new MobilePhone("0478123456", CountryCode.BELGIUM))
                 .setEmailAddress("Freddi@Fish.be")
                 .setLicensePlate(newLicensePlate)
                 .setMemberLevel(GOLD);
@@ -176,8 +179,8 @@ public class MemberIntegrationTest {
                 .setFirstName("Freddi")
                 .setLastName("Fish")
                 .setAddress(newAddress)
-                .setPhoneNumber("003487442233")
-                .setMobileNumber("+32487442233")
+                .setPhoneNumber(new LandLinePhone("070001122", CountryCode.BELGIUM))
+                .setMobileNumber(new MobilePhone("0478123456", CountryCode.BELGIUM))
                 .setEmailAddress("Freddi@Fish.be")
                 .setLicensePlate(newLicensePlate);
 

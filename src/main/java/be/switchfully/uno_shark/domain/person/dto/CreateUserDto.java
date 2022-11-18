@@ -3,6 +3,8 @@ package be.switchfully.uno_shark.domain.person.dto;
 import be.switchfully.uno_shark.domain.person.LicensePlate;
 import be.switchfully.uno_shark.domain.person.MembershipLevel;
 import be.switchfully.uno_shark.domain.person.address.Address;
+import be.switchfully.uno_shark.domain.person.phonenumber.LandLinePhone;
+import be.switchfully.uno_shark.domain.person.phonenumber.MobilePhone;
 
 import java.time.LocalDate;
 
@@ -10,8 +12,8 @@ public class CreateUserDto {
     private String firstName;
     private String lastName;
     private Address address;
-    private String phoneNumber;
-    private String mobileNumber;
+    private LandLinePhone phoneNumber;
+    private MobilePhone mobileNumber;
     private String emailAddress;
     private LicensePlate licensePlate;
 
@@ -30,11 +32,11 @@ public class CreateUserDto {
         return address;
     }
 
-    public String getPhoneNumber() {
+    public LandLinePhone getPhoneNumber() {
         return phoneNumber;
     }
 
-    public String getMobileNumber() {
+    public MobilePhone getMobileNumber() {
         return mobileNumber;
     }
 
@@ -65,12 +67,12 @@ public class CreateUserDto {
         return this;
     }
 
-    public CreateUserDto setPhoneNumber(String phoneNumber) {
+    public CreateUserDto setPhoneNumber(LandLinePhone phoneNumber) {
         this.phoneNumber = phoneNumber;
         return this;
     }
 
-    public CreateUserDto setMobileNumber(String mobileNumber) {
+    public CreateUserDto setMobileNumber(MobilePhone mobileNumber) {
         this.mobileNumber = mobileNumber;
         return this;
     }
