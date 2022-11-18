@@ -1,12 +1,9 @@
 package be.switchfully.uno_shark.controllers;
 
-import be.switchfully.uno_shark.domain.parking.divisionDto.ShowDivisionDto;
 import be.switchfully.uno_shark.domain.parkingspotallocation.dto.ShowAllocationDto;
 import be.switchfully.uno_shark.repositories.SpotAllocationRepository;
-import be.switchfully.uno_shark.services.SpotAllocationService;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +14,6 @@ import org.springframework.http.HttpStatus;
 
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.stream.Collectors;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.*;
@@ -87,7 +83,20 @@ class ParkingSpotAllocationControllerTest {
                 .as(ShowAllocationDto[].class);
 
         assertEquals(response.length, spotRepo.findAll().size());
+    }
 
+    @Test
+    void findAllWithoutFilter_asMember_Forbidden() {
+        given()
+                .header("Authorization", "Bearer " + memberToken)
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .get("/spotallocations")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.FORBIDDEN.value())
+                .extract();
     }
 
     @Test
@@ -178,6 +187,19 @@ class ParkingSpotAllocationControllerTest {
 
         assertThat(spotRepo.findById(3L).orElseThrow().isActive()).isFalse();
         assertThat(spotRepo.findById(3L).orElseThrow().getEndTime()).isNotNull();
+    }
+
+    @Test
+    void stopParking_asManager_Forbidden() {
+        given()
+                .header("Authorization", "Bearer " +managerToken)
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .put("/spotallocations/3")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.FORBIDDEN.value());
     }
 
     @Test
