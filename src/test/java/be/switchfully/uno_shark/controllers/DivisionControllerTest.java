@@ -5,8 +5,10 @@ import be.switchfully.uno_shark.domain.parking.divisionDto.ShowDivisionDto;
 import be.switchfully.uno_shark.domain.parking.divisionDto.SingleDivisionDto;
 import be.switchfully.uno_shark.repositories.DivisionRepository;
 import be.switchfully.uno_shark.services.DivisionService;
+import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -37,9 +39,29 @@ class DivisionControllerTest {
     @LocalServerPort
     private int port;
 
+    private static String managerToken;
+
+    @BeforeAll
+    static void generateManagerToken() {
+        managerToken = RestAssured
+                .given()
+                .contentType("application/x-www-form-urlencoded; charset=utf-8")
+                .formParam("username", "manager")
+                .formParam("password", "manager")
+                .formParam("grant_type", "password")
+                .formParam("client_id", "parkSharkoUno")
+                .formParam("client_secret", "a50b122c-462f-4f5f-996c-2af33b6506be")
+                .when()
+                .post("https://keycloak.switchfully.com/auth/realms/sharkoUno/protocol/openid-connect/token")
+                .then()
+                .extract()
+                .path("access_token")
+                .toString();
+    }
     @Test
     void createDivisionHappyPath() {
         given()
+                .header("Authorization", "Bearer " + managerToken)
                 .baseUri("http://localhost")
                 .port(port)
                 .when()
@@ -56,6 +78,7 @@ class DivisionControllerTest {
     @Test
     void whenEmptyField_illegalArgumentExceptionIsThrown() {
         Response response = given()
+                .header("Authorization", "Bearer " + managerToken)
                 .baseUri("http://localhost")
                 .port(port)
                 .when()
@@ -75,7 +98,9 @@ class DivisionControllerTest {
     @Test
     void getAllDivisionsHappyPath() {
 
-        ShowDivisionDto[] response = given().baseUri("http://localhost")
+        ShowDivisionDto[] response = given()
+                .header("Authorization", "Bearer " + managerToken)
+                .baseUri("http://localhost")
                 .port(port)
                 .when()
                 .get("/divisions")
@@ -93,7 +118,9 @@ class DivisionControllerTest {
     @Test
     void getASingleDivisionHappyPath(){
 
-       SingleDivisionDto response = given().baseUri("http://localhost")
+       SingleDivisionDto response = given()
+               .header("Authorization", "Bearer " + managerToken)
+               .baseUri("http://localhost")
                 .port(port)
                 .when()
                 .get("/divisions/1")
@@ -109,6 +136,7 @@ class DivisionControllerTest {
     @Test
     void whenGetSingleDivision_andNoSuchDivisionExists_IllegalArgumentExceptionIsThrown(){
         Response response = given()
+                .header("Authorization", "Bearer " + managerToken)
                 .baseUri("http://localhost")
                 .port(port)
                 .when()

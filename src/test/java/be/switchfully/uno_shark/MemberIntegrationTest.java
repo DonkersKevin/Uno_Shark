@@ -9,8 +9,10 @@ import be.switchfully.uno_shark.domain.person.dto.UserDto;
 import be.switchfully.uno_shark.domain.person.dto.UserDtoLimitedInfo;
 import be.switchfully.uno_shark.repositories.UserRepository;
 import be.switchfully.uno_shark.services.MemberService;
+import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -41,6 +43,45 @@ public class MemberIntegrationTest {
 
     @Autowired
     MemberService memberService;
+
+    private static String managerToken;
+    private static String memberToken;
+
+    @BeforeAll
+    static void generateManagerToken() {
+        managerToken = RestAssured
+                .given()
+                .contentType("application/x-www-form-urlencoded; charset=utf-8")
+                .formParam("username", "manager")
+                .formParam("password", "manager")
+                .formParam("grant_type", "password")
+                .formParam("client_id", "parkSharkoUno")
+                .formParam("client_secret", "a50b122c-462f-4f5f-996c-2af33b6506be")
+                .when()
+                .post("https://keycloak.switchfully.com/auth/realms/sharkoUno/protocol/openid-connect/token")
+                .then()
+                .extract()
+                .path("access_token")
+                .toString();
+    }
+
+    @BeforeAll
+    static void generateMemberToken() {
+        memberToken = RestAssured
+                .given()
+                .contentType("application/x-www-form-urlencoded; charset=utf-8")
+                .formParam("username", "member")
+                .formParam("password", "member")
+                .formParam("grant_type", "password")
+                .formParam("client_id", "parkSharkoUno")
+                .formParam("client_secret", "a50b122c-462f-4f5f-996c-2af33b6506be")
+                .when()
+                .post("https://keycloak.switchfully.com/auth/realms/sharkoUno/protocol/openid-connect/token")
+                .then()
+                .extract()
+                .path("access_token")
+                .toString();
+    }
 
     @Test
     void createNewMemberHappyPath() {
@@ -223,12 +264,18 @@ public class MemberIntegrationTest {
         List<UserDtoLimitedInfo> userList = memberService.getAllMembers();
 
 
-        List<UserDtoLimitedInfo> response = List.of(given()
-                .baseUri("http://localhost")
-                .port(port)
-                .when()
-                .get("/members")
-                .as(UserDtoLimitedInfo.class));
+        List<UserDtoLimitedInfo> response = List.of(
+                given()
+                        .header("Authorization", "Bearer " + managerToken)
+                        .baseUri("http://localhost")
+                        .port(port)
+                        .when()
+                        .get("/members")
+                        .then()
+                        .assertThat()
+                        .statusCode(HttpStatus.OK.value())
+                        .extract()
+                        .as(UserDtoLimitedInfo[].class));
 
         assertEquals(response, userList);
 
@@ -237,6 +284,7 @@ public class MemberIntegrationTest {
     @Test
     void getAMemberHappyPath() {
         UserDto response = given()
+                .header("Authorization", "Bearer " + managerToken)
                 .baseUri("http://localhost")
                 .port(port)
                 .when()
@@ -253,6 +301,7 @@ public class MemberIntegrationTest {
     @Test
     void whenMemberDoesNotExist_IllegalArgumentExceptionIsThrown() {
         Response response = given()
+                .header("Authorization", "Bearer " + managerToken)
                 .baseUri("http://localhost")
                 .port(port)
                 .when()
