@@ -4,6 +4,7 @@ import be.switchfully.uno_shark.domain.parking.divisionDto.ShowDivisionDto;
 import be.switchfully.uno_shark.domain.parkingspotallocation.dto.ShowAllocationDto;
 import be.switchfully.uno_shark.repositories.SpotAllocationRepository;
 import be.switchfully.uno_shark.services.SpotAllocationService;
+import io.restassured.response.Response;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,6 +114,50 @@ class ParkingSpotAllocationControllerTest {
         assertThat(Arrays.stream(response)
                 .filter(showAllocationDto -> showAllocationDto.getStopTime() == null).toList()).isEmpty();
 
+    }
+
+    @Test
+    void stopParkingHappyPath(){
+        given().baseUri("http://localhost")
+                .port(port)
+                .when()
+                .put("/spotallocation/3")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value());
+
+        assertThat(spotRepo.findById(3L).orElseThrow().isActive()).isFalse();
+        assertThat(spotRepo.findById(3L).orElseThrow().getEndTime()).isNotNull();
+    }
+
+    @Test
+    void stopParkingWhenAlreadyStopped_ThrowsException(){
+        Response response = given().baseUri("http://localhost")
+                .port(port)
+                .when()
+                .put("/spotallocation/1")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .extract()
+                .response();
+
+        assertEquals("This allocation has already been stopped!", response.jsonPath().getString("message"));
+    }
+
+    @Test
+    void stopParkingWhenAllocationDoesntExist_ThrowsException(){
+        Response response = given().baseUri("http://localhost")
+                .port(port)
+                .when()
+                .put("/spotallocation/1000000")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .extract()
+                .response();
+
+        assertEquals("No such parking allocation exists!", response.jsonPath().getString("message"));
     }
 
 

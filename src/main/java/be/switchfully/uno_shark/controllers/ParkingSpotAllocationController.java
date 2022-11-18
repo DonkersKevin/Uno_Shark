@@ -41,4 +41,9 @@ public class ParkingSpotAllocationController {
         return spotAllocationService.getAllAllocations(sort, status, limit);
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping(path = "/{id}")
+    public void stopParking(@PathVariable long id){
+        spotAllocationService.stopParkingAllocation(id);
+    }
 }

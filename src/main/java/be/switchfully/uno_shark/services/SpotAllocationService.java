@@ -117,6 +117,12 @@ public class SpotAllocationService {
         return allocations;
     }
 
+    public void stopParkingAllocation(long id){
+        ParkingSpotAllocation allocation = spotAllocationRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No such parking allocation exists!"));
 
+        allocation.stop();
+
+        spotAllocationRepository.save(allocation);
+    }
 
 }
