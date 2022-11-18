@@ -6,9 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SpotAllocationRepository extends JpaRepository<ParkingSpotAllocation, Long> {
-    //ParkingSpotAllocation findParkingSpotAllocationByUserId(String userId);
-    //ParkingSpotAllocation findParkingSpotAllocationsByUserId(Long userId);
-    //ParkingSpotAllocation findParkingSpotAllocationsByParkinglotId(Long parkingLotId);
+
 
 
 }

@@ -5,6 +5,7 @@ import be.switchfully.uno_shark.domain.person.licenseplate.LicensePlate;
 import be.switchfully.uno_shark.domain.person.User;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
@@ -17,32 +18,35 @@ public class ParkingSpotAllocation {
     private Long id;
 
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "fk_users_id")
     private User user;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne (cascade = CascadeType.ALL, fetch = FetchType.EAGER )
     @JoinColumn(name = "fk_licenseplate_id")
     private LicensePlate licensePlate;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "fk_parkinglot_id")
     private ParkingLot parkinglot;
 
     @Column(name = "starttime")
-    private LocalTime startTime;
+    private LocalDateTime startTime;
     @Column(name = "endtime")
-    private LocalTime endTime;
+    private LocalDateTime endTime;
     @Column(name = "isactive")
     private boolean isActive;
 
     public ParkingSpotAllocation() {
     }
 
+
     public ParkingSpotAllocation(User user, LicensePlate licensePlate, ParkingLot parkinglot) {
         this.user = user;
         this.licensePlate = licensePlate;
         this.parkinglot = parkinglot;
+        this.startTime = LocalDateTime.now();
+        this.isActive = true;
     }
 
     public Long getId() {
@@ -61,15 +65,19 @@ public class ParkingSpotAllocation {
         return parkinglot;
     }
 
-    public LocalTime getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    public LocalTime getEndTime() {
+    public LocalDateTime getEndTime() {
         return endTime;
     }
 
     public boolean isActive() {
         return isActive;
+    }
+
+    public void setLicensePlate(LicensePlate licensePlate) {
+        this.licensePlate = licensePlate;
     }
 }
