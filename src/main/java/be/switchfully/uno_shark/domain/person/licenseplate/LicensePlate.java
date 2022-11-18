@@ -8,7 +8,7 @@ import java.util.Objects;
 public class LicensePlate {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "licenseplate_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "licenseplate_seq")
     @SequenceGenerator(name = "licenseplate_seq", sequenceName = "licenseplate_seq", allocationSize = 1)
     private long id;
 
@@ -20,6 +20,8 @@ public class LicensePlate {
 
     public LicensePlate() {
     }
+
+
 
     public LicensePlate(IssuingCountry issuingCountry, String licensePlateNumber) {
         this.issuingCountry = issuingCountryVerification(issuingCountry);
@@ -53,11 +55,8 @@ public class LicensePlate {
         if (this == o) return true;
         if (!(o instanceof LicensePlate that)) return false;
 
+        if (getIssuingCountry() != that.getIssuingCountry()) return false;
         return getLicensePlateNumber() != null ? getLicensePlateNumber().equals(that.getLicensePlateNumber()) : that.getLicensePlateNumber() == null;
     }
 
-    @Override
-    public int hashCode() {
-        return getLicensePlateNumber() != null ? getLicensePlateNumber().hashCode() : 0;
-    }
 }

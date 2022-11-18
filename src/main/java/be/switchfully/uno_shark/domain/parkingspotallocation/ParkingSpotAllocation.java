@@ -5,6 +5,7 @@ import be.switchfully.uno_shark.domain.person.licenseplate.LicensePlate;
 import be.switchfully.uno_shark.domain.person.User;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
@@ -14,36 +15,42 @@ public class ParkingSpotAllocation {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "spotallocation_seq")
     @SequenceGenerator(name = "spotallocation_seq", sequenceName = "spotallocation_seq", allocationSize = 1)
-    private java.lang.Long allocationId;
+    private Long id;
 
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "fk_users_id")
     private User user;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "fk_licensePlate_id")
+    @OneToOne (cascade = CascadeType.ALL, fetch = FetchType.EAGER )
+    @JoinColumn(name = "fk_licenseplate_id")
     private LicensePlate licensePlate;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "fk_parkinglot_id")
     private ParkingLot parkinglot;
 
-    private LocalTime startTime;
-    private LocalTime endTime;
+    @Column(name = "starttime")
+    private LocalDateTime startTime;
+    @Column(name = "endtime")
+    private LocalDateTime endTime;
+    @Column(name = "isactive")
     private boolean isActive;
 
     public ParkingSpotAllocation() {
     }
 
+
     public ParkingSpotAllocation(User user, LicensePlate licensePlate, ParkingLot parkinglot) {
         this.user = user;
         this.licensePlate = licensePlate;
         this.parkinglot = parkinglot;
+        this.startTime = LocalDateTime.now();
+        this.isActive = true;
     }
 
-    public java.lang.Long getAllocationId() {
-        return allocationId;
+    public Long getId() {
+        return id;
     }
 
     public User getUser() {
@@ -58,15 +65,26 @@ public class ParkingSpotAllocation {
         return parkinglot;
     }
 
-    public LocalTime getStartTime() {
+    public LocalDateTime getStartTime() {
         return startTime;
     }
 
-    public LocalTime getEndTime() {
+    public LocalDateTime getEndTime() {
         return endTime;
     }
 
     public boolean isActive() {
         return isActive;
     }
+
+    public void setLicensePlate(LicensePlate licensePlate) {
+        this.licensePlate = licensePlate;
+    }
+
+    public void stop(){
+        if(!isActive) throw new IllegalArgumentException("This allocation has already been stopped!");
+        isActive = false;
+        endTime = LocalDateTime.now();
+    }
+
 }
