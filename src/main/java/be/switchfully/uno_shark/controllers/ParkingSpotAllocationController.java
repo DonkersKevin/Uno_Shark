@@ -27,7 +27,7 @@ public class ParkingSpotAllocationController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasAuthority('CREATE_PARKINGLOT')")
+    @PreAuthorize("hasAuthority('START_ALLOCATION_PARKINGSPOT')")
     public Long createParkingSpotAllocation(@RequestBody CreateParkingSpotAllocationDto createParkingSpotAllocationDto) {
         log.info("adding the following ParkingSpotAllocation: "+ createParkingSpotAllocationDto);
         return spotAllocationService.allocateParkingSpot(createParkingSpotAllocationDto);

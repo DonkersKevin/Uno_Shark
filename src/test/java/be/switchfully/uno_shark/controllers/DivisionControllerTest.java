@@ -27,7 +27,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class DivisionControllerTest {
 
     @Autowired
@@ -42,7 +41,6 @@ class DivisionControllerTest {
     private static String managerToken;
 
     private static String memberToken;
-
 
     @BeforeAll
     static void generateManagerToken() {
