@@ -35,6 +35,7 @@ public class ParkingSpotAllocationController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('GET_ALL_PARKINGALLOCATIONS')")
     public List<ShowAllocationDto> getAll(@RequestParam(required=false) String sort,
                                           @RequestParam(required=false) String status,
                                           @RequestParam(required=false) Integer limit){
@@ -43,6 +44,7 @@ public class ParkingSpotAllocationController {
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping(path = "/{id}")
+    @PreAuthorize("hasAuthority('STOP_ALLOCATION_PARKINGSPOT')")
     public void stopParking(@PathVariable long id){
         spotAllocationService.stopParkingAllocation(id);
     }
