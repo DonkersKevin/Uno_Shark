@@ -3,6 +3,7 @@ package be.switchfully.uno_shark.services;
 import be.switchfully.uno_shark.domain.parking.ParkingLot;
 import be.switchfully.uno_shark.domain.parkingspotallocation.ParkingSpotAllocation;
 import be.switchfully.uno_shark.domain.parkingspotallocation.dto.CreateParkingSpotAllocationDto;
+import be.switchfully.uno_shark.domain.parkingspotallocation.dto.ShowAllocationDto;
 import be.switchfully.uno_shark.domain.parkingspotallocation.dto.SpotAllocationMapper;
 import be.switchfully.uno_shark.domain.person.MembershipLevel;
 import be.switchfully.uno_shark.domain.person.licenseplate.LicensePlate;
@@ -12,6 +13,7 @@ import be.switchfully.uno_shark.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 @Transactional
@@ -83,5 +85,14 @@ public class SpotAllocationService {
             throw new RuntimeException("parking is full!");
         }
     }
+
+    public List<ShowAllocationDto> getAllAllocations(){
+        return spotAllocationRepository.findAll().stream()
+                .map(spotAllocationMapper::mapAllocationToShowDto)
+                .sorted(ShowAllocationDto::compareTo)
+                .toList();
+    }
+
+
 
 }
