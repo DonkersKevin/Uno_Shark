@@ -5,33 +5,32 @@ import be.switchfully.uno_shark.domain.person.licenseplate.LicensePlate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-public class CreateParkingSpotAllocationDto {
+public class ShowAllocationDto implements Comparable<ShowAllocationDto>{
 
-
+    private Long id;
     private Long userId;
     private LicensePlate licensePlate;
     private Long parkingLotId;
     private LocalDateTime startTime;
+    private LocalDateTime stopTime;
 
-    public CreateParkingSpotAllocationDto() {
-    }
-
-    public CreateParkingSpotAllocationDto(Long userId, LicensePlate licensePlate, Long parkingLotId) {
-        this.userId = userId;
-        this.licensePlate = licensePlate;
-        this.parkingLotId = parkingLotId;
-        this.startTime = LocalDateTime.now();
-    }
-
-    public CreateParkingSpotAllocationDto(java.lang.Long userId, LicensePlate licensePlate, Long parkingLotId, LocalDateTime startTime) {
+    public ShowAllocationDto(Long id, Long userId, LicensePlate licensePlate, Long parkingLotId, LocalDateTime startTime) {
+        this.id = id;
         this.userId = userId;
         this.licensePlate = licensePlate;
         this.parkingLotId = parkingLotId;
         this.startTime = startTime;
     }
 
+    public void setStopTime(LocalDateTime stopTime) {
+        this.stopTime = stopTime;
+    }
 
-    public java.lang.Long getUserId() {
+    public Long getId() {
+        return id;
+    }
+
+    public Long getUserId() {
         return userId;
     }
 
@@ -47,4 +46,12 @@ public class CreateParkingSpotAllocationDto {
         return startTime;
     }
 
+    public LocalDateTime getStopTime() {
+        return stopTime;
+    }
+
+    @Override
+    public int compareTo(ShowAllocationDto o) {
+        return startTime.compareTo(o.startTime);
+    }
 }

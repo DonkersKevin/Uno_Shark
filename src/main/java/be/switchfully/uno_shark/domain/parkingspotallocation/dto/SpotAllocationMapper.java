@@ -39,4 +39,14 @@ public class SpotAllocationMapper {
 
         return existingLicensePlate;
     }
+
+    public ShowAllocationDto mapAllocationToShowDto(ParkingSpotAllocation allocation){
+        ShowAllocationDto dto = new ShowAllocationDto(allocation.getId(),
+                allocation.getUser().getId(),
+                allocation.getLicensePlate(),
+                allocation.getParkinglot().getId(),
+                allocation.getStartTime());
+        if(!allocation.isActive()) dto.setStopTime(allocation.getEndTime());
+        return dto;
+    }
 }
