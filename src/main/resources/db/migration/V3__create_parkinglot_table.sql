@@ -9,10 +9,10 @@ create table parkinglot
     parking_category varchar(255),
     amount           double precision not null,
     currency         varchar(255),
-    fk_address_id       bigint
-            references address,
-    fk_division_id      bigint
-            references division,
-    fk_person_id        bigint
-            references person
+    fk_address_id    bigint
+        references address,
+    fk_division_id   bigint
+        references division,
+    fk_person_id     bigint
+        references person
 );
