@@ -4,8 +4,6 @@ import be.switchfully.uno_shark.domain.person.phonenumber.LandLinePhone;
 import be.switchfully.uno_shark.domain.person.phonenumber.MobilePhone;
 
 public class ParkingLotSimpleDto {
-
-
     private Long id;
     private String name;
     private int capacity;

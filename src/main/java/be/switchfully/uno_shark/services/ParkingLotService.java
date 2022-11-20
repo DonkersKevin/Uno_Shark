@@ -13,10 +13,12 @@ import be.switchfully.uno_shark.repositories.ParkingLotRepository;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -40,7 +42,6 @@ public class ParkingLotService {
 
     public ParkingLotDto addParkingLot(CreateParkingLotDto createParkingLotDto) {
         ParkingLot checkedParkingLot = checkParkingLotForDuplicatesByFields(parkingLotMapper.CreateDtoToParkingLot(createParkingLotDto));
-
         log.info("Saving parkinglot");
         ParkingLot returnedParkinglot = parkingLotRepository.save(checkedParkingLot);
         return parkingLotMapper.parkingLotToDto(returnedParkinglot);
@@ -56,7 +57,13 @@ public class ParkingLotService {
         Division checkedDivision = divisionService.checkDivisionForDuplicatesByFields(parkingLotTosave.getDivision());
         parkingLotTosave.setDivision(checkedDivision);
 
-        return parkingLotTosave;
+        return checkParkingLotItself(parkingLotTosave);
+    }
+
+    private ParkingLot checkParkingLotItself(ParkingLot parkingLot) {
+        Example<ParkingLot> example = Example.of(parkingLot);
+        Optional<ParkingLot> searchResult = parkingLotRepository.findOne(example);
+        return searchResult.orElse(parkingLot);
     }
 
     public List<ParkingLotSimpleDto> getAllParkinglots() {
@@ -67,5 +74,4 @@ public class ParkingLotService {
         return parkingLotMapper.parkingLotToDto(parkingLotRepository.findById(Long.valueOf(id)).orElseThrow(()
                 -> new NoParkingLotByThatIdException("No parkinglot with id: " + id)));
     }
-
 }

@@ -32,25 +32,4 @@ public class Price {
     public void setCurrency(Currency currency) {
         this.currency = currency;
     }
-
-    @Override
-    public String toString() {
-        return "Price{" +
-                "amount=" + amount +
-                ", currency=" + currency +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Price price = (Price) o;
-        return Double.compare(price.amount, amount) == 0 && Objects.equals(currency, price.currency);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(amount, currency);
-    }
 }

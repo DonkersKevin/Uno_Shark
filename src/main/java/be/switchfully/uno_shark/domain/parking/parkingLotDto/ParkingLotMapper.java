@@ -55,8 +55,8 @@ public class ParkingLotMapper {
                 parkingLot.getId(),
                 parkingLot.getName(),
                 parkingLot.getCapacity(),
-                parkingLot.getPerson().getMobilePhone(),
-                parkingLot.getPerson().getLandLinePhone()
+                parkingLot.getMobilePhone(),
+                parkingLot.getLandLinePhone()
         );
     }
 
@@ -64,6 +64,4 @@ public class ParkingLotMapper {
         log.info("Converting List : ParkingLotSimpleDto <- Parkinglot");
         return parkingLots.stream().map(this::parkingLotToSimpleDto).toList();
     }
-
-
 }

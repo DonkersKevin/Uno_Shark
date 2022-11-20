@@ -15,7 +15,7 @@ import static javax.persistence.EnumType.*;
 @Entity
 @Table(name = "USERS")
 @JsonIgnoreProperties(ignoreUnknown = true)
-//todo can be used with inheritance bit we have to figure that one out
+//Todo can be used with inheritance bit we have to figure that one out
 public class User {
 
     @Id

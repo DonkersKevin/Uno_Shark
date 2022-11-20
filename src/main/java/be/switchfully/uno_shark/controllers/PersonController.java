@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class PersonController {
 
     //Todo remove when done.
-    //test it... it works... why?
+    //test it... it works... why? (change mapping to "Persons" or call /{id}
 
 
 }

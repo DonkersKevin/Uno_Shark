@@ -2,6 +2,8 @@ package be.switchfully.uno_shark.domain.parking;
 
 import be.switchfully.uno_shark.domain.person.Person;
 import be.switchfully.uno_shark.domain.person.address.Address;
+import be.switchfully.uno_shark.domain.person.phonenumber.LandLinePhone;
+import be.switchfully.uno_shark.domain.person.phonenumber.MobilePhone;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -17,16 +19,16 @@ public class ParkingLot {
     @Enumerated(EnumType.STRING)
     private ParkingCategory parkingCategory;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "fk_division_id")
     private Division division;
     private int capacity;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "fk_person_id")
     private Person person;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "fk_address_id")
     private Address address;
 
@@ -119,6 +121,14 @@ public class ParkingLot {
         return pricePerHour;
     }
 
+    public MobilePhone getMobilePhone(){
+        return this.person.getMobilePhone();
+    }
+
+    public LandLinePhone getLandLinePhone(){
+        return this.person.getLandLinePhone();
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -149,18 +159,5 @@ public class ParkingLot {
 
     public void setPricePerHour(Price pricePerHour) {
         this.pricePerHour = pricePerHour;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ParkingLot that = (ParkingLot) o;
-        return name.equals(that.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name);
     }
 }
