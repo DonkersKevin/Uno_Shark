@@ -1,13 +1,9 @@
 package be.switchfully.uno_shark.controllers;
 
-import be.switchfully.uno_shark.domain.parking.divisionDto.CreateDivisionDto;
-import be.switchfully.uno_shark.domain.parking.divisionDto.ShowDivisionDto;
-import be.switchfully.uno_shark.domain.parking.divisionDto.SingleDivisionDto;
-import be.switchfully.uno_shark.repositories.DivisionRepository;
-import be.switchfully.uno_shark.services.DivisionService;
+import be.switchfully.uno_shark.domain.parkingspotallocation.dto.ShowAllocationDto;
+import be.switchfully.uno_shark.repositories.SpotAllocationRepository;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,25 +11,20 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.annotation.DirtiesContext;
-
 
 import java.util.Arrays;
-import java.util.stream.Collectors;
+import java.util.Comparator;
 
 import static io.restassured.RestAssured.given;
-import static io.restassured.http.ContentType.JSON;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
-class DivisionControllerTest {
+class ParkingSpotAllocationControllerTest {
 
     @Autowired
-    DivisionRepository divisionRepository;
-
-    @Autowired
-    DivisionService divisionService;
+    private SpotAllocationRepository spotRepo;
 
     @LocalServerPort
     private int port;
@@ -41,7 +32,6 @@ class DivisionControllerTest {
     private static String managerToken;
 
     private static String memberToken;
-
     @BeforeAll
     static void generateManagerToken() {
         managerToken = RestAssured
@@ -79,142 +69,172 @@ class DivisionControllerTest {
     }
 
     @Test
-    void createDivisionHappyPath() {
-        given()
+    void findAllWithoutFilterHappyPath() {
+        ShowAllocationDto[] response = given()
                 .header("Authorization", "Bearer " + managerToken)
                 .baseUri("http://localhost")
                 .port(port)
                 .when()
-                .body(new CreateDivisionDto(1, "New Division", "Old Division Name", "Gigachad"))
-                .contentType(JSON)
-                .post("/divisions")
+                .get("/spotallocations")
                 .then()
                 .assertThat()
-                .statusCode(HttpStatus.CREATED.value());
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(ShowAllocationDto[].class);
 
-        Assertions.assertThat(divisionRepository.findById(4L).orElseThrow().getDirector()).isEqualTo("Gigachad");
+        assertEquals(response.length, spotRepo.findAll().size());
     }
 
     @Test
-    void createDivision_asMember_Forbidden() {
+    void findAllWithoutFilter_asMember_Forbidden() {
         given()
                 .header("Authorization", "Bearer " + memberToken)
                 .baseUri("http://localhost")
                 .port(port)
                 .when()
-                .body(new CreateDivisionDto(1, "New Division", "Old Division Name", "Gigachad"))
-                .contentType(JSON)
-                .post("/divisions")
+                .get("/spotallocations")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.FORBIDDEN.value())
+                .extract();
+    }
+
+    @Test
+    void findAllWithLimitHappyPath() {
+        ShowAllocationDto[] response = given()
+                .header("Authorization", "Bearer " + managerToken)
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .get("/spotallocations?limit=2")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(ShowAllocationDto[].class);
+
+        assertEquals(response.length, 2);
+
+    }
+
+    @Test
+    void findAllDescendingHappyPath() {
+        ShowAllocationDto[] response = given()
+                .header("Authorization", "Bearer " + managerToken)
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .get("/spotallocations?sort=descending")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(ShowAllocationDto[].class);
+
+        assertThat(response).isSortedAccordingTo(Comparator.reverseOrder());
+
+    }
+
+    @Test
+    void findAllStatusActiveHappyPath() {
+        ShowAllocationDto[] response = given()
+                .header("Authorization", "Bearer " + managerToken)
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .get("/spotallocations?status=active")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(ShowAllocationDto[].class);
+
+        assertThat(Arrays.stream(response)
+                .filter(showAllocationDto -> showAllocationDto.getStopTime() != null).toList()).isEmpty();
+
+    }
+
+    @Test
+    void findAllStatusStoppedHappyPath() {
+        ShowAllocationDto[] response = given()
+                .header("Authorization", "Bearer " + managerToken)
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .get("/spotallocations?status=stopped")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(ShowAllocationDto[].class);
+
+        assertThat(Arrays.stream(response)
+                .filter(showAllocationDto -> showAllocationDto.getStopTime() == null).toList()).isEmpty();
+
+    }
+
+    @Test
+    void stopParkingHappyPath() {
+        given()
+                .header("Authorization", "Bearer " + memberToken)
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .put("/spotallocations/3")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value());
+
+        assertThat(spotRepo.findById(3L).orElseThrow().isActive()).isFalse();
+        assertThat(spotRepo.findById(3L).orElseThrow().getEndTime()).isNotNull();
+    }
+
+    @Test
+    void stopParking_asManager_Forbidden() {
+        given()
+                .header("Authorization", "Bearer " +managerToken)
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .put("/spotallocations/3")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.FORBIDDEN.value());
     }
 
     @Test
-    void whenEmptyField_illegalArgumentExceptionIsThrown() {
+    void stopParkingWhenAlreadyStopped_ThrowsException() {
         Response response = given()
-                .header("Authorization", "Bearer " + managerToken)
+                .header("Authorization", "Bearer " + memberToken)
                 .baseUri("http://localhost")
                 .port(port)
                 .when()
-                .body(new CreateDivisionDto(1, null, "Old Division Name", "Gigachad"))
-                .contentType(JSON)
-                .post("/divisions")
+                .put("/spotallocations/1")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .extract()
                 .response();
 
-        assertEquals("Name can not be empty!", response.jsonPath().getString("message"));
-
+        assertEquals("This allocation has already been stopped!", response.jsonPath().getString("message"));
     }
 
     @Test
-    void getAllDivisionsHappyPath() {
-
-        ShowDivisionDto[] response = given()
-                .header("Authorization", "Bearer " + managerToken)
-                .baseUri("http://localhost")
-                .port(port)
-                .when()
-                .get("/divisions")
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.OK.value())
-                .extract()
-                .as(ShowDivisionDto[].class);
-
-        assertEquals(response.length, divisionRepository.findAll().size());
-
-        System.out.println(Arrays.stream(response).map(ShowDivisionDto::toString).collect(Collectors.toList()));
-    }
-
-    @Test
-    void getAllDivisions_asMember_Forbidden() {
-
-        given()
-                .header("Authorization", "Bearer " + memberToken)
-                .baseUri("http://localhost")
-                .port(port)
-                .when()
-                .get("/divisions")
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.FORBIDDEN.value())
-                .extract();
-    }
-
-    @Test
-    void getASingleDivisionHappyPath() {
-
-        SingleDivisionDto response = given()
-                .header("Authorization", "Bearer " + managerToken)
-                .baseUri("http://localhost")
-                .port(port)
-                .when()
-                .get("/divisions/1")
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.OK.value())
-                .extract()
-                .as(SingleDivisionDto.class);
-
-        assertEquals(response.getName(), "UGC");
-    }
-
-    @Test
-    void getASingleDivision_asMember_Forbidden() {
-
-        given()
-                .header("Authorization", "Bearer " + memberToken)
-                .baseUri("http://localhost")
-                .port(port)
-                .when()
-                .get("/divisions/1")
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.FORBIDDEN.value())
-                .extract();
-
-    }
-
-    @Test
-    void whenGetSingleDivision_andNoSuchDivisionExists_IllegalArgumentExceptionIsThrown() {
+    void stopParkingWhenAllocationDoesntExist_ThrowsException() {
         Response response = given()
-                .header("Authorization", "Bearer " + managerToken)
+                .header("Authorization", "Bearer " + memberToken)
                 .baseUri("http://localhost")
                 .port(port)
                 .when()
-                .contentType(JSON)
-                .get("/divisions/1000000000")
+                .put("/spotallocations/1000000")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
                 .extract()
                 .response();
 
-        assertEquals("No such division exists!", response.jsonPath().getString("message"));
+        assertEquals("No such parking allocation exists!", response.jsonPath().getString("message"));
     }
+
 
 }

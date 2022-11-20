@@ -1,6 +1,7 @@
 package be.switchfully.uno_shark.domain.person;
 
 import be.switchfully.uno_shark.domain.person.address.Address;
+import be.switchfully.uno_shark.security.Role;
 import be.switchfully.uno_shark.domain.person.phonenumber.LandLinePhone;
 import be.switchfully.uno_shark.domain.person.phonenumber.MobilePhone;
 import be.switchfully.uno_shark.domain.person.licenseplate.LicensePlate;
@@ -41,6 +42,9 @@ public class User {
     @Enumerated(STRING)
     private Role role;
 
+    @Column(name = "username")
+    private String userName;
+
     public User() {
     }
 
@@ -63,6 +67,24 @@ public class User {
         this.registrationDate = LocalDate.now();
         this.licensePlate = licensePlate;
         this.role = role;
+    }
+
+    public User(String firstName, String lastName, Address address, LandLinePhone phoneNumber, MobilePhone mobileNumber, String emailAddress, LicensePlate licensePlate, Role role, String userName) {
+        this.person = new Person(firstName, lastName, address, phoneNumber, mobileNumber, emailAddress);
+        this.registrationDate = LocalDate.now();
+        this.licensePlate = licensePlate;
+        this.memberLevel = BRONZE;
+        this.role = role;
+        this.userName = userName;
+    }
+
+    public User(String firstName, String lastName, Address address, LandLinePhone phoneNumber, MobilePhone mobileNumber, String emailAddress, LicensePlate licensePlate, String userName) {
+        this.person = new Person(firstName, lastName, address, phoneNumber, mobileNumber, emailAddress);
+        this.registrationDate = LocalDate.now();
+        this.licensePlate = licensePlate;
+        this.memberLevel = BRONZE;
+        this.role = Role.MEMBER;
+        this.userName = userName;
     }
 
     public User setLicensePlate(LicensePlate licensePlate) {
@@ -92,6 +114,14 @@ public class User {
 
     public Role getRole() {
         return role;
+    }
+
+    public String getUsername() {
+        return userName;
+    }
+
+    public long getId() {
+        return id;
     }
 
     @Override

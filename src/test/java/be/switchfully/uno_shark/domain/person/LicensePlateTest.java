@@ -21,7 +21,6 @@ class LicensePlateTest {
         LicensePlate licensePlate1 = new LicensePlate(IssuingCountry.BE,"XOXO");
         LicensePlate licensePlate2 = new LicensePlate(IssuingCountry.BE,"XOXO");
         assertThat(licensePlate1).isEqualTo(licensePlate2);
-        assertThat(licensePlate1.hashCode()).isEqualTo(licensePlate2.hashCode());
     }
 
     @Test

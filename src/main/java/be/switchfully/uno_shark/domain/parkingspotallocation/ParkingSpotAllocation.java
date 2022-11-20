@@ -80,4 +80,11 @@ public class ParkingSpotAllocation {
     public void setLicensePlate(LicensePlate licensePlate) {
         this.licensePlate = licensePlate;
     }
+
+    public void stop(){
+        if(!isActive) throw new IllegalArgumentException("This allocation has already been stopped!");
+        isActive = false;
+        endTime = LocalDateTime.now();
+    }
+
 }

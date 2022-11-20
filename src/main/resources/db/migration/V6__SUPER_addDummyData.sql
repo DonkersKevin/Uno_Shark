@@ -82,6 +82,9 @@ values (nextval('parkinglot_seq'),250,'Center','ABOVEGROUND', 6.00,'EUR',3,4,1);
 insert into parkinglot (id, capacity, name, parking_category, amount, currency, fk_address_id, fk_person_id, fk_division_id)
 values (nextval('parkinglot_seq'),20,'rue Haute','UNDERGROUND', 2.00,'EUR',5,6,3);
 
+insert into parkinglot (id, capacity, name, parking_category, amount, currency, fk_address_id, fk_person_id, fk_division_id)
+values (nextval('parkinglot_seq'),2,'thuis','ABOVEGROUND', 2.00,'EUR',4,2,1);
+
 insert into users(id, registration_date, fk_licenseplate_id, fk_person_id, role, member_level)
 values (nextval('user_seq'), '2010-12-01',  1, 1, 'MANAGER','GOLD');
 
