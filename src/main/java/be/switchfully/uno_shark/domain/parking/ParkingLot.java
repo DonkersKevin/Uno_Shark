@@ -4,6 +4,7 @@ import be.switchfully.uno_shark.domain.person.Person;
 import be.switchfully.uno_shark.domain.person.address.Address;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "parkinglot")
@@ -16,16 +17,16 @@ public class ParkingLot {
     @Enumerated(EnumType.STRING)
     private ParkingCategory parkingCategory;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_division_id")
     private Division division;
     private int capacity;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_person_id")
     private Person person;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_address_id")
     private Address address;
 
@@ -116,5 +117,50 @@ public class ParkingLot {
 
     public Price getPricePerHour() {
         return pricePerHour;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setParkingCategory(ParkingCategory parkingCategory) {
+        this.parkingCategory = parkingCategory;
+    }
+
+    public void setDivision(Division division) {
+        this.division = division;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public void setPricePerHour(Price pricePerHour) {
+        this.pricePerHour = pricePerHour;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ParkingLot that = (ParkingLot) o;
+        return name.equals(that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }

@@ -61,7 +61,7 @@ public class ParkingLotMapper {
     }
 
     public List<ParkingLotSimpleDto> parkingLotListToDto(List<ParkingLot> parkingLots) {
-        log.info("Converting List of ParkingLotSimpleDto <- Parkinglot");
+        log.info("Converting List : ParkingLotSimpleDto <- Parkinglot");
         return parkingLots.stream().map(this::parkingLotToSimpleDto).toList();
     }
 
