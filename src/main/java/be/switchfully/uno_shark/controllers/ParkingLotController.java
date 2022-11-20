@@ -36,16 +36,16 @@ public class ParkingLotController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
     @PreAuthorize("hasAuthority('GET_ALL_PARKINGLOTS')")
-    public List<ParkingLotSimpleDto> getAllParkinglots(){
-        log.info("Getting all parkinglots");
-        return parkingLotService.getAllParkinglots();
+    public List<ParkingLotSimpleDto> getAllParkingLots(){
+        log.info("Getting all parking lots");
+        return parkingLotService.getAllParkingLots();
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
     @PreAuthorize("hasAuthority('GET_PARKINGLOT')")
     public ParkingLotDto getParkingLotById(@PathVariable String id){
-        log.info("Looking for parkinglot with id: " + id);
+        log.info("Looking for parking lot with id: " + id);
         return parkingLotService.getParkingLotById(id);
     }
 }

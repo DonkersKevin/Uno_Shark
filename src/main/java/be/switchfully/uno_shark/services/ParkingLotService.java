@@ -42,22 +42,22 @@ public class ParkingLotService {
 
     public ParkingLotDto addParkingLot(CreateParkingLotDto createParkingLotDto) {
         ParkingLot checkedParkingLot = checkParkingLotForDuplicatesByFields(parkingLotMapper.CreateDtoToParkingLot(createParkingLotDto));
-        log.info("Saving parkinglot");
-        ParkingLot returnedParkinglot = parkingLotRepository.save(checkedParkingLot);
-        return parkingLotMapper.parkingLotToDto(returnedParkinglot);
+        log.info("Saving parking lot");
+        ParkingLot returnedParkingLot = parkingLotRepository.save(checkedParkingLot);
+        return parkingLotMapper.parkingLotToDto(returnedParkingLot);
     }
 
-    private ParkingLot checkParkingLotForDuplicatesByFields(ParkingLot parkingLotTosave) {
-        Address checkedAddress = addressService.checkAddressForDuplicatesByFields(parkingLotTosave.getAddress());
-        parkingLotTosave.setAddress(checkedAddress);
+    private ParkingLot checkParkingLotForDuplicatesByFields(ParkingLot parkingLotToSave) {
+        Address checkedAddress = addressService.checkAddressForDuplicatesByFields(parkingLotToSave.getAddress());
+        parkingLotToSave.setAddress(checkedAddress);
 
-        Person checkedPerson = personService.checkPersonForDuplicatesByFields(parkingLotTosave.getPerson());
-        parkingLotTosave.setPerson(checkedPerson);
+        Person checkedPerson = personService.checkPersonForDuplicatesByFields(parkingLotToSave.getPerson());
+        parkingLotToSave.setPerson(checkedPerson);
 
-        Division checkedDivision = divisionService.checkDivisionForDuplicatesByFields(parkingLotTosave.getDivision());
-        parkingLotTosave.setDivision(checkedDivision);
+        Division checkedDivision = divisionService.checkDivisionForDuplicatesByFields(parkingLotToSave.getDivision());
+        parkingLotToSave.setDivision(checkedDivision);
 
-        return checkParkingLotItself(parkingLotTosave);
+        return checkParkingLotItself(parkingLotToSave);
     }
 
     private ParkingLot checkParkingLotItself(ParkingLot parkingLot) {
@@ -66,7 +66,7 @@ public class ParkingLotService {
         return searchResult.orElse(parkingLot);
     }
 
-    public List<ParkingLotSimpleDto> getAllParkinglots() {
+    public List<ParkingLotSimpleDto> getAllParkingLots() {
         return parkingLotMapper.parkingLotListToDto(parkingLotRepository.findAll());
     }
 
