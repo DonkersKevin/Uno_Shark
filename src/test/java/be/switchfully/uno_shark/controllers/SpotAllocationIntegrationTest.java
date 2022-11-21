@@ -196,33 +196,12 @@ public class SpotAllocationIntegrationTest {
     @Test
     void createNewSpotAllocation_whenCapacityHasBeenReached_ThenThrowError(){
         LicensePlate licensePlate = new LicensePlate(IssuingCountry.BE, "ABC123");
-        CreateParkingSpotAllocationDto createParkingSpotAllocationDto = new CreateParkingSpotAllocationDto(1L, licensePlate, 1L);
+        CreateParkingSpotAllocationDto createParkingSpotAllocationDto = new CreateParkingSpotAllocationDto(1L, licensePlate, 4L);
 
-        given()
-                .baseUri("http://localhost")
-                .header("Authorization", "Bearer " + memberToken)
-                .port(port)
-                .when()
-                .body(createParkingSpotAllocationDto)
-                .contentType(JSON)
-                .post("/spotallocations")
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.CREATED.value());
-
-        given()
-                .baseUri("http://localhost")
-                .port(port)
-                .when()
-                .body(createParkingSpotAllocationDto)
-                .contentType(JSON)
-                .post("/spotallocations")
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.CREATED.value());
 
         Response response = given()
                 .baseUri("http://localhost")
+                .header("Authorization", "Bearer " + memberToken)
                 .port(port)
                 .when()
                 .body(createParkingSpotAllocationDto)
