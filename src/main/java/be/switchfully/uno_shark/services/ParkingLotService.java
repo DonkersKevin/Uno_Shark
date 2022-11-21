@@ -11,6 +11,7 @@ import be.switchfully.uno_shark.domain.person.Person;
 import be.switchfully.uno_shark.domain.person.address.Address;
 import be.switchfully.uno_shark.repositories.ParkingLotRepository;
 
+import be.switchfully.uno_shark.services.util.ParkingLotDtoValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Example;
@@ -27,20 +28,24 @@ public class ParkingLotService {
     private final ParkingLotMapper parkingLotMapper;
     private final ParkingLotRepository parkingLotRepository;
 
+    private final ParkingLotDtoValidator parkingLotDtoValidator;
+
     private final AddressService addressService;
     private final PersonService personService;
     private final DivisionService divisionService;
 
 
-    public ParkingLotService(ParkingLotMapper parkingLotMapper, ParkingLotRepository parkingLotRepository, AddressService addressService, PersonService personService, DivisionService divisionService) {
+    public ParkingLotService(ParkingLotMapper parkingLotMapper, ParkingLotRepository parkingLotRepository, ParkingLotDtoValidator parkingLotDtoValidator, AddressService addressService, PersonService personService, DivisionService divisionService) {
         this.parkingLotMapper = parkingLotMapper;
         this.parkingLotRepository = parkingLotRepository;
+        this.parkingLotDtoValidator = parkingLotDtoValidator;
         this.addressService = addressService;
         this.personService = personService;
         this.divisionService = divisionService;
     }
 
     public ParkingLotDto addParkingLot(CreateParkingLotDto createParkingLotDto) {
+        parkingLotDtoValidator.checkParkingLotDtoForNullFields(createParkingLotDto);
         ParkingLot checkedParkingLot = checkParkingLotForDuplicatesByFields(parkingLotMapper.CreateDtoToParkingLot(createParkingLotDto));
         log.info("Saving parking lot");
         ParkingLot returnedParkingLot = parkingLotRepository.save(checkedParkingLot);
