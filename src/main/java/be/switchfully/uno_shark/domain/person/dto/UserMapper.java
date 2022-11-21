@@ -1,6 +1,7 @@
 package be.switchfully.uno_shark.domain.person.dto;
 
 import be.switchfully.uno_shark.domain.person.User;
+import be.switchfully.uno_shark.security.Role;
 import be.switchfully.uno_shark.services.CreatePersonDto;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +19,9 @@ public class UserMapper {
                 createUserDto.getPhoneNumber(),
                 createUserDto.getMobileNumber(),
                 createUserDto.getEmailAddress(),
-                createUserDto.getLicensePlate());
+                createUserDto.getLicensePlate(),
+                Role.valueOf(createUserDto.getRole().toUpperCase()),
+                createUserDto.getUserName());
         changeLevelMaybe(user, createUserDto);
         return user;
     }
@@ -40,7 +43,9 @@ public class UserMapper {
                 .setEmailAddress(user.getPerson().getEmailAddress())
                 .setLicensePlate(user.getLicensePlate())
                 .setRegistrationDate(user.getRegistrationDate())
-                .setMemberLevel(user.getMemberLevel());
+                .setMemberLevel(user.getMemberLevel())
+                .setRole(user.getRole())
+                .setUserName(user.getUsername());
     }
 
     public CreatePersonDto mapUserDtoToPersonDto(CreateUserDto createUserDto) {

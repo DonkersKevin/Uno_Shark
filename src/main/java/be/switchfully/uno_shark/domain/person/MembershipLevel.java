@@ -3,7 +3,6 @@ package be.switchfully.uno_shark.domain.person;
 import java.math.BigDecimal;
 
 public enum MembershipLevel {
-
     BRONZE(0.00,0,4),
     SILVER(10.00,20,6),
     GOLD(40.00,30,24);

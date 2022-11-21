@@ -6,24 +6,22 @@ import be.switchfully.uno_shark.domain.person.licenseplate.IssuingCountry;
 import be.switchfully.uno_shark.domain.person.licenseplate.LicensePlate;
 import be.switchfully.uno_shark.repositories.SpotAllocationRepository;
 import be.switchfully.uno_shark.services.SpotAllocationService;
+import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.annotation.DirtiesContext;
 
-import static io.restassured.RestAssured.expect;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 public class SpotAllocationIntegrationTest {
 
     @LocalServerPort
@@ -35,6 +33,45 @@ public class SpotAllocationIntegrationTest {
     @Autowired
     SpotAllocationService spotAllocationService;
 
+    private static String managerToken;
+    private static String memberToken;
+
+    @BeforeAll
+    static void generateManagerToken() {
+        managerToken = RestAssured
+                .given()
+                .contentType("application/x-www-form-urlencoded; charset=utf-8")
+                .formParam("username", "manager")
+                .formParam("password", "manager")
+                .formParam("grant_type", "password")
+                .formParam("client_id", "parkSharkoUno")
+                .formParam("client_secret", "a50b122c-462f-4f5f-996c-2af33b6506be")
+                .when()
+                .post("https://keycloak.switchfully.com/auth/realms/sharkoUno/protocol/openid-connect/token")
+                .then()
+                .extract()
+                .path("access_token")
+                .toString();
+    }
+
+    @BeforeAll
+    static void generateMemberToken() {
+        memberToken = RestAssured
+                .given()
+                .contentType("application/x-www-form-urlencoded; charset=utf-8")
+                .formParam("username", "member")
+                .formParam("password", "member")
+                .formParam("grant_type", "password")
+                .formParam("client_id", "parkSharkoUno")
+                .formParam("client_secret", "a50b122c-462f-4f5f-996c-2af33b6506be")
+                .when()
+                .post("https://keycloak.switchfully.com/auth/realms/sharkoUno/protocol/openid-connect/token")
+                .then()
+                .extract()
+                .path("access_token")
+                .toString();
+    }
+
     @Test
     void createNewSpotAllocationHappyPath() {
         LicensePlate licensePlate = new LicensePlate(IssuingCountry.BE, "ABC123");
@@ -42,15 +79,34 @@ public class SpotAllocationIntegrationTest {
 
         given()
                 .baseUri("http://localhost")
+                .header("Authorization", "Bearer " + memberToken)
                 .port(port)
                 .when()
                 .body(createParkingSpotAllocationDto)
                 .contentType(JSON)
-                .post("/spotallocation")
+                .post("/spotallocations")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.CREATED.value());
 
+    }
+
+    @Test
+    void createNewSpotAllocation_asManager_Forbidden() {
+        LicensePlate licensePlate = new LicensePlate(IssuingCountry.BE, "ABC123");
+        CreateParkingSpotAllocationDto createParkingSpotAllocationDto = new CreateParkingSpotAllocationDto(1L, licensePlate, 1L);
+
+        given()
+                .baseUri("http://localhost")
+                .header("Authorization", "Bearer " + managerToken)
+                .port(port)
+                .when()
+                .body(createParkingSpotAllocationDto)
+                .contentType(JSON)
+                .post("/spotallocations")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.FORBIDDEN.value());
     }
 
     @Test
@@ -60,11 +116,12 @@ public class SpotAllocationIntegrationTest {
 
         Response response = given()
                 .baseUri("http://localhost")
+                .header("Authorization", "Bearer " + memberToken)
                 .port(port)
                 .when()
                 .body(createParkingSpotAllocationDto)
                 .contentType(JSON)
-                .post("/spotallocation")
+                .post("/spotallocations")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
@@ -81,11 +138,12 @@ public class SpotAllocationIntegrationTest {
 
         Response response = given()
                 .baseUri("http://localhost")
+                .header("Authorization", "Bearer " + memberToken)
                 .port(port)
                 .when()
                 .body(createParkingSpotAllocationDto)
                 .contentType(JSON)
-                .post("/spotallocation")
+                .post("/spotallocations")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
@@ -102,11 +160,12 @@ public class SpotAllocationIntegrationTest {
 
         given()
                 .baseUri("http://localhost")
+                .header("Authorization", "Bearer " + memberToken)
                 .port(port)
                 .when()
                 .body(createParkingSpotAllocationDto)
                 .contentType(JSON)
-                .post("/spotallocation")
+                .post("/spotallocations")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.CREATED.value());
@@ -119,11 +178,12 @@ public class SpotAllocationIntegrationTest {
 
         Response response = given()
                 .baseUri("http://localhost")
+                .header("Authorization", "Bearer " + memberToken)
                 .port(port)
                 .when()
                 .body(createParkingSpotAllocationDto)
                 .contentType(JSON)
-                .post("/spotallocation")
+                .post("/spotallocations")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
@@ -136,37 +196,17 @@ public class SpotAllocationIntegrationTest {
     @Test
     void createNewSpotAllocation_whenCapacityHasBeenReached_ThenThrowError(){
         LicensePlate licensePlate = new LicensePlate(IssuingCountry.BE, "ABC123");
-        CreateParkingSpotAllocationDto createParkingSpotAllocationDto = new CreateParkingSpotAllocationDto(1L, licensePlate, 1L);
+        CreateParkingSpotAllocationDto createParkingSpotAllocationDto = new CreateParkingSpotAllocationDto(1L, licensePlate, 4L);
 
-        given()
-                .baseUri("http://localhost")
-                .port(port)
-                .when()
-                .body(createParkingSpotAllocationDto)
-                .contentType(JSON)
-                .post("/spotallocation")
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.CREATED.value());
-
-        given()
-                .baseUri("http://localhost")
-                .port(port)
-                .when()
-                .body(createParkingSpotAllocationDto)
-                .contentType(JSON)
-                .post("/spotallocation")
-                .then()
-                .assertThat()
-                .statusCode(HttpStatus.CREATED.value());
 
         Response response = given()
                 .baseUri("http://localhost")
+                .header("Authorization", "Bearer " + memberToken)
                 .port(port)
                 .when()
                 .body(createParkingSpotAllocationDto)
                 .contentType(JSON)
-                .post("/spotallocation")
+                .post("/spotallocations")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST.value())

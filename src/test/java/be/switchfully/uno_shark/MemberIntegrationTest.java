@@ -12,8 +12,10 @@ import be.switchfully.uno_shark.domain.person.phonenumber.LandLinePhone;
 import be.switchfully.uno_shark.domain.person.phonenumber.MobilePhone;
 import be.switchfully.uno_shark.repositories.UserRepository;
 import be.switchfully.uno_shark.services.MemberService;
+import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -21,19 +23,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
-import static be.switchfully.uno_shark.domain.person.MembershipLevel.GOLD;
+import static be.switchfully.uno_shark.domain.person.MembershipLevel.*;
 
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.springframework.test.annotation.DirtiesContext.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
-@DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 public class MemberIntegrationTest {
 
     @LocalServerPort
@@ -45,7 +46,47 @@ public class MemberIntegrationTest {
     @Autowired
     MemberService memberService;
 
+    private static String managerToken;
+    private static String memberToken;
+
+    @BeforeAll
+    static void generateManagerToken() {
+        managerToken = RestAssured
+                .given()
+                .contentType("application/x-www-form-urlencoded; charset=utf-8")
+                .formParam("username", "manager")
+                .formParam("password", "manager")
+                .formParam("grant_type", "password")
+                .formParam("client_id", "parkSharkoUno")
+                .formParam("client_secret", "a50b122c-462f-4f5f-996c-2af33b6506be")
+                .when()
+                .post("https://keycloak.switchfully.com/auth/realms/sharkoUno/protocol/openid-connect/token")
+                .then()
+                .extract()
+                .path("access_token")
+                .toString();
+    }
+
+    @BeforeAll
+    static void generateMemberToken() {
+        memberToken = RestAssured
+                .given()
+                .contentType("application/x-www-form-urlencoded; charset=utf-8")
+                .formParam("username", "member")
+                .formParam("password", "member")
+                .formParam("grant_type", "password")
+                .formParam("client_id", "parkSharkoUno")
+                .formParam("client_secret", "a50b122c-462f-4f5f-996c-2af33b6506be")
+                .when()
+                .post("https://keycloak.switchfully.com/auth/realms/sharkoUno/protocol/openid-connect/token")
+                .then()
+                .extract()
+                .path("access_token")
+                .toString();
+    }
+
     @Test
+    @DirtiesContext(methodMode = MethodMode.BEFORE_METHOD)
     void createNewMemberHappyPath() {
         PostalCode newPostalCode = new PostalCode("2000", "Antwerp");
         Address newAddress = new Address("fishlane", "23", newPostalCode, "belgium");
@@ -58,7 +99,11 @@ public class MemberIntegrationTest {
                 .setPhoneNumber(new LandLinePhone("070001122", CountryCode.BELGIUM))
                 .setMobileNumber(new MobilePhone("0478123456", CountryCode.BELGIUM))
                 .setEmailAddress("Freddi@Fish.be")
-                .setLicensePlate(newLicensePlate);
+                .setLicensePlate(newLicensePlate)
+                .setMemberLevel(BRONZE)
+                .setUserName("testUser")
+                .setPassword("pwd")
+                .setRole("member");
 
         given()
                 .baseUri("http://localhost")
@@ -150,7 +195,10 @@ public class MemberIntegrationTest {
                 .setMobileNumber(new MobilePhone("0478123456", CountryCode.BELGIUM))
                 .setEmailAddress("Freddi@Fish.be")
                 .setLicensePlate(newLicensePlate)
-                .setMemberLevel(GOLD);
+                .setMemberLevel(GOLD)
+                .setUserName("testUser")
+                .setPassword("pwd")
+                .setRole("member");
 
         given()
                 .baseUri("http://localhost")
@@ -169,9 +217,9 @@ public class MemberIntegrationTest {
 
     @Test
     void whenSameLicensePlate_illegalArgumentExceptionIsThrown() {
-        PostalCode newPostalCode = new PostalCode("2000","Antwerp");
+        PostalCode newPostalCode = new PostalCode("2000", "Antwerp");
         Address newAddress = new Address("fishlane", "23", newPostalCode, "belgium");
-        LicensePlate newLicensePlate = new LicensePlate(IssuingCountry.BE, "1ABC123" );
+        LicensePlate newLicensePlate = new LicensePlate(IssuingCountry.BE, "1ABC123");
 
         CreateUserDto newUser = new CreateUserDto()
                 .setFirstName("Freddi")
@@ -180,7 +228,11 @@ public class MemberIntegrationTest {
                 .setPhoneNumber(new LandLinePhone("070001122", CountryCode.BELGIUM))
                 .setMobileNumber(new MobilePhone("0478123456", CountryCode.BELGIUM))
                 .setEmailAddress("Freddi@Fish.be")
-                .setLicensePlate(newLicensePlate);
+                .setLicensePlate(newLicensePlate)
+                .setMemberLevel(BRONZE)
+                .setUserName("testFreddi")
+                .setPassword("pwd")
+                .setRole("member");
 
         given()
                 .baseUri("http://localhost")
@@ -215,20 +267,41 @@ public class MemberIntegrationTest {
         List<UserDtoLimitedInfo> userList = memberService.getAllMembers();
 
 
-        List<UserDtoLimitedInfo> response = List.of(given()
-                .baseUri("http://localhost")
-                .port(port)
-                .when()
-                .get("/members")
-                .as(UserDtoLimitedInfo[].class));
+        List<UserDtoLimitedInfo> response = List.of(
+                given()
+                        .header("Authorization", "Bearer " + managerToken)
+                        .baseUri("http://localhost")
+                        .port(port)
+                        .when()
+                        .get("/members")
+                        .then()
+                        .assertThat()
+                        .statusCode(HttpStatus.OK.value())
+                        .extract()
+                        .as(UserDtoLimitedInfo[].class));
 
         assertEquals(response, userList);
-
     }
 
     @Test
-    void getAMemberHappyPath(){
+    void getAllUsers_asMember_Forbidden() {
+
+                given()
+                        .header("Authorization", "Bearer " + memberToken)
+                        .baseUri("http://localhost")
+                        .port(port)
+                        .when()
+                        .get("/members")
+                        .then()
+                        .assertThat()
+                        .statusCode(HttpStatus.FORBIDDEN.value())
+                        .extract();
+    }
+
+    @Test
+    void getAMemberHappyPath() {
         UserDto response = given()
+                .header("Authorization", "Bearer " + managerToken)
                 .baseUri("http://localhost")
                 .port(port)
                 .when()
@@ -243,8 +316,24 @@ public class MemberIntegrationTest {
     }
 
     @Test
-    void whenMemberDoesNotExist_IllegalArgumentExceptionIsThrown(){
+    void getAMember_asMember_Forbidden() {
+
+        given()
+                .header("Authorization", "Bearer " + memberToken)
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .get("/members/1")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.FORBIDDEN.value())
+                .extract();
+    }
+
+    @Test
+    void whenMemberDoesNotExist_IllegalArgumentExceptionIsThrown() {
         Response response = given()
+                .header("Authorization", "Bearer " + managerToken)
                 .baseUri("http://localhost")
                 .port(port)
                 .when()

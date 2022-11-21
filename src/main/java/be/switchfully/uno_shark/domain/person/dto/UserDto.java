@@ -2,14 +2,14 @@ package be.switchfully.uno_shark.domain.person.dto;
 
 import be.switchfully.uno_shark.domain.person.licenseplate.LicensePlate;
 import be.switchfully.uno_shark.domain.person.MembershipLevel;
-import be.switchfully.uno_shark.domain.person.Role;
 import be.switchfully.uno_shark.domain.person.address.Address;
+import be.switchfully.uno_shark.security.Role;
 
 import java.time.LocalDate;
 
 public class UserDto {
 
-    private java.lang.Long id;
+    private Long id;
     private String firstName;
     private String lastName;
     private Address address;
@@ -18,10 +18,10 @@ public class UserDto {
     private String emailAddress;
     private LicensePlate licensePlate;
     private LocalDate registrationDate;
-
-    private Role role;
-
     private MembershipLevel memberLevel;
+    private Role role;
+    private String userName;
+
 
     public UserDto(Long id, String firstName, String lastName, Address address, String phoneNumber, String mobileNumber, String emailAddress, LicensePlate licensePlate, LocalDate registrationDate, Role role, MembershipLevel memberLevel) {
         this.id = id;
@@ -44,15 +44,7 @@ public class UserDto {
         return memberLevel;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
-    public java.lang.Long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -88,7 +80,15 @@ public class UserDto {
         return registrationDate;
     }
 
-    public UserDto setId(java.lang.Long id) {
+    public Role getRole() {
+        return role;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public UserDto setId(Long id) {
         this.id = id;
         return this;
     }
@@ -135,6 +135,16 @@ public class UserDto {
 
     public UserDto setMemberLevel(MembershipLevel memberLevel) {
         this.memberLevel = memberLevel;
+        return this;
+    }
+
+    public UserDto setRole(Role role) {
+        this.role = role;
+        return this;
+    }
+
+    public UserDto setUserName(String userName) {
+        this.userName = userName;
         return this;
     }
 }

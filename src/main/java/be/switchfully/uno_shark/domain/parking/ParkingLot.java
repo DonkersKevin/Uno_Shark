@@ -2,8 +2,11 @@ package be.switchfully.uno_shark.domain.parking;
 
 import be.switchfully.uno_shark.domain.person.Person;
 import be.switchfully.uno_shark.domain.person.address.Address;
+import be.switchfully.uno_shark.domain.person.phonenumber.LandLinePhone;
+import be.switchfully.uno_shark.domain.person.phonenumber.MobilePhone;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "parkinglot")
@@ -116,5 +119,45 @@ public class ParkingLot {
 
     public Price getPricePerHour() {
         return pricePerHour;
+    }
+
+    public MobilePhone getMobilePhone(){
+        return this.person.getMobilePhone();
+    }
+
+    public LandLinePhone getLandLinePhone(){
+        return this.person.getLandLinePhone();
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setParkingCategory(ParkingCategory parkingCategory) {
+        this.parkingCategory = parkingCategory;
+    }
+
+    public void setDivision(Division division) {
+        this.division = division;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public void setPricePerHour(Price pricePerHour) {
+        this.pricePerHour = pricePerHour;
     }
 }

@@ -14,9 +14,8 @@ public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "person_seq")
     @SequenceGenerator(name = "person_seq", sequenceName = "person_seq", allocationSize = 1)
-    @Column(name = "id", nullable = false)
+    //@Column(name = "id", nullable = false)
     private Long id;
-
     private String firstName;
     private String lastName;
 
@@ -43,6 +42,17 @@ public class Person {
         this.mobilePhone = mobilePhone;
         this.emailAddress = emailAddress;
         checkPhoneNumber();
+    }
+
+    //Todo bugfixing duplication, getting null for id,
+    public Person(Long id, String firstName, String lastName, Address address, LandLinePhone landLinePhone, MobilePhone mobilePhone, String emailAddress) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.landLinePhone = landLinePhone;
+        this.mobilePhone = mobilePhone;
+        this.emailAddress = emailAddress;
     }
 
     private void checkPhoneNumber(){
@@ -81,7 +91,7 @@ public class Person {
         return this;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -107,31 +117,5 @@ public class Person {
 
     public String getEmailAddress() {
         return emailAddress;
-    }
-
-    @Override
-    public String toString() {
-        return "Person{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", address=" + address +
-                ", phoneNumber='" + landLinePhone + '\'' +
-                ", mobileNumber='" + mobilePhone + '\'' +
-                ", emailAddress='" + emailAddress + '\'' +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Person person = (Person) o;
-        return Objects.equals(id, person.id) && Objects.equals(firstName, person.firstName) && Objects.equals(lastName, person.lastName) && Objects.equals(address, person.address) && Objects.equals(landLinePhone, person.landLinePhone) && Objects.equals(mobilePhone, person.mobilePhone) && Objects.equals(emailAddress, person.emailAddress);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, firstName, lastName, address, landLinePhone, mobilePhone, emailAddress);
     }
 }

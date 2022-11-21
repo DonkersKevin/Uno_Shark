@@ -21,8 +21,6 @@ public class LicensePlate {
     public LicensePlate() {
     }
 
-
-
     public LicensePlate(IssuingCountry issuingCountry, String licensePlateNumber) {
         this.issuingCountry = issuingCountryVerification(issuingCountry);
         this.licensePlateNumber = licenseplateNumberVerification(licensePlateNumber);

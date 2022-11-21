@@ -1,11 +1,10 @@
 package be.switchfully.uno_shark.controllers;
 
-import be.switchfully.uno_shark.domain.parking.divisionDto.ShowDivisionDto;
 import be.switchfully.uno_shark.domain.parkingspotallocation.dto.ShowAllocationDto;
 import be.switchfully.uno_shark.repositories.SpotAllocationRepository;
-import be.switchfully.uno_shark.services.SpotAllocationService;
+import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -15,7 +14,6 @@ import org.springframework.http.HttpStatus;
 
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.stream.Collectors;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.*;
@@ -28,18 +26,56 @@ class ParkingSpotAllocationControllerTest {
     @Autowired
     private SpotAllocationRepository spotRepo;
 
-    @Autowired
-    private SpotAllocationService spotService;
-
     @LocalServerPort
     private int port;
 
+    private static String managerToken;
+
+    private static String memberToken;
+    @BeforeAll
+    static void generateManagerToken() {
+        managerToken = RestAssured
+                .given()
+                .contentType("application/x-www-form-urlencoded; charset=utf-8")
+                .formParam("username", "manager")
+                .formParam("password", "manager")
+                .formParam("grant_type", "password")
+                .formParam("client_id", "parkSharkoUno")
+                .formParam("client_secret", "a50b122c-462f-4f5f-996c-2af33b6506be")
+                .when()
+                .post("https://keycloak.switchfully.com/auth/realms/sharkoUno/protocol/openid-connect/token")
+                .then()
+                .extract()
+                .path("access_token")
+                .toString();
+    }
+
+    @BeforeAll
+    static void generateMemberToken() {
+        memberToken = RestAssured
+                .given()
+                .contentType("application/x-www-form-urlencoded; charset=utf-8")
+                .formParam("username", "member")
+                .formParam("password", "member")
+                .formParam("grant_type", "password")
+                .formParam("client_id", "parkSharkoUno")
+                .formParam("client_secret", "a50b122c-462f-4f5f-996c-2af33b6506be")
+                .when()
+                .post("https://keycloak.switchfully.com/auth/realms/sharkoUno/protocol/openid-connect/token")
+                .then()
+                .extract()
+                .path("access_token")
+                .toString();
+    }
+
     @Test
-    void findAllWithoutFilterHappyPath(){
-        ShowAllocationDto[] response = given().baseUri("http://localhost")
+    void findAllWithoutFilterHappyPath() {
+        ShowAllocationDto[] response = given()
+                .header("Authorization", "Bearer " + managerToken)
+                .baseUri("http://localhost")
                 .port(port)
                 .when()
-                .get("/spotallocation")
+                .get("/spotallocations")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())
@@ -47,15 +83,30 @@ class ParkingSpotAllocationControllerTest {
                 .as(ShowAllocationDto[].class);
 
         assertEquals(response.length, spotRepo.findAll().size());
-
     }
 
     @Test
-    void findAllWithLimitHappyPath(){
-        ShowAllocationDto[] response = given().baseUri("http://localhost")
+    void findAllWithoutFilter_asMember_Forbidden() {
+        given()
+                .header("Authorization", "Bearer " + memberToken)
+                .baseUri("http://localhost")
                 .port(port)
                 .when()
-                .get("/spotallocation?limit=2")
+                .get("/spotallocations")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.FORBIDDEN.value())
+                .extract();
+    }
+
+    @Test
+    void findAllWithLimitHappyPath() {
+        ShowAllocationDto[] response = given()
+                .header("Authorization", "Bearer " + managerToken)
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .get("/spotallocations?limit=2")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())
@@ -67,11 +118,13 @@ class ParkingSpotAllocationControllerTest {
     }
 
     @Test
-    void findAllDescendingHappyPath(){
-        ShowAllocationDto[] response = given().baseUri("http://localhost")
+    void findAllDescendingHappyPath() {
+        ShowAllocationDto[] response = given()
+                .header("Authorization", "Bearer " + managerToken)
+                .baseUri("http://localhost")
                 .port(port)
                 .when()
-                .get("/spotallocation?sort=descending")
+                .get("/spotallocations?sort=descending")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())
@@ -83,11 +136,13 @@ class ParkingSpotAllocationControllerTest {
     }
 
     @Test
-    void findAllStatusActiveHappyPath(){
-        ShowAllocationDto[] response = given().baseUri("http://localhost")
+    void findAllStatusActiveHappyPath() {
+        ShowAllocationDto[] response = given()
+                .header("Authorization", "Bearer " + managerToken)
+                .baseUri("http://localhost")
                 .port(port)
                 .when()
-                .get("/spotallocation?status=active")
+                .get("/spotallocations?status=active")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())
@@ -100,11 +155,13 @@ class ParkingSpotAllocationControllerTest {
     }
 
     @Test
-    void findAllStatusStoppedHappyPath(){
-        ShowAllocationDto[] response = given().baseUri("http://localhost")
+    void findAllStatusStoppedHappyPath() {
+        ShowAllocationDto[] response = given()
+                .header("Authorization", "Bearer " + managerToken)
+                .baseUri("http://localhost")
                 .port(port)
                 .when()
-                .get("/spotallocation?status=stopped")
+                .get("/spotallocations?status=stopped")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.OK.value())
@@ -117,11 +174,13 @@ class ParkingSpotAllocationControllerTest {
     }
 
     @Test
-    void stopParkingHappyPath(){
-        given().baseUri("http://localhost")
+    void stopParkingHappyPath() {
+        given()
+                .header("Authorization", "Bearer " + memberToken)
+                .baseUri("http://localhost")
                 .port(port)
                 .when()
-                .put("/spotallocation/3")
+                .put("/spotallocations/3")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.OK.value());
@@ -131,11 +190,26 @@ class ParkingSpotAllocationControllerTest {
     }
 
     @Test
-    void stopParkingWhenAlreadyStopped_ThrowsException(){
-        Response response = given().baseUri("http://localhost")
+    void stopParking_asManager_Forbidden() {
+        given()
+                .header("Authorization", "Bearer " +managerToken)
+                .baseUri("http://localhost")
                 .port(port)
                 .when()
-                .put("/spotallocation/1")
+                .put("/spotallocations/3")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.FORBIDDEN.value());
+    }
+
+    @Test
+    void stopParkingWhenAlreadyStopped_ThrowsException() {
+        Response response = given()
+                .header("Authorization", "Bearer " + memberToken)
+                .baseUri("http://localhost")
+                .port(port)
+                .when()
+                .put("/spotallocations/1")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
@@ -146,11 +220,13 @@ class ParkingSpotAllocationControllerTest {
     }
 
     @Test
-    void stopParkingWhenAllocationDoesntExist_ThrowsException(){
-        Response response = given().baseUri("http://localhost")
+    void stopParkingWhenAllocationDoesntExist_ThrowsException() {
+        Response response = given()
+                .header("Authorization", "Bearer " + memberToken)
+                .baseUri("http://localhost")
                 .port(port)
                 .when()
-                .put("/spotallocation/1000000")
+                .put("/spotallocations/1000000")
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
@@ -159,7 +235,6 @@ class ParkingSpotAllocationControllerTest {
 
         assertEquals("No such parking allocation exists!", response.jsonPath().getString("message"));
     }
-
 
 
 }
