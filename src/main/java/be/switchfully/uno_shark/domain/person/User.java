@@ -16,7 +16,6 @@ import static javax.persistence.EnumType.*;
 @Entity
 @Table(name = "USERS")
 @JsonIgnoreProperties(ignoreUnknown = true)
-//Todo can be used with inheritance bit we have to figure that one out
 public class User {
 
     @Id
@@ -28,7 +27,6 @@ public class User {
     @JoinColumn(name = "fk_person_id")
     private Person person;
 
-    //todo if we want to change this to one-to-many
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_licenseplate_id")
     private LicensePlate licensePlate;

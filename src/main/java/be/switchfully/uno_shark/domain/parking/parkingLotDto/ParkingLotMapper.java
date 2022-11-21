@@ -4,8 +4,6 @@ import be.switchfully.uno_shark.domain.parking.ParkingCategory;
 import be.switchfully.uno_shark.domain.parking.ParkingLot;
 import be.switchfully.uno_shark.domain.parking.divisionDto.DivisionMapper;
 import be.switchfully.uno_shark.domain.person.dto.PersonMapper;
-import be.switchfully.uno_shark.domain.person.phonenumber.CountryCode;
-import be.switchfully.uno_shark.domain.person.phonenumber.MobilePhone;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -37,7 +35,6 @@ public class ParkingLotMapper {
 
     public ParkingLotDto parkingLotToDto(ParkingLot parkinglot) {
         log.info("Converting Dto <- Parkinglot");
-        //Todo change Dtos
         return new ParkingLotDto(
                 parkinglot.getId(),
                 parkinglot.getName(),

@@ -5,7 +5,6 @@ import be.switchfully.uno_shark.domain.parking.divisionDto.CreateDivisionDto;
 import be.switchfully.uno_shark.domain.parking.divisionDto.ShowDivisionDto;
 import be.switchfully.uno_shark.domain.parking.divisionDto.DivisionMapper;
 import be.switchfully.uno_shark.domain.parking.divisionDto.SingleDivisionDto;
-import be.switchfully.uno_shark.domain.person.Person;
 import be.switchfully.uno_shark.repositories.DivisionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

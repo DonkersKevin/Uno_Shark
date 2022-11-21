@@ -25,7 +25,6 @@ public class PersonService {
     public Person checkPersonForDuplicatesByFields(Person person) {
         log.info("Checking database for existing person based on fields.");
 
-        //Todo check if address check for person is needed
         Address checkedAddress = addressService.checkAddressForDuplicatesByFields(person.getAddress());
         person.setAddress(checkedAddress);
         

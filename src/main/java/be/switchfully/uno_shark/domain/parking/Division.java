@@ -1,7 +1,6 @@
 package be.switchfully.uno_shark.domain.parking;
 
 import javax.persistence.*;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -22,7 +21,6 @@ public class Division {
 
     private String name;
     private String originalName;
-    //todo
     private String director;
 
     public Division() {

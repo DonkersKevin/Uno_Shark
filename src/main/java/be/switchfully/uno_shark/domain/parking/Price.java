@@ -2,7 +2,6 @@ package be.switchfully.uno_shark.domain.parking;
 
 import javax.persistence.Embeddable;
 import java.util.Currency;
-import java.util.Objects;
 
 @Embeddable
 public class Price {

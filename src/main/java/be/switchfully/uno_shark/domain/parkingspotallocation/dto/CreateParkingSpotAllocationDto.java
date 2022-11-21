@@ -3,7 +3,6 @@ package be.switchfully.uno_shark.domain.parkingspotallocation.dto;
 import be.switchfully.uno_shark.domain.person.licenseplate.LicensePlate;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 public class CreateParkingSpotAllocationDto {
 

@@ -6,7 +6,6 @@ import be.switchfully.uno_shark.domain.person.phonenumber.LandLinePhone;
 import be.switchfully.uno_shark.domain.person.phonenumber.MobilePhone;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 @Table(name = "parkinglot")

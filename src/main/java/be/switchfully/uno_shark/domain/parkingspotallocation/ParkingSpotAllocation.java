@@ -6,7 +6,6 @@ import be.switchfully.uno_shark.domain.person.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 @Entity
 @Table(name = "parkingspotallocation")

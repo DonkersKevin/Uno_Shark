@@ -6,7 +6,6 @@ import be.switchfully.uno_shark.domain.parking.divisionDto.SingleDivisionDto;
 import be.switchfully.uno_shark.domain.person.Person;
 import be.switchfully.uno_shark.domain.person.address.Address;
 
-import java.util.Objects;
 
 public class ParkingLotDto {
     private Long id;

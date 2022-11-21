@@ -1,7 +1,6 @@
 package be.switchfully.uno_shark.domain.person.licenseplate;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 @Table(name = "license_plate")

@@ -5,7 +5,6 @@ import be.switchfully.uno_shark.domain.person.phonenumber.LandLinePhone;
 import be.switchfully.uno_shark.domain.person.phonenumber.MobilePhone;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 
 @Entity
@@ -14,7 +13,7 @@ public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "person_seq")
     @SequenceGenerator(name = "person_seq", sequenceName = "person_seq", allocationSize = 1)
-    //@Column(name = "id", nullable = false)
+
     private Long id;
     private String firstName;
     private String lastName;
@@ -33,7 +32,6 @@ public class Person {
     public Person() {
     }
 
-    //check if we can still use the builder pattern and inheritance altogether.
     public Person(String firstName, String lastName, Address address, LandLinePhone landLinePhone, MobilePhone mobilePhone, String emailAddress) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -44,7 +42,6 @@ public class Person {
         checkPhoneNumber();
     }
 
-    //Todo bugfixing duplication, getting null for id,
     public Person(Long id, String firstName, String lastName, Address address, LandLinePhone landLinePhone, MobilePhone mobilePhone, String emailAddress) {
         this.id = id;
         this.firstName = firstName;
