@@ -13,8 +13,22 @@ public class Price {
     }
 
     public Price(double amount, Currency currency) {
-        this.amount = amount;
-        this.currency = currency;
+        this.amount = amountVerification(amount);
+        this.currency = currencyVerification(currency);
+    }
+
+    private double amountVerification(double amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Provide a valid price.");
+        }
+        return amount;
+    }
+
+    private Currency currencyVerification(Currency currency) {
+        if (currency == null) {
+            throw new IllegalArgumentException("Provide a currency.");
+        }
+        return currency;
     }
 
     public double getAmount() {
