@@ -20,10 +20,10 @@ import java.util.Optional;
 public class DivisionService {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
-    DivisionRepository divisionRepository;
-    DivisionMapper divisionMapper;
+    private DivisionRepository divisionRepository;
+    private DivisionMapper divisionMapper;
 
-    GeneralValidationService generalValidationService;
+    private GeneralValidationService generalValidationService;
 
     public DivisionService(DivisionRepository divisionRepository, DivisionMapper divisionMapper, GeneralValidationService generalValidationService) {
         this.divisionRepository = divisionRepository;

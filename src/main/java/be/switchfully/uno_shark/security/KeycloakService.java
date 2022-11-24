@@ -10,12 +10,14 @@ import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 
 @Service
+@Profile("!test")
 public class KeycloakService {
 
     private final RealmResource realmResource;

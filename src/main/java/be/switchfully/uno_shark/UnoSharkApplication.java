@@ -1,5 +1,6 @@
 package be.switchfully.uno_shark;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.keycloak.OAuth2Constants;
 import org.keycloak.adapters.KeycloakConfigResolver;
